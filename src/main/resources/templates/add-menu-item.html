@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add menu item</title>
+</head>
+<body>
+<h1>Add menu item</h1>
+<form th:action="@{/menuItems/submit}" method="post" th:object="${menuItem}">
+
+   <p>Име: <input type="text" th:field="*{name}" placeholder="Въведете име" minlength="2" maxlength="30" required></p>
+   <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">name error</p>
+
+    <p>Цена: <input type="number" th:field="*{price}" placeholder="Въведете цена" min="0" step=".01" required></p>
+    <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">price error</p>
+
+    <p>Описание: <textarea th:field="*{description}" placeholder="Въведете описание" minlength="2" maxlength="150"></textarea></p>
+    <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description error</p>
+
+    <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1" required></p>
+    <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
+
+    <input type="submit" value="Save">
+    <!--<a href="/menuItems" class="btn btn-outline-secondary">Back</a>-->
+</form>
+</body>
+</html>
