@@ -21,16 +21,17 @@ public class Dish {
     private double price;
     @Min(1)
     private int quantity;
-    private DishQuantityType dishQuantityType;
-    private DishType dishType;
+    private String  dishQuantityType;
+    private String dishType;
 
-    public DishType getDishType() {
+    public String getDishType() {
         return dishType;
     }
 
-    public void setDishType(DishType dishType) {
+    public void setDishType(String dishType) {
         this.dishType = dishType;
     }
+
     public Integer getId() {
         return id;
     }
@@ -71,11 +72,11 @@ public class Dish {
         this.quantity = quantity;
     }
 
-    public DishQuantityType getDishQuantityType() {
+    public String getDishQuantityType() {
         return dishQuantityType;
     }
 
-    public void setDishQuantityType(DishQuantityType dishQuantityType) {
+    public void setDishQuantityType(String dishQuantityType) {
         this.dishQuantityType = dishQuantityType;
     }
 }

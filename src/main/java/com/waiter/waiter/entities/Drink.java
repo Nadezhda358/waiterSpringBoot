@@ -1,8 +1,5 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.DrinkQuantityType;
-import com.waiter.waiter.enums.DrinkType;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -21,14 +18,14 @@ public class Drink {
     private double price;
     @Min(1)
     private int quantity;
-    private DrinkQuantityType drinkQuantityType;
-    private DrinkType drinkType;
+    private String drinkQuantityType;
+    private String drinkType;
 
-    public DrinkType getDrinkType() {
+    public String getDrinkType() {
         return drinkType;
     }
 
-    public void setDrinkType(DrinkType drinkType) {
+    public void setDrinkType(String drinkType) {
         this.drinkType = drinkType;
     }
 
@@ -72,11 +69,11 @@ public class Drink {
         this.quantity = quantity;
     }
 
-    public DrinkQuantityType getDrinkQuantityType() {
+    public String getDrinkQuantityType() {
         return drinkQuantityType;
     }
 
-    public void setDrinkQuantityType(DrinkQuantityType drinkQuantityType) {
+    public void setDrinkQuantityType(String drinkQuantityType) {
         this.drinkQuantityType = drinkQuantityType;
     }
 }

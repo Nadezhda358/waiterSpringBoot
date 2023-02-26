@@ -40,6 +40,14 @@
         </p>
         <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
 
+        <p>Тип:
+            <select th:field="${drink.drinkType}">
+                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkType).values()}"
+                        th:value="${state}"
+                        th:text="${state}">
+                </option>
+            </select>
+        </p>
 
         <input type="submit" value="Save" class="btn btn-outline-success">
         <a href="/menuItems" class="btn btn-outline-secondary">Back</a>
