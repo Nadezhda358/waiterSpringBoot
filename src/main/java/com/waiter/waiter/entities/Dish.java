@@ -1,6 +1,7 @@
 package com.waiter.waiter.entities;
 
 import com.waiter.waiter.enums.DishQuantityType;
+import com.waiter.waiter.enums.DishType;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
@@ -21,7 +22,15 @@ public class Dish {
     @Min(1)
     private int quantity;
     private DishQuantityType dishQuantityType;
+    private DishType dishType;
 
+    public DishType getDishType() {
+        return dishType;
+    }
+
+    public void setDishType(DishType dishType) {
+        this.dishType = dishType;
+    }
     public Integer getId() {
         return id;
     }

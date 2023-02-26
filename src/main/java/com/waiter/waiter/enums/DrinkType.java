@@ -1,4 +1,8 @@
 package com.waiter.waiter.enums;
 
-public class DrinkType {
+public enum DrinkType {
+    HOT,
+    NONALCOHOLIC,
+    ALCOHOLIC,
+    COCKTAIL;
 }
