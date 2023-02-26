@@ -1,0 +1,72 @@
+package com.waiter.waiter.entities;
+
+import com.waiter.waiter.enums.DishQuantityType;
+
+import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
+@Entity
+@Table(name = "dishes")
+public class Dish {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+    @Size(min=2, max=30)
+    private String name;
+    @Size(max=150)
+    private String description;
+    @Min(0)
+    private double price;
+    @Min(1)
+    private int quantity;
+    private DishQuantityType dishQuantityType;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public DishQuantityType getDishQuantityType() {
+        return dishQuantityType;
+    }
+
+    public void setDishQuantityType(DishQuantityType dishQuantityType) {
+        this.dishQuantityType = dishQuantityType;
+    }
+}

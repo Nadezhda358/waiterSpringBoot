@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Add menu item</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+<div class="container">
+    <h1>Add drink</h1>
+    <form th:action="@{/drinks/submit}" method="post" th:object="${drink}" class="col-md-8">
+
+        <p>Име: <input type="text" th:field="*{name}" placeholder="Въведете име" minlength="2" maxlength="30"
+                       class="form-control border-3" required></p>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">name error</p>
+
+        <p>Цена: <input type="number" th:field="*{price}" placeholder="Въведете цена" min="0" step=".01"
+                        class="form-control border-3" required></p>
+        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">price error</p>
+
+        <p>Описание: <textarea th:field="*{description}" placeholder="Въведете описание" minlength="2" maxlength="150"
+                               class="form-control border-3"></textarea></p>
+        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description
+            error</p>
+
+        <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
+                              class="form-control border-3" required>
+
+            <select th:field="${drink.drinkQuantityType}">
+                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkQuantityType).values()}"
+                        th:value="${state}"
+                        th:text="${state}">
+                </option>
+            </select>
+        </p>
+        <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
+
+
+        <input type="submit" value="Save" class="btn btn-outline-success">
+        <a href="/menuItems" class="btn btn-outline-secondary">Back</a>
+    </form>
+</div>
+</body>
+</html>

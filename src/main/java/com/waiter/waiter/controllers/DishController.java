@@ -1,7 +1,9 @@
 package com.waiter.waiter.controllers;
 
-import com.waiter.waiter.entities.MenuItem;
+import com.waiter.waiter.entities.Dish;
+import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.MenuItemRepository;
+import com.waiter.waiter.services.DishService;
 import com.waiter.waiter.services.MenuItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,21 +16,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import javax.validation.Valid;
 
 @Controller
-@RequestMapping("/menuItems")
-public class MenuItemController {
+@RequestMapping("/dishes")
+public class DishController {
     @Autowired
-    MenuItemService menuItemService;
-    @Autowired
-    MenuItemRepository menuItemRepository;
+    DishService dishService;
 
     @GetMapping("/create")
-    private String createMenuItem(Model model){
-        MenuItem menuItem = new MenuItem();
-        model.addAttribute("menuItem", menuItem);
-        return "/menu/add-menu-item";
+    private String createDish(Model model){
+        Dish dish = new Dish();
+        model.addAttribute("dish", dish);
+        return "/menu/add-dish";
     }
     @PostMapping("/submit")
-    private String saveMenuItem(@Valid MenuItem menuItem, BindingResult bindingResult){
-        return menuItemService.saveMenuItem(menuItem, bindingResult);
+    private String saveDish(@Valid Dish dish, BindingResult bindingResult){
+        return dishService.saveDish(dish, bindingResult);
     }
 }

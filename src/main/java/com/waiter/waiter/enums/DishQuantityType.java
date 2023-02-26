@@ -4,9 +4,4 @@ public enum DishQuantityType {
     KG,
     BR,
     GR
-    /*
-     TODO
-     L
-     ML
-    */
 }
