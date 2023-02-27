@@ -35,6 +35,15 @@ public class User {
     private LocalDate hireDate;
     @Size(max=500)
     private String description;
+    private boolean enabled;
+
+    public boolean isEnabled() {
+        return enabled;
+    }
+
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
     public Integer getId() {
         return id;
