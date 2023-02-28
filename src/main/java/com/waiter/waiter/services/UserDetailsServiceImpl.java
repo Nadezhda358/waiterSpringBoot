@@ -36,7 +36,7 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
     public List<Object> isUserPresent(User user) {
         boolean userExists = false;
         String message = null;
-        User u  = userRepo.getUserByUsername(user.getFirstName());
+        User u  = userRepo.getUserByUsername(user.getUsername());
         if(u != null){
             userExists = true;
             message = "Username Already Present!";
