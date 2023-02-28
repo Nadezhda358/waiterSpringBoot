@@ -7,8 +7,8 @@ package com.waiter.waiter.enums;
 //}
 
 public enum Role {
-    ROLE_USER("User"),
-    ROLE_ADMIN("Admin");
+    WAITER("Сервитьор"),
+    COOK("Готвач");
 
     private final String value;
 
