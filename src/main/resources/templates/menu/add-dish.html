@@ -12,8 +12,8 @@
 </head>
 <body>
 <div class="container">
-    <h1>Add drink</h1>
-    <form th:action="@{/drinks/submit}" method="post" th:object="${drink}" class="col-md-8">
+    <h1>Add dish</h1>
+    <form th:action="@{/dishes/submit}" method="post" th:object="${dish}" class="col-md-8">
 
         <p>Име: <input type="text" th:field="*{name}" placeholder="Въведете име" minlength="2" maxlength="30"
                        class="form-control border-3" required></p>
@@ -31,8 +31,8 @@
         <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
                               class="form-control border-3" required>
 
-            <select th:field="${drink.drinkQuantityType}">
-                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkQuantityType).values()}"
+            <select th:field="${dish.dishQuantityType}">
+                <option th:each="state : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
                         th:value="${state}"
                         th:text="${state}">
                 </option>
@@ -41,14 +41,13 @@
         <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
 
         <p>Тип:
-            <select th:field="${drink.drinkType}">
-                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkType).values()}"
+            <select th:field="${dish.dishType}">
+                <option th:each="state : ${T(com.waiter.waiter.enums.DishType).values()}"
                         th:value="${state}"
                         th:text="${state}">
                 </option>
             </select>
         </p>
-
         <input type="submit" value="Save" class="btn btn-outline-success">
         <a href="/" class="btn btn-outline-secondary">Back</a>
     </form>
