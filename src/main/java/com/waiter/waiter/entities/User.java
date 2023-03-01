@@ -5,10 +5,12 @@ import com.waiter.waiter.enums.Role;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.util.Date;
 
 @Entity
 @Table(name="users")
@@ -16,7 +18,7 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
-    private Long id;
+    private Integer id;
 
     @NotNull
     @Size(min=5, max=30)
@@ -31,7 +33,7 @@ public class User {
     @Size(min=2, max=30)
     private String lastName;//register input done
     @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate dateOfBirth;//register input done
+    private Date dateOfBirth;//register input done
     @Size(min=4,max =100)
     private String address;
     @Size(min=3, max=13)
@@ -42,18 +44,18 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Gender gender;//register input done
     @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate hireDate;
+    private Date hireDate;
     @Size(max=500)
     private String description;
     @Enumerated(EnumType.STRING)
     private Role role;//register input done
     private boolean enabled;
 
-    public Long getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -113,11 +115,11 @@ public class User {
         this.lastName = lastName;
     }
 
-    public LocalDate getDateOfBirth() {
+    public Date getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(LocalDate dateOfBirth) {
+    public void setDateOfBirth(Date dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -145,11 +147,11 @@ public class User {
         this.gender = gender;
     }
 
-    public LocalDate getHireDate() {
+    public Date getHireDate() {
         return hireDate;
     }
 
-    public void setHireDate(LocalDate hireDate) {
+    public void setHireDate(Date hireDate) {
         this.hireDate = hireDate;
     }
 
@@ -168,4 +170,5 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
 }
