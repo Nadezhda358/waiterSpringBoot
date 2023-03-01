@@ -54,12 +54,16 @@
     <p>Адрес: <input type="text" th:field="*{address}" placeholder="Въведете адрес" minlength="3" maxlength="13"
                                class="form-control border-3" required></p>
     <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger">address error</p>
-    <p>Рождена дата: <input type="date" th:field="*{dateOfBirth}" placeholder="Въведете телефонен номер" minlength="3" maxlength="13"
-                               class="form-control border-3" required></p>
+
+
+    <p>Рождена дата: <input type="date" th:field="*{dateOfBirth}" class="form-control border-3" required></p>
     <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="text-danger">date error</p>
-    <p>Работещ в ресторанта от: <input type="date" th:field="*{hireDate}" placeholder="Въведете телефонен номер" minlength="3" maxlength="13"
-                            class="form-control border-3" required></p>
+
+
+    <p>Работещ в ресторанта от: <input type="date" th:field="*{hireDate}" class="form-control border-3" required></p>
     <p th:if="${#fields.hasErrors('hireDate')}" th:errors="*{hireDate}" class="text-danger">date error</p>
+
+
     <p>Описание: <textarea th:field="*{description}" placeholder="Въведете описание"
                            class="form-control border-3"></textarea></p>
     <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description</p>
