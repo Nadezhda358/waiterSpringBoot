@@ -1,8 +1,7 @@
 package com.waiter.waiter.controllers;
 
-import com.waiter.waiter.entities.Dish;
+
 import com.waiter.waiter.entities.Drink;
-import com.waiter.waiter.services.DishService;
 import com.waiter.waiter.services.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -29,5 +28,9 @@ public class DrinkController {
     @PostMapping("/submit")
     private String saveDrink(@Valid Drink drink, BindingResult bindingResult){
         return drinkService.saveDrink(drink, bindingResult);
+    }
+    @GetMapping("/menu")
+    private String getMenu(){
+        return "/menu/menu";
     }
 }
