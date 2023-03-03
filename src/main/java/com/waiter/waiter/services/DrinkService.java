@@ -22,4 +22,8 @@ public class DrinkService {
         drinkRepository.save(drink);
         return "index";
     }
+    public Iterable<Drink> getAllDrinks() {
+        Iterable<Drink> drinks = drinkRepository.findAll();
+        return drinks;
+    }
 }

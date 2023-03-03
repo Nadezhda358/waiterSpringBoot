@@ -4,6 +4,7 @@ import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.enums.DishType;
 import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.services.DishService;
+import com.waiter.waiter.services.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,22 +23,12 @@ public class MenuController {
     DishRepository dishRepository;
     @Autowired
     DishService dishService;
+    @Autowired
+    DrinkService drinkService;
     @GetMapping
     private String getMenu(Model model){
         model.addAttribute("dishes", dishService.getAllDishes());
-        model.addAttribute("dishTypes", DishType.values());
-        //List<Dish> salads = dishRepository.getDishesByType("SALAD");
-        //model.addAttribute("salads", salads);
-
-        //ArrayList<ArrayList<Dish>> dishesByTypes = new ArrayList<>();
-        //for (int i = 0; i < DishType.values().length; i++) {
-        //    ArrayList<Dish> dishes = dishRepository.getDishesByType(DishType.)
-        //    dishesByTypes.add()
-        //}
-        //EnumMap<DishType, ArrayList<Dish>> dishItems =  new EnumMap<>(DishType.class);
-        //for (int i = 0; i < DishType.values().length; i++) {
-        //    dishItems.computeIfAbsent(drinkToAdd.getDrinkType(), k -> new ArrayList<>()).add(drinkToAdd);
-        //}
+        model.addAttribute("drinks", drinkService.getAllDrinks());
         return "/menu/menu";
     }
 }

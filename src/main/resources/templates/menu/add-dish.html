@@ -32,9 +32,9 @@
                               class="form-control border-3" required>
 
             <select th:field="${dish.dishQuantityType}">
-                <option th:each="state : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
-                        th:value="${state}"
-                        th:text="${state}">
+                <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
+                        th:value="${type}"
+                        th:text="${type.getValue}">
                 </option>
             </select>
         </p>

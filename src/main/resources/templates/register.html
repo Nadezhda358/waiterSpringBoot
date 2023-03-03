@@ -25,9 +25,9 @@
     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}" style="color:red">password error</span>
     <br/><br/>
     <select th:field="${user.role}">
-        <option th:each="state : ${T(com.waiter.waiter.enums.Role).values()}"
-                th:value="${state}"
-                th:text="${state.getValue}">
+        <option th:each="userRole : ${T(com.waiter.waiter.enums.Role).values()}"
+                th:value="${userRole}"
+                th:text="${userRole.getValue}">
         </option>
     </select>
     <p>Име: <input type="text" th:field="*{firstName}" placeholder="Въведете име" minlength="2" maxlength="30"

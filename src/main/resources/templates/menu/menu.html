@@ -13,10 +13,10 @@
 <body>
     <!--todo navigation -->
     <div class="container text-center">
-        <!--<h1>Меню</h1>
+        <h1>Меню</h1>
         <h2 class="p-3 mb-2 bg-success text-white">Храни</h2>
 
-
+<!--
         <table class="table table-striped">
         <thead>
         <tr>
@@ -38,6 +38,7 @@
     </table>-->
 
 
+
         <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
             <h2 th:text="${type.getValue}"></h2>
             <table>
@@ -55,6 +56,30 @@
                     <td th:text="${dish.name}"></td>
                     <td th:text="${dish.price}"></td>
                     <td th:text="${dish.quantity}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <h2 class="p-3 mb-2 bg-success text-white">Напитки</h2>
+        <div th:each="type : ${T(com.waiter.waiter.enums.DrinkType).values()}">
+            <h2 th:text="${type.getValue}"></h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Име</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="drink : ${drinks}" th:if="${drink.drinkType == type.getValue}">
+                    <td th:text="${drink.name}"></td>
+                    <td th:text="${drink.price}"></td>
+                    <td th:text="${drink.quantity}"></td>
                 </tr>
                 </tbody>
             </table>
