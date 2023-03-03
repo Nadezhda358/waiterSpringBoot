@@ -55,7 +55,7 @@
                 <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                     <td th:text="${dish.name}"></td>
                     <td th:text="${dish.price}"></td>
-                    <td th:text="${dish.quantity}"></td>
+                    <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -79,7 +79,7 @@
                 <tr th:each="drink : ${drinks}" th:if="${drink.drinkType == type.getValue}">
                     <td th:text="${drink.name}"></td>
                     <td th:text="${drink.price}"></td>
-                    <td th:text="${drink.quantity}"></td>
+                    <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
                 </tr>
                 </tbody>
             </table>
