@@ -42,7 +42,7 @@
     <p>Имейл: <input type="email" th:field="*{email}" placeholder="Въведете имейл" minlength="2" maxlength="30"
                        class="form-control border-3" required></p>
     <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
-    <p>Телефонен номер: <input type="phoneNumber" th:field="*{phoneNumber}" placeholder="Въведете телефонен номер" minlength="3" maxlength="13"
+    <p>Телефонен номер: <input type="text" th:field="*{phoneNumber}" placeholder="Въведете телефонен номер" minlength="3" maxlength="13"
                      class="form-control border-3" required></p>
     <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger">phone number error</p>
     <select th:field="${user.gender}">

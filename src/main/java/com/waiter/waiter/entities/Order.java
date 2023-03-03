@@ -21,21 +21,21 @@ public class Order {
     @NotNull
     @Size(min=1)
     private Integer idTable;
-    @ManyToOne
+    /*@ManyToOne
     @JoinColumn(name = "user_id")
-    private User user;
+    private User user;*/
     private String status;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate finishDate;
     private double totalCost;
-
+/*
     public User getUser() {
         return user;
     }
 
     public void setUser(User user) {
         this.user = user;
-    }
+    }*/
 
     public Integer getId() {
         return id;

@@ -17,7 +17,7 @@ import java.util.List;
 public class AuthController {
 
     @Autowired
-    private UserService userService;
+    public UserService userService;
 
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)
@@ -42,8 +42,9 @@ public class AuthController {
             model.addAttribute("successMessage", userPresentObj.get(1));
             return "register";
         }
+
         userService.saveUser(user);
-//        model.addAttribute("successMessage", "User registered successfully!");
+        //model.addAttribute("successMessage", "User registered successfully!");
 
         return "login";
     }
