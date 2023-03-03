@@ -75,6 +75,7 @@ li a:hover:not(.active) {
                 <th>Количество</th>
                 <th></th>
                 <th></th>
+                <th></th>
             </tr>
             </thead>
             <tbody>
@@ -82,6 +83,13 @@ li a:hover:not(.active) {
                 <td th:text="${dish.name}"></td>
                 <td th:text="${dish.price}"></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
+                <td>
+                    <form th:action="@{/dishes/more-info/{dishId}(dishId=${dish.id})}" method="post">
+                        <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
+                    </form>
+                </td>
+                <td>Промяна</td>
+                <td>Премахване</td>
             </tr>
             </tbody>
         </table>

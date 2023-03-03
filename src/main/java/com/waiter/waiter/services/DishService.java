@@ -9,6 +9,7 @@ import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class DishService {
@@ -26,6 +27,14 @@ public class DishService {
     public Iterable<Dish> getAllDishes() {
         Iterable<Dish> dishes = dishRepository.findAll();
         return  dishes;
+    }
+    public Dish getDishById(Integer dishId){
+        Optional<Dish> oe = dishRepository.findById(dishId);
+        if(oe.isPresent()) {
+            return oe.get();
+        } else {
+            return new Dish();
+        }
     }
 
 }
