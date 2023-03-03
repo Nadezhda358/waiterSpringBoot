@@ -26,7 +26,7 @@ public class DishService {
 
     public Iterable<Dish> getAllDishes() {
         Iterable<Dish> dishes = dishRepository.findAll();
-        return  dishes;
+        return dishes;
     }
     public Dish getDishById(Integer dishId){
         Optional<Dish> oe = dishRepository.findById(dishId);

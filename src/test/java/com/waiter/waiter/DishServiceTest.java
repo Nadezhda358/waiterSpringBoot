@@ -7,10 +7,16 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.*;
 
 public class DishServiceTest {
@@ -33,7 +39,7 @@ public class DishServiceTest {
         Dish dish = new Dish();
         when(bindingResult.hasErrors()).thenReturn(false);
         String result = dishService.saveDish(dish, bindingResult, "");
-        assertEquals("/menu/menu", result);
+        assertEquals("redirect:/menu", result);
     }
 
     @Test
@@ -51,4 +57,27 @@ public class DishServiceTest {
         dishService.saveDish(dish, bindingResult, "");
         verify(dishRepository, times(1)).save(dish);
     }
+
+    @Test
+    public void testGetAllDishes() {
+        List<Dish> dishList = new ArrayList<>();
+        Dish dish1 = new Dish();
+        Dish dish2 = new Dish();
+        dishList.add(dish1);
+        dishList.add(dish2);
+        Mockito.when(dishRepository.findAll()).thenReturn(dishList);
+        Iterable<Dish> result = dishService.getAllDishes();
+        assertNotNull(result);
+        assertEquals(2, ((Collection<?>) result).size());
+    }
+
+    @Test
+    public void testGetAllDishesWithNoDishes() {
+        List<Dish> dishList = new ArrayList<>();
+        Mockito.when(dishRepository.findAll()).thenReturn(dishList);
+        Iterable<Dish> result = dishService.getAllDishes();
+        assertNotNull(result);
+        assertEquals(0, ((Collection<?>) result).size());
+    }
+
 }

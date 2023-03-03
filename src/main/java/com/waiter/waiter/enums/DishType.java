@@ -6,7 +6,8 @@ public enum DishType {
     MAIN_COURSES("Основно"),
     GRILL("Барбекю"),
     SEAFOOD("Морски дарове"),
-    DESSERT("Десерти");
+    DESSERT("Десерти"),
+    SOUP("Супи");
 
     private final String value;
 
