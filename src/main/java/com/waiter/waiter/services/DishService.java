@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
+import java.util.List;
 
 @Service
 public class DishService {
@@ -21,4 +22,10 @@ public class DishService {
         dishRepository.save(dish);
         return "index";
     }
+
+    public Iterable<Dish> getAllDishes() {
+        Iterable<Dish> dishes = dishRepository.findAll();
+        return  dishes;
+    }
+
 }

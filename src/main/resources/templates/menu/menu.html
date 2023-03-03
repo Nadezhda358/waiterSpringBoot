@@ -13,11 +13,10 @@
 <body>
     <!--todo navigation -->
     <div class="container text-center">
-        <h1>MENU</h1>
-        <h2 class="p-3 mb-2 bg-success text-white">Dishes</h2>
+        <h1>Меню</h1>
+        <h2 class="p-3 mb-2 bg-success text-white">Храни</h2>
 
-
-
+<!--
         <table class="table table-striped">
         <thead>
         <tr>
@@ -33,16 +32,58 @@
             <td th:text="${salad.name}"></td>
             <td th:text="${salad.price}"></td>
             <td th:text="${salad.quantity}"></td>
-            <!--<td><a th:href="@{/actors/edit/{actorId}(actorId=${actor.id})}" class="btn btn-outline-warning">Update</a></td>
-            <td>
-                <form th:action="@{/actors/delete/{actorId}(actorId=${actor.id})}" method="post">
-                    <input type="submit" name="delete" value="Delete" class="btn btn-outline-danger">
-                </form>
-            </td>-->
+
         </tr>
         </tbody>
-    </table>
+    </table>-->
 
+
+
+        <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
+            <h2 th:text="${type.getValue}"></h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Име</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
+                    <td th:text="${dish.name}"></td>
+                    <td th:text="${dish.price}"></td>
+                    <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <h2 class="p-3 mb-2 bg-success text-white">Напитки</h2>
+        <div th:each="type : ${T(com.waiter.waiter.enums.DrinkType).values()}">
+            <h2 th:text="${type.getValue}"></h2>
+            <table>
+                <thead>
+                <tr>
+                    <th>Име</th>
+                    <th>Цена</th>
+                    <th>Количество</th>
+                    <th></th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="drink : ${drinks}" th:if="${drink.drinkType == type.getValue}">
+                    <td th:text="${drink.name}"></td>
+                    <td th:text="${drink.price}"></td>
+                    <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
     </div>
 </body>
 </html>
