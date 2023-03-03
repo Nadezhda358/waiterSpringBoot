@@ -1,10 +1,7 @@
 package com.waiter.waiter;
 
-import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Drink;
-import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.DrinkRepository;
-import com.waiter.waiter.services.DishService;
 import com.waiter.waiter.services.DrinkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
@@ -19,8 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class DrinkServiceTest {
@@ -104,4 +101,18 @@ public class DrinkServiceTest {
     //    assertNotNull(result);
     //    assertEquals(new Drink(), result);
     //}
+
+    @Test
+    public void testDeleteDrinkByIdWithValidId() {
+        Integer drinkId = 1;
+        drinkService.deleteDrinkById(drinkId);
+        Mockito.verify(drinkRepository, Mockito.times(1)).deleteById(drinkId);
+    }
+
+    @Test
+    public void testDeleteDrinkByIdWithInvalidId() {
+        Integer drinkId = 99; // invalid ID
+        doThrow(EmptyResultDataAccessException.class).when(drinkRepository).deleteById(drinkId);
+        assertThrows(EmptyResultDataAccessException.class, () -> drinkService.deleteDrinkById(drinkId));
+    }
 }

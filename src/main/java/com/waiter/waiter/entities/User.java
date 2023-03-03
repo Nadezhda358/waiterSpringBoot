@@ -5,11 +5,9 @@ import com.waiter.waiter.enums.Role;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 import java.util.Date;
 
 @Entity

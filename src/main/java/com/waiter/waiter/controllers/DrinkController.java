@@ -1,7 +1,5 @@
 package com.waiter.waiter.controllers;
 
-
-import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.services.DrinkService;
 import org.springframework.beans.factory.annotation.Autowired;

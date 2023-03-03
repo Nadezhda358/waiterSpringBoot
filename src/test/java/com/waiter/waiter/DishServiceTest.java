@@ -9,6 +9,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
 
 import java.util.ArrayList;
@@ -16,8 +17,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 public class DishServiceTest {
@@ -102,4 +102,18 @@ public class DishServiceTest {
     //    assertEquals(new Dish(), result);
     //}
 
+
+    @Test
+    public void testDeleteDishByIdWithValidId() {
+        Integer dishId = 1;
+        dishService.deleteDishById(dishId);
+        Mockito.verify(dishRepository, Mockito.times(1)).deleteById(dishId);
+    }
+
+    @Test
+    public void testDeleteDishByIdWithInvalidId() {
+        Integer dishId = 99; // invalid ID
+        doThrow(EmptyResultDataAccessException.class).when(dishRepository).deleteById(dishId);
+        assertThrows(EmptyResultDataAccessException.class, () -> dishService.deleteDishById(dishId));
+    }
 }
