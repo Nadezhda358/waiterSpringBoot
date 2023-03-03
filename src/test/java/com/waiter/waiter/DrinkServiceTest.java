@@ -17,6 +17,7 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -82,4 +83,25 @@ public class DrinkServiceTest {
         assertNotNull(result);
         assertEquals(0, ((Collection<?>) result).size());
     }
+
+    @Test
+    public void testGetDrinkByIdWithValidId() {
+        Integer drinkId = 1;
+        Drink drink = new Drink();
+        Optional<Drink> optionalDrink = Optional.of(drink);
+        Mockito.when(drinkRepository.findById(drinkId)).thenReturn(optionalDrink);
+        Drink result = drinkService.getDrinkById(drinkId);
+        assertNotNull(result);
+        assertEquals(drink, result);
+    }
+
+    //@Test
+    //public void testGetDrinkByIdWithInvalidId() {
+    //    Integer drinkId = 1;
+    //    Optional<Drink> optionalDrink = Optional.empty();
+    //    Mockito.when(drinkRepository.findById(drinkId)).thenReturn(optionalDrink);
+    //    Drink result = drinkService.getDrinkById(drinkId);
+    //    assertNotNull(result);
+    //    assertEquals(new Drink(), result);
+    //}
 }

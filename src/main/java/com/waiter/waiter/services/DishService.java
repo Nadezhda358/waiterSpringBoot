@@ -36,9 +36,8 @@ public class DishService {
             return new Dish();
         }
     }
-    public String deleteDishById(Integer dishId){
+    public void deleteDishById(Integer dishId){
         dishRepository.deleteById(dishId);
-        return "redirect:/menu";
     }
 
 }

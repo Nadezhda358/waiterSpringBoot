@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -79,5 +80,26 @@ public class DishServiceTest {
         assertNotNull(result);
         assertEquals(0, ((Collection<?>) result).size());
     }
+
+    @Test
+    public void testGetDishByIdWithValidId() {
+        Integer dishId = 1;
+        Dish dish = new Dish();
+        Optional<Dish> optionalDish = Optional.of(dish);
+        Mockito.when(dishRepository.findById(dishId)).thenReturn(optionalDish);
+        Dish result = dishService.getDishById(dishId);
+        assertNotNull(result);
+        assertEquals(dish, result);
+    }
+
+    //@Test
+    //public void testGetDishByIdWithInvalidId() {
+    //    Integer dishId = 1;
+    //    Optional<Dish> optionalDish = Optional.empty();
+    //    Mockito.when(dishRepository.findById(dishId)).thenReturn(optionalDish);
+    //    Dish result = dishService.getDishById(dishId);
+    //    assertNotNull(result);
+    //    assertEquals(new Dish(), result);
+    //}
 
 }

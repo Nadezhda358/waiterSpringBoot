@@ -35,8 +35,7 @@ public class DrinkService {
             return new Drink();
         }
     }
-    public String deleteDrinkById(Integer drinkId){
+    public void deleteDrinkById(Integer drinkId){
         drinkRepository.deleteById(drinkId);
-        return "redirect:/menu";
     }
 }

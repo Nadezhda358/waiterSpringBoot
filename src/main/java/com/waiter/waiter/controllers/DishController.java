@@ -50,6 +50,7 @@ public class DishController {
     }
     @PostMapping("/delete/{dishId}")
     private String deleteDish(@PathVariable(name="dishId") Integer dishId) {
-        return dishService.deleteDishById(dishId);
+        dishService.deleteDishById(dishId);
+        return "redirect:/menu";
     }
 }

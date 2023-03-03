@@ -55,6 +55,7 @@ public class DrinkController {
     }
     @PostMapping("/delete/{drinkId}")
     private String deleteDrink(@PathVariable(name="drinkId") Integer drinkId) {
-        return drinkService.deleteDrinkById(drinkId);
+        drinkService.deleteDrinkById(drinkId);
+        return "redirect:/menu";
     }
 }
