@@ -34,7 +34,7 @@
             <select th:field="${drink.drinkQuantityType}">
                 <option th:each="type : ${T(com.waiter.waiter.enums.DrinkQuantityType).values()}"
                         th:value="${type}"
-                        th:text="${type.getValue}">
+                        th:text="${type}">
                 </option>
             </select>
         </p>
@@ -43,8 +43,8 @@
         <p>Тип:
             <select th:field="${drink.drinkType}">
                 <option th:each="state : ${T(com.waiter.waiter.enums.DrinkType).values()}"
-                        th:value="${state}"
-                        th:text="${state}">
+                        th:value="${state.getValue}"
+                        th:text="${state.getValue}">
                 </option>
             </select>
         </p>

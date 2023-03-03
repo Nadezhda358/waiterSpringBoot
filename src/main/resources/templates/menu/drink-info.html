@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Dish info</title>
+    <title>Drink info</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
@@ -12,14 +12,14 @@
 </head>
 <body>
     <div class="container">
-        <p>Име: <span th:text="${dish.name}"></span></p>
-        <p>Тип: <span th:text="${dish.dishType}"></span></p>
-        <p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>
-        <p>Количество: <span th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></span></p>
-        <p>Описание: <span th:text="${dish.description}"></span></p>
+        <p>Име: <span th:text="${drink.name}"></span></p>
+        <p>Тип: <span th:text="${drink.drinkType}"></span></p>
+        <p>Цена: <span th:text="${drink.price} + ' лв.'"></span></p>
+        <p>Количество: <span th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></span></p>
+        <p>Описание: <span th:text="${drink.description}"></span></p>
         <a href="/menu" s="btn btn-outline-secondary">Назад</a>
-        <a th:href="@{/dishes/edit/{dishId}(dishId=${dish.id})}" class="btn btn-outline-warning">Промяна</a>
-        <form th:action="@{/dishes/delete/{dishId}(dishId=${dish.id})}" method="post">
+        <a th:href="@{/drinks/edit/{drinkId}(drinkId=${drink.id})}" class="btn btn-outline-warning">Промяна</a>
+        <form th:action="@{/drinks/delete/{drinkId}(drinkId=${drink.id})}" method="post">
             <input type="submit" name="delete" value="Премахване" class="btn btn-outline-danger">
         </form>
     </div>

@@ -9,21 +9,34 @@ import org.springframework.stereotype.Service;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.Valid;
+import java.util.Optional;
 
 @Service
 public class DrinkService {
     @Autowired
     DrinkRepository drinkRepository;
 
-    public String saveDrink(@Valid Drink drink, BindingResult bindingResult){
+    public String saveDrink(@Valid Drink drink, BindingResult bindingResult, String redirectIfErrors){
         if (bindingResult.hasErrors()){
-            return "/menu/add-drink";
+            return redirectIfErrors;
         }
         drinkRepository.save(drink);
-        return "index";
+        return "redirect:/menu";
     }
     public Iterable<Drink> getAllDrinks() {
         Iterable<Drink> drinks = drinkRepository.findAll();
         return drinks;
+    }
+    public Drink getDrinkById(Integer drinkId){
+        Optional<Drink> oe = drinkRepository.findById(drinkId);
+        if(oe.isPresent()) {
+            return oe.get();
+        } else {
+            return new Drink();
+        }
+    }
+    public String deleteDrinkById(Integer drinkId){
+        drinkRepository.deleteById(drinkId);
+        return "redirect:/menu";
     }
 }
