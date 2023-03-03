@@ -30,11 +30,10 @@
 
         <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
                               class="form-control border-3" required>
-
             <select th:field="${dish.dishQuantityType}">
                 <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
                         th:value="${type}"
-                        th:text="${type.getValue}">
+                        th:text="${type}">
                 </option>
             </select>
         </p>
@@ -43,8 +42,8 @@
         <p>Тип:
             <select th:field="${dish.dishType}">
                 <option th:each="state : ${T(com.waiter.waiter.enums.DishType).values()}"
-                        th:value="${state}"
-                        th:text="${state}">
+                        th:value="${state.getValue}"
+                        th:text="${state.getValue}">
                 </option>
             </select>
         </p>

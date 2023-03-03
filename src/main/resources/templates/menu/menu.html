@@ -64,7 +64,8 @@ li a:hover:not(.active) {
     </ul>
 </div>
 <div class="container">
-
+    <a href="/drinks/create" class="btn btn-outline-secondary">Добави напитка</a>
+    <a href="/dishes/create" class="btn btn-outline-secondary">Добави ястие</a>
     <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
         <h2 th:text="${type.getValue}"></h2>
         <table class="table table-striped">
@@ -81,15 +82,19 @@ li a:hover:not(.active) {
             <tbody>
             <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                 <td th:text="${dish.name}"></td>
-                <td th:text="${dish.price}"></td>
+                <td th:text="${dish.price} + ' лв.'"></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
                 <td>
                     <form th:action="@{/dishes/more-info/{dishId}(dishId=${dish.id})}" method="post">
                         <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
                     </form>
                 </td>
-                <td>Промяна</td>
-                <td>Премахване</td>
+                <td><a th:href="@{/dishes/edit/{dishId}(dishId=${dish.id})}" class="btn btn-outline-warning">Промяна</a></td>
+                <td>
+                    <form th:action="@{/dishes/delete/{dishId}(dishId=${dish.id})}" method="post">
+                        <input type="submit" name="delete" value="Премахване" class="btn btn-outline-danger">
+                    </form>
+                </td>
             </tr>
             </tbody>
         </table>
@@ -111,7 +116,7 @@ li a:hover:not(.active) {
             <tbody>
             <tr th:each="drink : ${drinks}" th:if="${drink.drinkType == type.getValue}">
                 <td th:text="${drink.name}"></td>
-                <td th:text="${drink.price}"></td>
+                <td th:text="${drink.price} + ' лв.'"></td>
                 <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
             </tr>
             </tbody>

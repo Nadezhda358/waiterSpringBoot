@@ -32,23 +32,23 @@ public class DishServiceTest {
     public void testSaveDishWithNoErrors() {
         Dish dish = new Dish();
         when(bindingResult.hasErrors()).thenReturn(false);
-        String result = dishService.saveDish(dish, bindingResult);
-        assertEquals("index", result);
+        String result = dishService.saveDish(dish, bindingResult, "");
+        assertEquals("/menu/menu", result);
     }
 
     @Test
     public void testSaveDishWithErrors() {
         Dish dish = new Dish();
         when(bindingResult.hasErrors()).thenReturn(true);
-        String result = dishService.saveDish(dish, bindingResult);
-        assertEquals("/menu/add-dish", result);
+        String result = dishService.saveDish(dish, bindingResult, "");
+        assertEquals("", result);
     }
 
     @Test
     public void testSaveDishSavesDish() {
         Dish dish = new Dish();
         when(bindingResult.hasErrors()).thenReturn(false);
-        dishService.saveDish(dish, bindingResult);
+        dishService.saveDish(dish, bindingResult, "");
         verify(dishRepository, times(1)).save(dish);
     }
 }

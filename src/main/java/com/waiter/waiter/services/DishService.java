@@ -16,12 +16,12 @@ public class DishService {
     @Autowired
     DishRepository dishRepository;
 
-    public String saveDish(@Valid Dish dish, BindingResult bindingResult){
+    public String saveDish(@Valid Dish dish, BindingResult bindingResult, String redirectIfErrors){
         if (bindingResult.hasErrors()){
-            return "/menu/add-dish";
+            return redirectIfErrors;
         }
         dishRepository.save(dish);
-        return "index";
+        return "redirect:/menu";
     }
 
     public Iterable<Dish> getAllDishes() {
@@ -35,6 +35,10 @@ public class DishService {
         } else {
             return new Dish();
         }
+    }
+    public String deleteDishById(Integer dishId){
+        dishRepository.deleteById(dishId);
+        return "redirect:/menu";
     }
 
 }
