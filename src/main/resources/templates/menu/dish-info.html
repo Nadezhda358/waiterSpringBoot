@@ -9,10 +9,46 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        .card{
+            background-color: #bc5090;
+            color: white;
+            box-shadow: rgba(0, 0, 0, 0.25) 0px 14px 28px, rgba(0, 0, 0, 0.22) 0px 10px 10px;
+            font-size: 120%;
+            padding: 50px;
+        }
+        h5{
+            font-size: 150%;
+        }
+    </style>
 </head>
-<body>
+<body class="position-absolute top-50 start-50 translate-middle">
     <div class="container">
-        <p>Име: <span th:text="${dish.name}"></span></p>
+        <!--max-width: max-content;
+            margin: auto;-->
+        <div class="card">
+            <!--<img src="..." class="card-img-top" alt="...">-->
+            <div class="card-body">
+                <h5 th:text="${dish.name}" class="text-center"></h5>
+                <div class="card-text">
+                    <p>Тип: <span th:text="${dish.dishType}"></span></p>
+                    <p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>
+                    <p>Количество: <span th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></span></p>
+                    <p>Описание: <span th:text="${dish.description}"></span></p>
+                </div>
+                <a href="/menu" class="btn btn-outline-secondary">Назад</a>
+                <a th:href="@{/dishes/edit/{dishId}(dishId=${dish.id})}" class="btn btn-outline-warning">Промяна</a>
+                <form th:action="@{/dishes/delete/{dishId}(dishId=${dish.id})}" method="post">
+                    <input type="submit" name="delete" value="Премахване" class="btn btn-outline-danger">
+                </form>
+            </div>
+        </div>
+
+
+
+
+
+        <!--<p>Име: <span th:text="${dish.name}"></span></p>
         <p>Тип: <span th:text="${dish.dishType}"></span></p>
         <p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>
         <p>Количество: <span th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></span></p>
@@ -21,7 +57,7 @@
         <a th:href="@{/dishes/edit/{dishId}(dishId=${dish.id})}" class="btn btn-outline-warning">Промяна</a>
         <form th:action="@{/dishes/delete/{dishId}(dishId=${dish.id})}" method="post">
             <input type="submit" name="delete" value="Премахване" class="btn btn-outline-danger">
-        </form>
+        </form>-->
     </div>
 </body>
 </html>
