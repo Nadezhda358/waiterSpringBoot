@@ -1,14 +1,7 @@
 package com.waiter.waiter.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
-
 @Entity
 @Table(name = "tables")
 public class RestaurantTable {
