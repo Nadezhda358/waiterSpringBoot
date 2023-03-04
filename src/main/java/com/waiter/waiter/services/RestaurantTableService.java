@@ -10,8 +10,8 @@ public class RestaurantTableService {
     @Autowired
     RestaurantTablesRepository restaurantTablesRepository;
     public void createNewTable(){
-        int newTableNumber= restaurantTablesRepository.getLastTableNumber()+1;
-        RestaurantTable restaurantTable=new RestaurantTable();
+        int newTableNumber = restaurantTablesRepository.count() > 0 ? restaurantTablesRepository.getLastTableNumber() + 1 : 1;
+        RestaurantTable restaurantTable = new RestaurantTable();
         restaurantTable.setNumber(newTableNumber);
         restaurantTablesRepository.save(restaurantTable);
     }
