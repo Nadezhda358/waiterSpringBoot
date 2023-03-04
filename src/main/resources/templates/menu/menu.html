@@ -121,9 +121,10 @@ li a:hover:not(.active) {
                 <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
 
                 <td>
-                    <form th:action="@{/drinks/more-info/{drinkId}(drinkId=${drink.id})}" method="post">
+                    <!--<form th:action="@{/drinks/more-info/{drinkId}(drinkId=${drink.id})}" method="post">
                         <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
-                    </form>
+                    </form>-->
+                    <a th:href="@{/drinks/more-info/{drinkId}(drinkId=${drink.id})}" class="btn btn-outline-warning">Още</a>
                 </td>
                 <td><a th:href="@{/drinks/edit/{drinkId}(drinkId=${drink.id})}" class="btn btn-outline-warning">Промяна</a></td>
                 <td>
