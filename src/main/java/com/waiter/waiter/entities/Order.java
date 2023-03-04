@@ -1,5 +1,6 @@
 package com.waiter.waiter.entities;
 
+import com.waiter.waiter.enums.OrderStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -16,26 +17,28 @@ public class Order {
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate createdOn;
-
-    //todo enums for status
-    @NotNull
-    @Size(min=1)
-    private Integer idTable;
-    /*@ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;*/
-    private String status;
+    @ManyToOne
+    @JoinColumn(name = "table_id")
+    private RestaurantTable table;
+    @ManyToOne
+    @JoinColumn(name = "waiter_id")
+    private User waiter;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus status;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate finishDate;
     private double totalCost;
-/*
+
+    public Order() {
+    }
+
     public User getUser() {
-        return user;
+        return waiter;
     }
 
     public void setUser(User user) {
-        this.user = user;
-    }*/
+        this.waiter = user;
+    }
 
     public Integer getId() {
         return id;
@@ -53,19 +56,19 @@ public class Order {
         this.createdOn = createdOn;
     }
 
-    public Integer getIdTable() {
-        return idTable;
+    public RestaurantTable getTable() {
+        return table;
     }
 
-    public void setIdTable(Integer idTable) {
-        this.idTable = idTable;
+    public void setTable(RestaurantTable table) {
+        this.table = table;
     }
 
-    public String getStatus() {
+    public OrderStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(OrderStatus status) {
         this.status = status;
     }
 
@@ -84,7 +87,15 @@ public class Order {
     public void setTotalCost(double totalCost) {
         this.totalCost = totalCost;
     }
-//in service orderCreation
+
+    public User getWaiter() {
+        return waiter;
+    }
+
+    public void setWaiter(User waiter) {
+        this.waiter = waiter;
+    }
+    //in service orderCreation
     //DateTimeFormatter dtf;
     //        LocalDateTime currentDateTime= LocalDateTime.of(LocalDate.now(),LocalTime.now());
     //        dtf=DateTimeFormatter.ofPattern("HH:mm d-MM-yy");
