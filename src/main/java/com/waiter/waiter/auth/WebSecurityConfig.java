@@ -43,7 +43,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers("/login", "/register").permitAll()
-                .mvcMatchers("/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables").hasAnyAuthority("WAITER", "COOK")
+                .mvcMatchers("/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**").hasAnyAuthority("WAITER", "COOK")
                 .anyRequest().hasAnyAuthority("ROLE_ADMIN")
                 .and()
                 .formLogin().loginPage("/login").permitAll()

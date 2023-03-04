@@ -8,8 +8,4 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface DishRepository extends CrudRepository<Dish, Integer> {
-    @Query("SELECT u FROM Dish u WHERE u.dishType = :dishType")
-    List<Dish> getDishesByType(@Param("dishType") String dishType);
-
-    //List<Dish> getDishes()
 }

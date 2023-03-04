@@ -8,7 +8,4 @@ import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
-public interface DrinkRepository extends CrudRepository<Drink, Integer> {
-    @Query("SELECT u FROM Drink u WHERE u.drinkType = :drinkType")
-    List<Dish> getDrinksByType(@Param("drinkType") String drinkType);
-}
+public interface DrinkRepository extends CrudRepository<Drink, Integer> {}
