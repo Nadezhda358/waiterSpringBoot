@@ -37,7 +37,12 @@ public class DrinkController {
 
 
 
-    @PostMapping("/more-info/{drinkId}")
+    /*@PostMapping("/more-info/{drinkId}")
+    private String moreInfo(@PathVariable(name="drinkId") Integer drinkId, Model model) {
+        model.addAttribute("drink", drinkService.getDrinkById(drinkId));
+        return "/menu/drink-info";
+    }*/
+    @GetMapping("/more-info/{drinkId}")
     private String moreInfo(@PathVariable(name="drinkId") Integer drinkId, Model model) {
         model.addAttribute("drink", drinkService.getDrinkById(drinkId));
         return "/menu/drink-info";
