@@ -47,6 +47,11 @@ public class OrderController {
         //return "/orders/add-order";
         model.addAttribute(order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
     }
 
@@ -57,6 +62,11 @@ public class OrderController {
         model.addAttribute("order",order);
 
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
     }
 
@@ -74,7 +84,6 @@ public class OrderController {
         model.addAttribute("selectabledishes",dishes1);
         model.addAttribute("order",order);
 
-
         return "/orders/add-dish-to-order";
     }
 
@@ -87,6 +96,12 @@ public class OrderController {
         model.addAttribute("order",order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
 
+
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
     }
 
