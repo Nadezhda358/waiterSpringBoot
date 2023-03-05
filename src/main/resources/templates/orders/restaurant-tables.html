@@ -98,14 +98,22 @@ li a:hover:not(.active) {
     <div class="row">
         <div class="col-md-4"  th:each="t : ${restaurantTables}">
             <div class="card" style="width: 18rem;">
-                <!<img src="..." class="card-img-top" alt="...">
+                <!--<img src="img.png" class="card-img-top" alt="table photo">-->
                 <div class="card-body">
                     <h5 class="card-title" th:text="${t.number}"></h5>
                     <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
 
-                    <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
-                        <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
-                    </form>
+
+                    <span th:if="${t.hasOrder == false}">
+                        <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
+                            <input type="submit" name="more" value="Добави поръчка" class="btn btn-outline-primary">
+                        </form>
+                    </span>
+                    <span th:if="${t.hasOrder == true}">
+                        <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
+                            <input type="submit" name="more" value="Виж поръчката" class="btn btn-outline-primary">
+                        </form>
+                    </span>
                 </div>
             </div>
         </div>

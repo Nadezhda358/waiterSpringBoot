@@ -5,6 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="orders")
@@ -13,8 +14,8 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
     private Integer id;
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
+    private LocalDateTime createdOn;
     @ManyToOne
     @JoinColumn(name = "table_id")
     private RestaurantTable table;
@@ -46,11 +47,11 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDate getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(LocalDate createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 

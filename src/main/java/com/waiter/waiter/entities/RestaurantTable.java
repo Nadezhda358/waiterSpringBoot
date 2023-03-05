@@ -13,6 +13,16 @@ public class RestaurantTable {
     @Column(unique = true,name="number")//todo validation in html for unique name
     private int number;//register input done
 
+    private boolean hasOrder = false;
+
+    public boolean isHasOrder() {
+        return hasOrder;
+    }
+
+    public void setHasOrder(boolean hasOrder) {
+        this.hasOrder = hasOrder;
+    }
+
     public Integer getId() {
         return id;
     }

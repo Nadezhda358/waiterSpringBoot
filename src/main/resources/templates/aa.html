@@ -56,5 +56,9 @@
             th:text="${state}">
     </option>
 </select>-->
+    <h3 th:inline="text">Добре дошли, [[${#httpServletRequest.remoteUser}]]</h3>
+    <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
+        <input type="submit" name="more" th:text="${#httpServletRequest.remoteUser}">
+    </form>
 </body>
 </html>
