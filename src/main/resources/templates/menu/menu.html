@@ -67,8 +67,7 @@ li a:hover:not(.active) {
     </ul>
 </div>
 <div class="container">
-    <a href="/drinks/create" class="btn btn-outline-secondary">Добави напитка</a>
-    <a href="/dishes/create" class="btn btn-outline-secondary">Добави ястие</a>
+    <a href="/dishes/create" class="btn btn-outline-secondary">Добави</a>
     <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
         <h2 th:text="${type.getValue}"></h2>
         <table class="table table-striped">

@@ -9,10 +9,72 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
+    <style>
+        .list-group-item list-group-item-action active{
+            background-color: #4DC3EB;
+        }
+    </style>
 </head>
 <body>
 <div class="container">
-    <h1>Add drink</h1>
+    <h1 class="text-center">Добави</h1>
+    <div class="row">
+        <div class="col-md-6 mx-auto">
+            <div class="card border-2">
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <a href="/dishes/create" class="list-group-item list-group-item-action">Храна</a>
+                    <a href="/drinks/create" class="list-group-item list-group-item-action active">Напитка</a>
+
+                </div>
+                <div class="card-body">
+                    <form th:action="@{/drinks/submit}" method="post" th:object="${drink}" class="col-md-8">
+
+                        <p>Име: <input type="text" th:field="*{name}" placeholder="Въведете име" minlength="2" maxlength="30"
+                                       class="form-control" required></p>
+                        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="text-danger">name error</p>
+
+                        <p>Цена: <input type="number" th:field="*{price}" placeholder="Въведете цена" min="0" step=".01"
+                                        class="form-control" required></p>
+                        <p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" class="text-danger">price error</p>
+
+                        <p>Описание: <textarea th:field="*{description}" placeholder="Въведете описание" minlength="2" maxlength="150"
+                                               class="form-control"></textarea></p>
+                        <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description
+                            error</p>
+
+                        <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
+                                              class="form-control" required>
+
+                            <select th:field="${drink.drinkQuantityType}">
+                                <option th:each="type : ${T(com.waiter.waiter.enums.DrinkQuantityType).values()}"
+                                        th:value="${type}"
+                                        th:text="${type}">
+                                </option>
+                            </select>
+                        </p>
+                        <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
+
+                        <p>Тип:
+                            <select th:field="${drink.drinkType}">
+                                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkType).values()}"
+                                        th:value="${state.getValue}"
+                                        th:text="${state.getValue}">
+                                </option>
+                            </select>
+                        </p>
+
+                        <input type="submit" value="Запази" class="btn btn-outline-success">
+                        <a href="/" class="btn btn-outline-secondary">Back</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!--<h1>Add drink</h1>
     <form th:action="@{/drinks/submit}" method="post" th:object="${drink}" class="col-md-8">
 
         <p>Име: <input type="text" th:field="*{name}" placeholder="Въведете име" minlength="2" maxlength="30"
@@ -51,7 +113,7 @@
 
         <input type="submit" value="Save" class="btn btn-outline-success">
         <a href="/" class="btn btn-outline-secondary">Back</a>
-    </form>
+    </form>-->
 </div>
 </body>
 </html>
