@@ -73,10 +73,13 @@ public class OrderController {
         return "/orders/add-dish-to-order";
     }
 
-    @PostMapping("/order-dish/add-to-order/submit")
-    private String saveDishesToOrder(OrderDishHelp orderDishHelp){
-        orderDishHelp.toString();
-        return orderDishService.saveDishesToOrder(orderDishHelp, "/menu");
+    @PostMapping("/order-dish/add-to-order/submit/{orderId}")
+    private String saveDishesToOrder(@PathVariable(name="orderId")Integer orderId,OrderDishHelp orderDishHelp){
+        Optional<Order> orders=orderRepository.findById(orderId);
+        Order order=orders.get();
+        orderDishHelp.setOrder(order);
+
+        return orderDishService.saveDishesToOrder(orderDishHelp, "");
     }
 
 

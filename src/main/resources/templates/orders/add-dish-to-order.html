@@ -15,7 +15,7 @@
 <div layout:fragment="content" class="ui attached segment">
 <h2>Add dishes to order;(</h2>
 <span th:text="'Поръчка за '+${orderdish.getOrder.getId}+'-а поръчка'"></span>
-  <form class="ui form" th:action="@{/orders/order-dish/add-to-order/submit}" method="post" th:object="${orderdish}">
+  <form class="ui form" th:action="@{/orders/order-dish/add-to-order/submit/{orderId}(orderId=${orderdish.getOrder.id})}" method="post" th:object="${orderdish}">
       <ul>
           <li th:each="dish : ${selectabledishes}">
               <input type="checkbox" th:field="${orderdish.dishes}"th:value="${dish.id}"><!-- "-->
@@ -24,6 +24,7 @@
       </ul>
 <div class="field">
     <button class="ui button" type="submit">Submit</button>
+
 </div>
   </form>
 </div>
