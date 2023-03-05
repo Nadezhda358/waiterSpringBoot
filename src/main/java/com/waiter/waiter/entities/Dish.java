@@ -1,5 +1,8 @@
 package com.waiter.waiter.entities;
 
+import com.waiter.waiter.enums.DishQuantityType;
+import com.waiter.waiter.enums.DishType;
+
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;
@@ -10,24 +13,19 @@ public class Dish {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Size(min=2, max=30)
+    @Size(min = 2, max = 30)
     private String name;
-    @Size(max=150)
+    @Size(max = 150)
     private String description;
     @Min(0)
     private double price;
     @Min(1)
     private int quantity;
-    private String  dishQuantityType;
-    private String dishType;
+    @Enumerated(EnumType.STRING)
+    private DishQuantityType dishQuantityType;
+    @Enumerated(EnumType.STRING)
+    private DishType dishType;
 
-    public String getDishType() {
-        return dishType;
-    }
-
-    public void setDishType(String dishType) {
-        this.dishType = dishType;
-    }
 
     public Integer getId() {
         return id;
@@ -69,11 +67,21 @@ public class Dish {
         this.quantity = quantity;
     }
 
-    public String getDishQuantityType() {
+    public DishQuantityType getDishQuantityType() {
         return dishQuantityType;
     }
 
-    public void setDishQuantityType(String dishQuantityType) {
+    public void setDishQuantityType(DishQuantityType dishQuantityType) {
         this.dishQuantityType = dishQuantityType;
     }
+
+    public DishType getDishType() {
+        return dishType;
+    }
+
+    public void setDishType(DishType dishType) {
+        this.dishType = dishType;
+    }
+
+
 }
