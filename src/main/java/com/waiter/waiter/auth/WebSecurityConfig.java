@@ -42,7 +42,7 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**","/orders/***","/orders/**","/order/****").permitAll()
+                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**","/orders/***","/orders/**","/order/****","/").permitAll()
                 .mvcMatchers("/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**").hasAnyAuthority("WAITER", "COOK")
                 .anyRequest().hasAnyAuthority("ROLE_ADMIN")
                 .and()

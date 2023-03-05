@@ -110,7 +110,7 @@ li a:hover:not(.active) {
                         </form>
                     </span>
                     <span th:if="${t.hasOrder == true}">
-                        <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
+                        <form th:action="@{/orders/view/{tId}(tId=${t.id})}" method="post">
                             <input type="submit" name="more" value="Виж поръчката" class="btn btn-outline-primary">
                         </form>
                     </span>

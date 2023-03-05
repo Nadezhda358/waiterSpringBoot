@@ -8,14 +8,13 @@ import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Repository;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/orders")
@@ -39,5 +38,14 @@ public class OrderController {
         orderRepository.save(order);
         return "/orders/add-order";
     }
+
+    @PostMapping("/view/{tId}")
+    private String viewOrderByTableId(@PathVariable(name="tId") Integer tId, Model model){
+        Optional<RestaurantTable> t=restaurantTablesRepository.findById(tId);
+        Order order=orderService.getOrderByTableId(t);
+        model.addAttribute(order);
+        return "/orders/view-order";
+    }
+
 
 }

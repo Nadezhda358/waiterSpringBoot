@@ -1,6 +1,5 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.OrderStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -22,8 +21,7 @@ public class Order {
     @ManyToOne
     @JoinColumn(name = "waiter_id")
     private User waiter;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private boolean isPaid=false;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate finishDate;
     private double totalCost;
@@ -63,12 +61,12 @@ public class Order {
         this.table = table;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public boolean isPaid() {
+        return isPaid;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public LocalDate getFinishDate() {
