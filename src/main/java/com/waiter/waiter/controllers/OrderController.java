@@ -43,8 +43,8 @@ public class OrderController {
 
     @PostMapping("/view/{tId}")
     private String viewOrderByTableId(@PathVariable(name="tId") Integer tId, Model model){
-        Optional<RestaurantTable> t=restaurantTablesRepository.findById(tId);
-        Order order=orderService.getOrderByTableId(t);
+        Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
+        Order order = orderService.getOrderByTableId(t);
         model.addAttribute(order);
         return "/orders/view-order";
     }
