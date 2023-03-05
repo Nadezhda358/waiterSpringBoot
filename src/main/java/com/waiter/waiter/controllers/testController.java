@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class testController {
-    @GetMapping("/try-form")
+    @GetMapping("/test")
     public String getAllActors(){
         return "aa";
     }
