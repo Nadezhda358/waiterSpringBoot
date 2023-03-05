@@ -50,8 +50,8 @@
                             <p>
                                 <select th:field="${dish.dishQuantityType}" class="btn dropdown-toggle">
                                     <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
-                                            th:value="${type}"
-                                            th:text="${type}">
+                                            th:value="${type.getValue}"
+                                            th:text="${type.getValue}">
                                     </option>
                                 </select>
                             </p>

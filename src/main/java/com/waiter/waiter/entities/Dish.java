@@ -21,10 +21,8 @@ public class Dish {
     private double price;
     @Min(1)
     private int quantity;
-    @Enumerated(EnumType.STRING)
-    private DishQuantityType dishQuantityType;
-    @Enumerated(EnumType.STRING)
-    private DishType dishType;
+    private String dishQuantityType;
+    private String dishType;
 
 
     public Integer getId() {
@@ -67,21 +65,19 @@ public class Dish {
         this.quantity = quantity;
     }
 
-    public DishQuantityType getDishQuantityType() {
+    public String getDishQuantityType() {
         return dishQuantityType;
     }
 
-    public void setDishQuantityType(DishQuantityType dishQuantityType) {
+    public void setDishQuantityType(String dishQuantityType) {
         this.dishQuantityType = dishQuantityType;
     }
 
-    public DishType getDishType() {
+    public String getDishType() {
         return dishType;
     }
 
-    public void setDishType(DishType dishType) {
+    public void setDishType(String dishType) {
         this.dishType = dishType;
     }
-
-
 }

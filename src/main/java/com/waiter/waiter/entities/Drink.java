@@ -21,10 +21,8 @@ public class Drink {
     private double price;
     @Min(1)
     private int quantity;
-    @Enumerated(EnumType.STRING)
-    private DrinkQuantityType drinkQuantityType;
-    @Enumerated(EnumType.STRING)
-    private DrinkType drinkType;
+    private String drinkQuantityType;
+    private String drinkType;
 
 
     public Integer getId() {
@@ -67,19 +65,19 @@ public class Drink {
         this.quantity = quantity;
     }
 
-    public DrinkQuantityType getDrinkQuantityType() {
+    public String getDrinkQuantityType() {
         return drinkQuantityType;
     }
 
-    public void setDrinkQuantityType(DrinkQuantityType drinkQuantityType) {
+    public void setDrinkQuantityType(String drinkQuantityType) {
         this.drinkQuantityType = drinkQuantityType;
     }
 
-    public DrinkType getDrinkType() {
+    public String getDrinkType() {
         return drinkType;
     }
 
-    public void setDrinkType(DrinkType drinkType) {
+    public void setDrinkType(String drinkType) {
         this.drinkType = drinkType;
     }
 }
