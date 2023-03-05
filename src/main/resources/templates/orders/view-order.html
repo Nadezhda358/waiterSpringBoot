@@ -15,15 +15,46 @@
 <!--<a href="/orders/addProducts">+</a>-->
 
 <form th:action="@{/orders/add-dishes/{orderId}(orderId=${order.id})}" method="post">
-    <input type="submit" name="more" value="+" class="btn btn-outline-primary">
+    <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left" width="40" height="40">
+    <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
 </form>
+<br/><br/><br/>
+
+    <table class="table table-striped" >
+        <thead>
+        <tr th:if="${orderDishNull == false}">
+            <th>Име</th>
+            <th>Цена</th>
+            <th>Количество</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <div th:each="od : ${orderDish}"><tr >
+            <td th:text="${od.dish.name}"></td>
+            <td th:text="${od.currentPrice} + ' лв.'"></td>
+            <td th:text="${od.quantity}"></td>
+
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+
+<br/><br/><br/>
+<a href="/tables" class="btn btn-outline-secondary">Назад</a>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
     Launch demo modal
-</button>
+</button>-->
+
 
 <!-- Modal -->
-<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+<!--<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -41,6 +72,6 @@
             </div>
         </div>
     </div>
-</div>
+</div>-->
 </body>
 </html>

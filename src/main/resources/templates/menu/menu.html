@@ -82,7 +82,7 @@ li a:hover:not(.active) {
             </tr>
             </thead>
             <tbody>
-            <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
+            <tr th:each="dish : ${dishes}">
                 <td th:text="${dish.name}"></td>
                 <td th:text="${dish.price} + ' лв.'"></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>

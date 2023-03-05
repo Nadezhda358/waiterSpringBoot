@@ -7,8 +7,8 @@ import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.BindingResult;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -17,7 +17,7 @@ public class OrderDishService {
     OrderDishRepository orderDishRepository;
 
 
-    public String saveDishesToOrder(OrderDishHelp orderDishHelp, String s) {
+    public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
         //System.out.println("Order id = "+orderDishHelp.getOrder().getId());
         for (Dish d:orderDishHelp.getDishes()) {
@@ -28,9 +28,19 @@ public class OrderDishService {
         for (Dish d:dishes) {
             OrderDish orderDish=new OrderDish();
             orderDish.setOrder(order);
+            orderDish.setQuantity(1);
+            orderDish.setCurrentPrice(d.getPrice());
             orderDish.setDish(d);
             orderDishRepository.save(orderDish);
         }
-        return s;
     }
+    public List<OrderDish> getOrderInfo(Order order){
+        List<OrderDish> orderDishes1=orderDishRepository.getOrderInfo(order);
+        List<OrderDish> orderInfo=new ArrayList<>();
+        if(orderDishes1!=null){
+            orderInfo.addAll(orderDishes1);
+        }
+        return  orderInfo;
+    }
+
 }
