@@ -1,12 +1,7 @@
 package com.waiter.waiter.entities;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Size;
-import java.time.LocalDate;
-
+import javax.validation.constraints.Min;
 @Entity
 @Table(name = "tables")
 public class RestaurantTable {
@@ -14,9 +9,19 @@ public class RestaurantTable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
     private Integer id;
-    @Size(min=1, max=3)
-    @Column(unique = true,name="name")//todo validation in html for unique name
-    private String name;//register input done
+    @Min(1)
+    @Column(unique = true,name="number")//todo validation in html for unique name
+    private int number;//register input done
+
+    private boolean hasOrder = false;
+
+    public boolean isHasOrder() {
+        return hasOrder;
+    }
+
+    public void setHasOrder(boolean hasOrder) {
+        this.hasOrder = hasOrder;
+    }
 
     public Integer getId() {
         return id;
@@ -26,11 +31,11 @@ public class RestaurantTable {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public int getNumber() {
+        return number;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNumber(int number) {
+        this.number = number;
     }
 }

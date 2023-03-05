@@ -1,12 +1,10 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.OrderStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="orders")
@@ -15,16 +13,15 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false, columnDefinition = "INT(11) UNSIGNED")
     private Integer id;
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private LocalDate createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
+    private LocalDateTime createdOn;
     @ManyToOne
     @JoinColumn(name = "table_id")
     private RestaurantTable table;
     @ManyToOne
     @JoinColumn(name = "waiter_id")
     private User waiter;
-    @Enumerated(EnumType.STRING)
-    private OrderStatus status;
+    private boolean isPaid=false;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate finishDate;
     private double totalCost;
@@ -48,11 +45,11 @@ public class Order {
         this.id = id;
     }
 
-    public LocalDate getCreatedOn() {
+    public LocalDateTime getCreatedOn() {
         return createdOn;
     }
 
-    public void setCreatedOn(LocalDate createdOn) {
+    public void setCreatedOn(LocalDateTime createdOn) {
         this.createdOn = createdOn;
     }
 
@@ -64,12 +61,12 @@ public class Order {
         this.table = table;
     }
 
-    public OrderStatus getStatus() {
-        return status;
+    public boolean isPaid() {
+        return isPaid;
     }
 
-    public void setStatus(OrderStatus status) {
-        this.status = status;
+    public void setPaid(boolean paid) {
+        isPaid = paid;
     }
 
     public LocalDate getFinishDate() {
@@ -99,4 +96,8 @@ public class Order {
     //DateTimeFormatter dtf;
     //        LocalDateTime currentDateTime= LocalDateTime.of(LocalDate.now(),LocalTime.now());
     //        dtf=DateTimeFormatter.ofPattern("HH:mm d-MM-yy");
+
+    public Order(Integer id) {
+        this.id = id;
+    }
 }

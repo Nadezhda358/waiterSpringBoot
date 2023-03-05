@@ -4,7 +4,7 @@ public enum DishType {
     SALAD("Салати"),
     STARTERS("Предястия"),
     MAIN_COURSES("Основно"),
-    GRILL("Барбекю"),
+    GRILL("Барбекю/Грил"),
     SEAFOOD("Морски дарове"),
     DESSERT("Десерти"),
     SOUP("Супи");
