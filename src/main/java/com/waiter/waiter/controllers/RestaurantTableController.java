@@ -19,14 +19,14 @@ public class RestaurantTableController {
     RestaurantTableService restaurantTableService;
     @GetMapping
     private String getTables(Model model){
-        //model.addAttribute("dishes", dishService.getAllDishes());
-        //model.addAttribute("drinks", drinkService.getAllDrinks());
+        model.addAttribute("restaurantTables",restaurantTableService.getAllTables());
         return "/orders/restaurant-tables";
     }
 
     @GetMapping("/create")
     private String createDish(){
         restaurantTableService.createNewTable();
-        return "/orders/restaurant-tables";
+        return "redirect:/tables";
     }
+
 }
