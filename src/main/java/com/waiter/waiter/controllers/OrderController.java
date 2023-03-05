@@ -46,6 +46,7 @@ public class OrderController {
         orderRepository.save(order);
         //return "/orders/add-order";
         model.addAttribute(order);
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
         return "/orders/view-order";
     }
 
@@ -53,7 +54,9 @@ public class OrderController {
     private String viewOrderByTableId(@PathVariable(name="tId") Integer tId, Model model){
         Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
         Order order = orderService.getOrderByTableId(t);
-        model.addAttribute(order);
+        model.addAttribute("order",order);
+
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
         return "/orders/view-order";
     }
 
@@ -70,16 +73,21 @@ public class OrderController {
         model.addAttribute("orderdish",orderDishHelp);
         model.addAttribute("selectabledishes",dishes1);
         model.addAttribute("order",order);
+
+
         return "/orders/add-dish-to-order";
     }
 
     @PostMapping("/order-dish/add-to-order/submit/{orderId}")
-    private String saveDishesToOrder(@PathVariable(name="orderId")Integer orderId,OrderDishHelp orderDishHelp){
+    private String saveDishesToOrder(@PathVariable(name="orderId")Integer orderId,OrderDishHelp orderDishHelp,Model model){
         Optional<Order> orders=orderRepository.findById(orderId);
         Order order=orders.get();
         orderDishHelp.setOrder(order);
+        orderDishService.saveDishesToOrder(orderDishHelp);
+        model.addAttribute("order",order);
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
 
-        return orderDishService.saveDishesToOrder(orderDishHelp, "");
+        return "/orders/view-order";
     }
 
 
