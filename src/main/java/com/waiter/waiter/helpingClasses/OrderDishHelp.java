@@ -5,7 +5,7 @@ import com.waiter.waiter.entities.Order;
 
 import java.util.List;
 
-public class OrderDish {
+public class OrderDishHelp {
     private Order order;
     private List<Dish> dishes;
 
@@ -23,5 +23,12 @@ public class OrderDish {
 
     public void setDishes(List<Dish> dishes) {
         this.dishes = dishes;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDishHelp{"+
+                ", dishes=" + dishes +
+                '}';
     }
 }

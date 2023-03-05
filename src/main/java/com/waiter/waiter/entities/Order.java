@@ -96,4 +96,8 @@ public class Order {
     //DateTimeFormatter dtf;
     //        LocalDateTime currentDateTime= LocalDateTime.of(LocalDate.now(),LocalTime.now());
     //        dtf=DateTimeFormatter.ofPattern("HH:mm d-MM-yy");
+
+    public Order(Integer id) {
+        this.id = id;
+    }
 }

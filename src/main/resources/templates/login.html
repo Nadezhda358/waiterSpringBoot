@@ -17,9 +17,15 @@
   margin-right: auto;
   width: 40%;
 }
+    body {
+    background-size: 100%;
+
+    background-repeat: no-repeat;
+
+    }
     </style>
 </head>
-<body>
+<body background='/indexpic.PNG'>
 
 <form th:action="@{/login}" method="POST" class="form-signin">
     <h2 th:text="Login"></h2><br />

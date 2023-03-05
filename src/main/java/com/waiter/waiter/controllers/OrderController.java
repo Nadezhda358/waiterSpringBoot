@@ -1,9 +1,13 @@
 package com.waiter.waiter.controllers;
 
+import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.helpingClasses.OrderDishHelp;
+import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
+import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +24,8 @@ import java.util.Optional;
 @RequestMapping("/orders")
 public class OrderController {
     @Autowired
+    DishRepository dishRepository;
+    @Autowired
     OrderService orderService;
     @Autowired
     RestaurantTablesRepository restaurantTablesRepository;
@@ -27,6 +33,8 @@ public class OrderController {
     OrderRepository orderRepository;
     @Autowired
     RestaurantTableService restaurantTableService;
+    @Autowired
+    OrderDishService orderDishService;
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name="tId") Integer tId, Model model) {
         Order order=new Order();
@@ -47,6 +55,28 @@ public class OrderController {
         Order order = orderService.getOrderByTableId(t);
         model.addAttribute(order);
         return "/orders/view-order";
+    }
+
+    @PostMapping("/add-dishes/{orderId}")
+    private String addDishesInOrder(@PathVariable(name="orderId") Integer orderId, Model model){
+        Optional<Order> orders=orderRepository.findById(orderId);
+        Order order=orders.get();
+        Iterable<Dish> dishes1=dishRepository.findAll();
+        /*if(dishes==null){
+            return "";//ако няма ястия в менюто, да не се добавят ястия в поръчка
+        }*/
+        OrderDishHelp orderDishHelp=new OrderDishHelp();
+        orderDishHelp.setOrder(order);
+        model.addAttribute("orderdish",orderDishHelp);
+        model.addAttribute("selectabledishes",dishes1);
+        model.addAttribute("order",order);
+        return "/orders/add-dish-to-order";
+    }
+
+    @PostMapping("/order-dish/add-to-order/submit")
+    private String saveDishesToOrder(OrderDishHelp orderDishHelp){
+        orderDishHelp.toString();
+        return orderDishService.saveDishesToOrder(orderDishHelp, "/menu");
     }
 
 
