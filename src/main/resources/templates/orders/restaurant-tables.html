@@ -98,10 +98,11 @@ li a:hover:not(.active) {
     <div class="row">
         <div class="col-md-4"  th:each="t : ${restaurantTables}">
             <div class="card" style="width: 18rem;">
-                <!--<img src="img.png" class="card-img-top" alt="table photo">-->
+
                 <div class="card-body">
                     <h5 class="card-title" th:text="${t.number}"></h5>
-                    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    <img src="https://cdn.pixabay.com/photo/2016/04/01/12/08/table-1300555_960_720.png" alt="table photo" width="150"/>
+                    <p class="card-text">Some quick example ...</p>
 
 
                     <span th:if="${t.hasOrder == false}">
