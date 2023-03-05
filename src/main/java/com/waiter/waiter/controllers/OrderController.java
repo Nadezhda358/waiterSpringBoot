@@ -28,7 +28,7 @@ public class OrderController {
     @Autowired
     RestaurantTableService restaurantTableService;
     @PostMapping("/create/{tId}")
-    private String moreInfo(@PathVariable(name="tId") Integer tId, Model model) {
+    private String createOrder(@PathVariable(name="tId") Integer tId, Model model) {
         Order order=new Order();
         RestaurantTable table = restaurantTableService.getTableById(tId);
         table.setHasOrder(true);
@@ -36,7 +36,9 @@ public class OrderController {
         order.setTable(table);
         order.setCreatedOn(LocalDateTime.now());
         orderRepository.save(order);
-        return "/orders/add-order";
+        //return "/orders/add-order";
+        model.addAttribute(order);
+        return "/orders/view-order";
     }
 
     @PostMapping("/view/{tId}")
