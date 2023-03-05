@@ -42,17 +42,45 @@
                     <p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" class="text-danger">description
                         error</p>
 
-                    <p>Количество: <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
+                    <!--<p>Количество:
+                        <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1"
                                           class="form-control" required>
-                        <select th:field="${dish.dishQuantityType}">
+                        <select th:field="${dish.dishQuantityType}" class="btn dropdown-toggle">
                             <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
                                     th:value="${type}"
                                     th:text="${type}">
                             </option>
                         </select>
-                    </p>
-                    <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
+                    </p>-->
+                    <div class="row">
+                        <div class="col-md-3">Количество:</div>
+                        <div class="col-md-5">
+                            <input type="number" th:field="*{quantity}" placeholder="Въведете количество" min="1" class="form-control" required>
+                        </div>
+                        <div class="col-md-4">
+                            <p>
+                                <select th:field="${dish.dishQuantityType}" class="btn dropdown-toggle">
+                                    <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
+                                            th:value="${type}"
+                                            th:text="${type}">
+                                    </option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
 
+
+                    <p th:if="${#fields.hasErrors('quantity')}" th:errors="*{quantity}" class="text-danger">quantity error</p>
+                    <p>Тип:
+                        <select th:field="${dish.dishType}" class="btn dropdown-toggle">
+                            <option th:each="state : ${T(com.waiter.waiter.enums.DishType).values()}"
+                                    th:value="${state.getValue}"
+                                    th:text="${state.getValue}">
+                            </option>
+                        </select>
+                    </p>
+
+                    <!--
                     <p>Тип:
                         <select th:field="${dish.dishType}">
                             <option th:each="state : ${T(com.waiter.waiter.enums.DishType).values()}"
@@ -61,8 +89,9 @@
                             </option>
                         </select>
                     </p>
+                    -->
                     <input type="submit" value="Запази" class="btn btn-outline-success">
-                    <a href="/" class="btn btn-outline-secondary">Назад</a>
+                    <a href="/menu" class="btn btn-outline-secondary">Назад</a>
                 </form>
             </div>
         </div>
