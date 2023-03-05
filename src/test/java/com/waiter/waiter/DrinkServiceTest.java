@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.validation.BindingResult;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
