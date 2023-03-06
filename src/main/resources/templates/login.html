@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" >
 <head>
+    <meta charset="UTF-8">
     <title>Login</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
@@ -163,8 +164,8 @@
                     <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
 
                         <div class="btn-group" role="group" aria-label="Basic outlined example">
-                            <a href="/login" class="list-group-item list-group-item-action active text-center p-3">Вход</a>
-                            <a href="/register" class="list-group-item list-group-item-action  text-center p-3">Регистрация</a>
+                            <a href="/login" class="list-group-item list-group-item-action active text-center p-3">Р’С…РѕРґ</a>
+                            <a href="/register" class="list-group-item list-group-item-action  text-center p-3">Р РµРіРёСЃС‚СЂР°С†РёСЏ</a>
 
                         </div>
 
@@ -172,18 +173,18 @@
                         <div class="card-body p-4 p-md-5">
                             <form th:action="@{/login}" th:object="${user}" method="post">
                                 <div class="form-outline">
-                                    <label class="form-label" for="username">Потребителско име: </label>
+                                    <label class="form-label" for="username">РџРѕС‚СЂРµР±РёС‚РµР»СЃРєРѕ РёРјРµ: </label>
                                     <input class="form-control form-control-lg" type="text" id="username" name="username"/>
                                 </div>
                                 <div>
                                     <div class="form-outline">
-                                        <label class="form-label" for="password">Парола: </label>
+                                        <label class="form-label" for="password">РџР°СЂРѕР»Р°: </label>
                                         <input class="form-control form-control-lg" type="password" id="password" name="password" />
                                     </div>
                                 </div>
-
+                                <div th:if="${param.error}"><p class="text-danger">Username or Password is invalid.</p></div>
                                 <div class="mt-4 pt-2">
-                                    <button type="submit" class="btn btn-primary btn-lg">Вход</button>
+                                    <button type="submit" class="btn btn-primary btn-lg">Р’С…РѕРґ</button>
                                 </div>
                             </form>
                         </div>

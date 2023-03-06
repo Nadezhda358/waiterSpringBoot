@@ -3,6 +3,7 @@ package com.waiter.waiter.controllers;
 import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderRepository;
@@ -13,6 +14,7 @@ import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,6 +45,7 @@ public class OrderController {
         restaurantTablesRepository.save(table);
         order.setTable(table);
         order.setCreatedOn(LocalDateTime.now());
+        order.setOrderStatus(OrderStatus.TAKING);
         orderRepository.save(order);
         //return "/orders/add-order";
         model.addAttribute(order);
@@ -103,6 +106,12 @@ public class OrderController {
         }
         model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
+    }
+    @GetMapping
+    public String getAllOrders(Model model){
+        Iterable<Order> orders = orderRepository.findAll();
+        model.addAttribute("orders", orders);
+        return "/orders/orders-list";
     }
 
 

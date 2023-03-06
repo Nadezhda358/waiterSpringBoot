@@ -133,7 +133,7 @@
                                         <!--<input type="text" id="firstName" class="form-control form-control-lg" />
                                         <label class="form-label" for="firstName">First Name</label>-->
                                         <label class="form-label" for="password">Парола: </label>
-                                        <input type="text" id="password" th:field="*{password}" minlength="2" maxlength="30"
+                                        <input type="password" id="password" th:field="*{password}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">password error</p>
                                     </div>
