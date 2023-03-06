@@ -19,8 +19,8 @@ public class OrderDrink {
     private Drink drink;
     private int quantity;
     private double currentPrice;//за записа
-    @Enumerated(EnumType.STRING)
-    private OrderDrinkStatus status;
+    //@Enumerated(EnumType.STRING)
+    //private OrderDrinkStatus status;
     public Drink getDrink() {
         return drink;
     }
@@ -64,11 +64,11 @@ public class OrderDrink {
         this.currentPrice = currentPrice;
     }
 
-    public OrderDrinkStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderDrinkStatus status) {
-        this.status = status;
-    }
+    //public OrderDrinkStatus getStatus() {
+    //    return status;
+    //}
+//
+    //public void setStatus(OrderDrinkStatus status) {
+    //    this.status = status;
+    //}
 }

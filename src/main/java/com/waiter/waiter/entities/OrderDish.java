@@ -19,8 +19,8 @@ public class OrderDish {
     private Dish dish;
     private int quantity;
     private double currentPrice;//за записа
-    @Enumerated(EnumType.STRING)
-    private OrderDishStatus status;
+    //@Enumerated(EnumType.STRING)
+    //private OrderDishStatus status;
 
     @ManyToOne
     @JoinColumn(name = "cook_id")
@@ -77,12 +77,11 @@ public class OrderDish {
         this.currentPrice = currentPrice;
     }
 
-    public OrderDishStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderDishStatus status) {
-        this.status = status;
-    }
-
+    //public OrderDishStatus getStatus() {
+    //    return status;
+    //}
+//
+    //public void setStatus(OrderDishStatus status) {
+    //    this.status = status;
+    //}
 }

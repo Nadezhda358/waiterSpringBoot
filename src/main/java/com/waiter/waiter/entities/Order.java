@@ -1,5 +1,7 @@
 package com.waiter.waiter.entities;
 
+import com.waiter.waiter.enums.OrderStatus;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
@@ -22,11 +24,22 @@ public class Order {
     @JoinColumn(name = "waiter_id")
     private User waiter;
     private boolean isPaid=false;
+    @Enumerated(EnumType.STRING)
+    private OrderStatus orderStatus;
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private LocalDate finishDate;
     private double totalCost;
 
     public Order() {
+
+    }
+
+    public OrderStatus getOrderStatus() {
+        return orderStatus;
+    }
+
+    public void setOrderStatus(OrderStatus orderStatus) {
+        this.orderStatus = orderStatus;
     }
 
     public User getUser() {
