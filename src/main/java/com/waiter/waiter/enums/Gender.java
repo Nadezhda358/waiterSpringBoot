@@ -3,7 +3,7 @@ package com.waiter.waiter.enums;
 public enum Gender {
     MALE("Мъж"),
     FEMALE("Жена"),
-    OTHER("-");
+    OTHER("Друг");
 
     private final String value;
 

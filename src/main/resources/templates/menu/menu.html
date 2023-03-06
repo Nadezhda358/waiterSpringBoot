@@ -68,6 +68,7 @@ li a:hover:not(.active) {
 </div>
 <div class="container">
     <a href="/dishes/create" class="btn btn-outline-secondary">Добави</a>
+
     <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
         <h2 th:text="${type.getValue}"></h2>
         <table class="table table-striped">
@@ -82,7 +83,7 @@ li a:hover:not(.active) {
             </tr>
             </thead>
             <tbody>
-            <tr th:each="dish : ${dishes}">
+            <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                 <td th:text="${dish.name}"></td>
                 <td th:text="${dish.price} + ' лв.'"></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
