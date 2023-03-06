@@ -74,7 +74,9 @@ public class OrderController {
     private String addDishesInOrder(@PathVariable(name="orderId") Integer orderId, Model model){
         Optional<Order> orders=orderRepository.findById(orderId);
         Order order=orders.get();
-        Iterable<Dish> dishes1=dishRepository.findAll();
+        //Iterable<Dish> dishes1=dishRepository.findAll();
+
+        Iterable<Dish> dishes1=orderDishService.findAllNotAddedDishesToOrder(order);
         /*if(dishes==null){
             return "";//ако няма ястия в менюто, да не се добавят ястия в поръчка
         }*/

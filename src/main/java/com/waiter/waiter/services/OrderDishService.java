@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderDishService {
@@ -19,11 +20,6 @@ public class OrderDishService {
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
-        //System.out.println("Order id = "+orderDishHelp.getOrder().getId());
-        for (Dish d:orderDishHelp.getDishes()) {
-            System.out.println("Dish id = "+d.getId()+" and name = "+d.getName());
-        }
-        System.out.println();
         List<Dish> dishes=orderDishHelp.getDishes();
         for (Dish d:dishes) {
             OrderDish orderDish=new OrderDish();
@@ -43,4 +39,8 @@ public class OrderDishService {
         return  orderInfo;
     }
 
+    public Iterable<Dish> findAllNotAddedDishesToOrder(Order order) {
+        Iterable<Dish> dishes=orderDishRepository.getAllNotAddedDishesToOrder(order);
+        return dishes;
+    }
 }
