@@ -4,6 +4,7 @@ import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
+import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,8 @@ import java.util.Optional;
 public class OrderDishService {
     @Autowired
     OrderDishRepository orderDishRepository;
-
+@Autowired
+    DishRepository dishRepository;
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
@@ -41,6 +43,9 @@ public class OrderDishService {
 
     public Iterable<Dish> findAllNotAddedDishesToOrder(Order order) {
         Iterable<Dish> dishes=orderDishRepository.getAllNotAddedDishesToOrder(order);
+        for (Dish d: dishes) {
+            d.toString();
+        }
         return dishes;
     }
 }
