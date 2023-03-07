@@ -115,6 +115,14 @@ public class OrderController {
         model.addAttribute("orders", orders);
         return "/orders/orders-list";
     }
-
+    //<form th:action="@{/orders/delete-dishes/{orderId}(orderId=${order.id})}" method="post">
+    //  <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit" width="40" height="40">
+    //</form>
+    @PostMapping("/delete-dishes/{orderDishId}")
+    private String deleteDishesInOrder(@PathVariable(name="orderDishId") Integer orderDishId,
+                                       Model model){
+        orderDishService.deleteOrderDishById(orderDishId);
+        return "/orders/view-order";
+    }
 
 }

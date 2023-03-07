@@ -1,8 +1,11 @@
 package com.waiter.waiter.services;
 
 import com.waiter.waiter.entities.Dish;
+import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
+import com.waiter.waiter.enums.OrderDishStatus;
+import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderDishRepository;
@@ -17,7 +20,7 @@ import java.util.Optional;
 public class OrderDishService {
     @Autowired
     OrderDishRepository orderDishRepository;
-@Autowired
+    @Autowired
     DishRepository dishRepository;
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
@@ -40,6 +43,14 @@ public class OrderDishService {
         }
         return  orderInfo;
     }
+    public OrderDish getOrderDishById(Integer orderDrinkId){
+        Optional<OrderDish> oe = orderDishRepository.findById(orderDrinkId);
+        if(oe.isPresent()) {
+            return oe.get();
+        } else {
+            return new OrderDish();
+        }
+    }
 
     public Iterable<Dish> findAllNotAddedDishesToOrder(Order order) {
         Iterable<Dish> dishes=orderDishRepository.getAllNotAddedDishesToOrder(order);
@@ -47,5 +58,11 @@ public class OrderDishService {
             d.toString();
         }
         return dishes;
+    }
+    public void deleteOrderDishById(Integer orderDishId){
+        OrderDish orderDish = getOrderDishById(orderDishId);
+        if (orderDish.getOrder().getOrderStatus() == OrderStatus.TAKING) {
+            orderDishRepository.deleteById(orderDishId);
+        }
     }
 }

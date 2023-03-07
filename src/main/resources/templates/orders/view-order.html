@@ -66,6 +66,7 @@ li a:hover:not(.active) {
 
 <div class="container">
 <h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'" class="text-center"></h3>
+<h4 th:text="'Статус: '+${order.orderStatus.getValue}" class="text-center"></h4>
 <!--<a href="/orders/addProducts">+</a>-->
 
 <form th:action="@{/orders/add-dishes/{orderId}(orderId=${order.id})}" method="post">
@@ -94,7 +95,15 @@ li a:hover:not(.active) {
 
                     <td></td>
                     <td></td>
-                    <td></td>
+                    <td>
+                        <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
+                        <form th:action="@{/orders/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
+                            <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit"
+                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                        </form>
+                        <!--@{/orders/create/{tId}/{waiterId}(tId=${t.id}, waiterId=${waiter.id})}-->
+
+                    </td>
                 </tr>
             </div>
         </tbody>

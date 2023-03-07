@@ -13,7 +13,7 @@
           crossorigin="anonymous">
 </head>
 <body>
-<nav class="navbar navbar-expand-lg bg-body-tertiary">
+<!--<nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Navbar</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -48,7 +48,7 @@
             </form>
         </div>
     </div>
-</nav>
+</nav>-->
 
 <!--<select>
     <option th:each="state : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
@@ -56,9 +56,10 @@
             th:text="${state}">
     </option>
 </select>-->
-    <h3 th:inline="text">Добре дошли, [[${#httpServletRequest.remoteUser}]]</h3>
+    <!--<h3 th:inline="text">Добре дошли, [[${#httpServletRequest.remoteUser}]]</h3>
     <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
         <input type="submit" name="more" th:text="${#httpServletRequest.remoteUser}">
-    </form>
+    </form>-->
+    <div th:text="${orderDishId}"></div>
 </body>
 </html>
