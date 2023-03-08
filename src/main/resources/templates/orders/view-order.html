@@ -65,8 +65,11 @@ li a:hover:not(.active) {
 <br/>
 
 <div class="container">
-<h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'" class="text-center"></h3>
-<h4 th:text="'Статус: '+${order.orderStatus.getValue}" class="text-center"></h4>
+    <div class="text-center">
+        <h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'"></h3>
+        <h4 th:text="'Статус: '+${order.orderStatus.getValue}"></h4>
+        <a href="/orders/changeStatus" class="btn btn-outline-primary">Промяна на статуса(Още не работи)</a>
+    </div>
 <!--<a href="/orders/addProducts">+</a>-->
 
 <form th:action="@{/orders/add-dishes/{orderId}(orderId=${order.id})}" method="post">
