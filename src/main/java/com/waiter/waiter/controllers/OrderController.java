@@ -6,6 +6,7 @@ import com.waiter.waiter.entities.RestaurantTable;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.DishRepository;
+import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
 import com.waiter.waiter.services.OrderDishService;
@@ -37,6 +38,8 @@ public class OrderController {
     RestaurantTableService restaurantTableService;
     @Autowired
     OrderDishService orderDishService;
+    @Autowired
+    OrderDishRepository orderDishRepository;
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name="tId") Integer tId, Model model) {
         Order order=new Order();
@@ -98,10 +101,10 @@ public class OrderController {
         Order order=orders.get();
         orderDishHelp.setOrder(order);
         orderDishService.saveDishesToOrder(orderDishHelp);
+
+
         model.addAttribute("order",order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-
-
         boolean orderDishNull=false;
         if(orderDishService.getOrderInfo(order)==null) {
             orderDishNull = true;
@@ -121,7 +124,17 @@ public class OrderController {
     @PostMapping("/delete-dishes/{orderDishId}")
     private String deleteDishesInOrder(@PathVariable(name="orderDishId") Integer orderDishId,
                                        Model model){
+        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+
         orderDishService.deleteOrderDishById(orderDishId);
+
+        model.addAttribute("order",order);
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
     }
 

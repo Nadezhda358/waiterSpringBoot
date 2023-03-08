@@ -67,17 +67,6 @@ li a:hover:not(.active) {
     </ul>
 </div>
 <div class="container">
-<br/><br/><br/><br/>
-
-
-    <h1><p th:text="${message}"></p></h1>
-
-
-    <br/><br/><br/><br/>
-
-    <h1><p th:text="'Ако не вярваш какво се случва, виж в кода:), '+${loggedUser.getRole.getValue}+'-потребителю с id '+${loggedUser.getId}"></p></h1>
-
-    <br/><br/><br/><br/>
     <a href="/dishes/create" class="btn btn-outline-secondary">Добави</a>
     <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
         <h2 th:text="${type.getValue}"></h2>

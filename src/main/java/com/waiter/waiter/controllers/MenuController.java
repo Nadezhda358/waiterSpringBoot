@@ -31,13 +31,7 @@ public class MenuController {
         model.addAttribute("dishes", dishService.getAllDishes());
         model.addAttribute("drinks", drinkService.getAllDrinks());
 
-        //specially for you, Nadi:)
-        //ugh, this not working
-        //User user = userRepository.getUserByUsername((String) SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-        //String message = user.getFirstName();
-
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        ;
         String username;
         if (principal instanceof UserDetails) {
             username = ((UserDetails) principal).getUsername();
@@ -45,10 +39,8 @@ public class MenuController {
             username = principal.toString();
         }
         User user=userRepository.getUserByUsername(username);
-        String message = "Heeeelloooo, "+user.getFirstName()+" "+user.getLastName()+":)!";
 
-        model.addAttribute("message", message);
-        model.addAttribute("loggedUser",user);
+
         return "/menu/menu";
     }
 }
