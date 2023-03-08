@@ -53,6 +53,7 @@ li a:hover:not(.active) {
     </style>
 </head>
 <body>
+<!-- https://ed100.org/uploads/images/shares/academy/pencil-orange.png снимка на моливче-->
 <div class="navdiv">
     <ul>
         <li><a  href="/">Начало</a></li>
@@ -77,33 +78,51 @@ li a:hover:not(.active) {
     <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
 </form>
 <br/><br/><br/>
-
-    <table class="table table-striped" >
+    <!--<td>
+    <span th:if="${teacher.gender == 'F'}">Female</span>
+    <span th:unless="${teacher.gender == 'F'}">Male</span>
+</td>-->
+    <table class="table table-striped">
         <thead>
+        <span th:if="${orderDishNull == false}">
         <tr>
-            <th>Име</th>
-            <th>Цена</th>
+            <th>Ястие</th>
+            <th>Единична цена</th>
             <th>Количество</th>
+            <th>Цена</th>
             <th></th>
             <th></th>
             <th></th>
         </tr>
+        </span>
         </thead>
         <tbody>
             <div th:each="od : ${orderDish}">
                 <tr>
-                    <td th:text="${od.dish.name}"></td>
-                    <td th:text="${od.currentPrice} + ' лв.'"></td>
+                    <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
+                    <td th:text="${od.pricePerItem} + ' лв.'"></td>
                     <td th:text="${od.quantity}"></td>
+                    <td th:text="${od.currentPrice} + ' лв.'"></td>
 
-                    <td></td>
-                    <td></td>
+                    <td>
+                        <form th:action="@{/orders/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
+                            <input type="image" src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png" alt="Submit"
+                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                        </form>
+                    </td>
+                    <td>
+                        <form th:action="@{/orders/remove-one-from-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
+                            <input type="image" src="https://as1.ftcdn.net/v2/jpg/01/13/16/86/1000_F_113168648_v07Gg3cMYXA15H6GK5pAV0vYevGLy8jk.jpg" alt="Submit"
+                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                        </form>
+                    </td>
                     <td>
                         <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
                         <form th:action="@{/orders/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
                             <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit"
                                    width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
                         </form>
+                        <!--https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png-->
                         <!--@{/orders/create/{tId}/{waiterId}(tId=${t.id}, waiterId=${waiter.id})}-->
 
                     </td>

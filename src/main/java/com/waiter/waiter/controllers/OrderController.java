@@ -1,18 +1,16 @@
 package com.waiter.waiter.controllers;
 
-import com.waiter.waiter.entities.Dish;
-import com.waiter.waiter.entities.Order;
-import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
+import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
-import com.waiter.waiter.repositories.DishRepository;
-import com.waiter.waiter.repositories.OrderDishRepository;
-import com.waiter.waiter.repositories.OrderRepository;
-import com.waiter.waiter.repositories.RestaurantTablesRepository;
+import com.waiter.waiter.repositories.*;
 import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -40,6 +38,8 @@ public class OrderController {
     OrderDishService orderDishService;
     @Autowired
     OrderDishRepository orderDishRepository;
+    @Autowired
+    UserRepository userRepository;
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name="tId") Integer tId, Model model) {
         Order order=new Order();
@@ -49,6 +49,20 @@ public class OrderController {
         order.setTable(table);
         order.setCreatedOn(LocalDateTime.now());
         order.setOrderStatus(OrderStatus.TAKING);
+
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        User user = userRepository.getUserByUsername(username);
+        if(user.getRole() == Role.WAITER){
+            order.setWaiter(user);
+        }
+
         orderRepository.save(order);
         //return "/orders/add-order";
         model.addAttribute(order);
@@ -69,7 +83,7 @@ public class OrderController {
 
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
         boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        if(orderDishService.getOrderInfo(order).isEmpty()) {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull",orderDishNull);
@@ -101,7 +115,8 @@ public class OrderController {
         Order order=orders.get();
         orderDishHelp.setOrder(order);
         orderDishService.saveDishesToOrder(orderDishHelp);
-
+        order.setTotalCost(orderDishRepository.getTotalCost(order));
+        orderRepository.save(order);
 
         model.addAttribute("order",order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
@@ -127,6 +142,67 @@ public class OrderController {
         Order order=orderDishRepository.findById(orderDishId).get().getOrder();
 
         orderDishService.deleteOrderDishById(orderDishId);
+
+        order.setTotalCost(orderDishRepository.getTotalCost(order));
+        orderRepository.save(order);
+
+        model.addAttribute("order",order);
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
+        return "/orders/view-order";
+    }
+
+    @PostMapping("/add-one-to-quantity/{orderDishId}")
+    private String addOneToQuantity(@PathVariable(name="orderDishId") Integer orderDishId,
+                                       Model model){
+        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+        Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
+        OrderDish orderDish;
+        if(orderDishes.isPresent()) {
+            orderDish = orderDishes.get();
+        } else {
+            orderDish = new OrderDish();
+        }
+        orderDish.setQuantity(orderDish.getQuantity() + 1);
+        orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
+        orderDishRepository.save(orderDish);
+
+        order.setTotalCost(orderDishRepository.getTotalCost(order));
+        orderRepository.save(order);
+
+        model.addAttribute("order",order);
+        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
+        boolean orderDishNull=false;
+        if(orderDishService.getOrderInfo(order)==null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull",orderDishNull);
+        return "/orders/view-order";
+    }
+
+    @PostMapping("/remove-one-from-quantity/{orderDishId}")
+    private String removeOneFromQuantity(@PathVariable(name="orderDishId") Integer orderDishId,
+                                    Model model){
+        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+        Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
+        OrderDish orderDish;
+        if(orderDishes.isPresent()) {
+            orderDish = orderDishes.get();
+        } else {
+            orderDish = new OrderDish();
+        }
+        if (orderDish.getQuantity() > 1){
+            orderDish.setQuantity(orderDish.getQuantity() - 1);
+            orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
+            orderDishRepository.save(orderDish);
+
+            order.setTotalCost(orderDishRepository.getTotalCost(order));
+            orderRepository.save(order);
+        }
 
         model.addAttribute("order",order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));

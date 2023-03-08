@@ -11,4 +11,5 @@ import java.util.Optional;
 public interface OrderRepository extends CrudRepository<Order, Integer> {
     @Query("SELECT o FROM Order o where o.table=:t")
     Order getOrderByTableId(@Param("t") Optional<RestaurantTable> t);
+
 }

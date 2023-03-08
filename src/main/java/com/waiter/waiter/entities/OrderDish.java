@@ -19,6 +19,16 @@ public class OrderDish {
     private Dish dish;
     private int quantity;
     private double currentPrice;//за записа
+    private double pricePerItem;
+
+    public double getPricePerItem() {
+        return pricePerItem;
+    }
+
+    public void setPricePerItem(double pricePerItem) {
+        this.pricePerItem = pricePerItem;
+    }
+
     @Enumerated(EnumType.STRING)
     private OrderDishStatus status;
 

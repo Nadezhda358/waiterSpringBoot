@@ -31,6 +31,7 @@ public class OrderDishService {
             orderDish.setOrder(order);
             orderDish.setQuantity(1);
             orderDish.setCurrentPrice(d.getPrice());
+            orderDish.setPricePerItem(d.getPrice());
             orderDish.setDish(d);
             orderDishRepository.save(orderDish);
         }

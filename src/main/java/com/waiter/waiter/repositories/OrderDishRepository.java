@@ -24,4 +24,7 @@ public interface OrderDishRepository extends CrudRepository<OrderDish, Integer> 
     //not working bot you better go to sleep @Query("SELECT d FROM Dish d LEFT JOIN (SELECT od.dish.id FROM OrderDish od WHERE od.order.id = :orderId) o ON d.id = o.id WHERE o.id IS NULL")
     @Query("SELECT d FROM Dish d WHERE d.id NOT IN (SELECT od.dish.id FROM OrderDish od WHERE od.order = :order)")
     public List<Dish> getAllNotAddedDishesToOrder(@Param("order") Order order);
+
+    @Query("SELECT sum(od.currentPrice) FROM OrderDish od WHERE od.order = :order")
+    public double getTotalCost(@Param("order") Order order);
 }

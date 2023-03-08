@@ -85,8 +85,8 @@ li a:hover:not(.active) {
                     <td th:text="${order.table.number}"></td>
                     <td th:text="${order.createdOn}"></td>
                     <td th:text="${order.orderStatus.getValue}"></td>
-                    <td>Ще има цена</td>
-                    <td>Ще има сервитьор</td>
+                    <td th:text="${order.totalCost}"></td>
+                    <td th:text="${order.waiter.firstName}"></td>
                     <td></td>
                     <td></td>
                     <td></td>
