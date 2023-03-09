@@ -70,26 +70,32 @@ li a:hover:not(.active) {
         <table class="table table-striped">
             <thead>
             <tr>
-                <th>Номер на маса</th>
-                <th>Дата на създаване</th>
+                <th>Маса</th>
+                <th>Създадена на</th>
+                <th>Платена на</th>
                 <th>Статус</th>
                 <th>Текуща цена</th>
                 <th>Сервитьор</th>
+                <th>Готвач</th>
                 <th></th>
-                <th></th>
-                <th></th>
+
             </tr>
             </thead>
             <tbody>
                 <tr th:each="order : ${orders}">
                     <td th:text="${order.table.number}"></td>
                     <td th:text="${order.createdOn}"></td>
+                    <td>
+                        <span th:text="${order.finishDate}" th:if="${order.finishDate} != null"></span>
+                    </td>
                     <td th:text="${order.orderStatus.getValue}"></td>
                     <td th:text="${order.totalCost}"></td>
                     <td th:text="${order.waiter.firstName}"></td>
+                    <td>
+                        <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
+                    </td>
                     <td></td>
-                    <td></td>
-                    <td></td>
+
                 </tr>
             </tbody>
         </table>

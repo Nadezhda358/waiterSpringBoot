@@ -87,6 +87,26 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull",orderDishNull);
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        User user = userRepository.getUserByUsername(username);
+
+        boolean isWaiter = false;
+        if (user.getRole() == Role.WAITER){
+            isWaiter = true;
+        }
+        boolean isAbleToChangeStatus = orderService.isAbleToChangeStatus(order.getOrderStatus(), isWaiter);
+        model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
+
+
+
+
         return "/orders/view-order";
     }
 
@@ -117,6 +137,8 @@ public class OrderController {
         orderDishService.saveDishesToOrder(orderDishHelp);
         order.setTotalCost(orderDishRepository.getTotalCost(order));
         orderRepository.save(order);
+
+
 
         model.addAttribute("order",order);
         model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
@@ -212,6 +234,19 @@ public class OrderController {
         }
         model.addAttribute("orderDishNull",orderDishNull);
         return "/orders/view-order";
+    }
+    @PostMapping("/change-status/{orderId}")
+    public String changeStatus(@PathVariable(name="orderId")Integer orderId ,Model model){
+        Optional<Order> order = orderRepository.findById(orderId);
+        Order order1;
+        if(order.isPresent()) {
+            order1 = order.get();
+        } else {
+            order1 = new Order();
+        }
+
+        orderService.ChangeStatus(order1);
+        return "/";
     }
 
 }

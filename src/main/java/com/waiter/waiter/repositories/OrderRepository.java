@@ -9,7 +9,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.Optional;
 
 public interface OrderRepository extends CrudRepository<Order, Integer> {
-    @Query("SELECT o FROM Order o where o.table=:t")
+    @Query("SELECT o FROM Order o where o.table=:t AND o.orderStatus <> 'PAID'")
     Order getOrderByTableId(@Param("t") Optional<RestaurantTable> t);
 
 }
