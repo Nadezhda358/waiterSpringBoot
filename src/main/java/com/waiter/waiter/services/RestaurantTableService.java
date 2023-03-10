@@ -29,12 +29,12 @@ public class RestaurantTableService {
         return  restaurantTables;
     }
     public Iterable<RestaurantTable> getTables(String filter){
-        Iterable<RestaurantTable> tables = new ArrayList<>();
-        if (filter.equals("all")) {
-            tables = restaurantTablesRepository.findAll();
-        } else if (filter.equals("your")) {
-            tables = orderRepository.getWaiterTables(userDetailsService.getLoggedUser().getId());
-        }
+        Iterable<RestaurantTable> tables = switch (filter) {
+            case "all" -> restaurantTablesRepository.findAll();
+            case "your" -> orderRepository.getWaiterTables(userDetailsService.getLoggedUser().getId());
+            case "notTaken" -> restaurantTablesRepository.getFreeTables();
+            default -> new ArrayList<>();
+        };
         return tables;
     }
     public RestaurantTable getTableById(Integer tId){

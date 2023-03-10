@@ -81,6 +81,7 @@ img.white-image {
     <select id="filter" name="filter">
         <option value="all" th:selected="${filter == 'all'}">All Tables</option>
         <option value="your" th:selected="${filter == 'your'}">Your Tables</option>
+        <option value="notTaken" th:selected="${filter == 'notTaken'}">Not taken</option>
     </select>
     <button type="submit">Apply Filter</button>
 </form><br>

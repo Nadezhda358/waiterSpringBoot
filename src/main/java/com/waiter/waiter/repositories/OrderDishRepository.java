@@ -3,7 +3,6 @@ package com.waiter.waiter.repositories;
 import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
-import com.waiter.waiter.entities.RestaurantTable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;

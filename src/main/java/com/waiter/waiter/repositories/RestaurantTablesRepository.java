@@ -8,4 +8,6 @@ import org.springframework.data.repository.CrudRepository;
 public interface RestaurantTablesRepository extends CrudRepository<RestaurantTable, Integer> {
     @Query("SELECT MAX(t.number) FROM RestaurantTable t")
     int getLastTableNumber();
+    @Query("SELECT t FROM RestaurantTable t WHERE t.hasOrder = false")
+    Iterable<RestaurantTable> getFreeTables();
 }
