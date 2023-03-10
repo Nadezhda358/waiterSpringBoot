@@ -1,6 +1,7 @@
 package com.waiter.waiter.services;
 
 import com.waiter.waiter.entities.Order;
+import com.waiter.waiter.entities.OrderDish;
 import com.waiter.waiter.entities.RestaurantTable;
 import com.waiter.waiter.entities.User;
 import com.waiter.waiter.enums.OrderStatus;
@@ -12,8 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -24,35 +27,35 @@ public class OrderService {
     UserRepository userRepository;
     @Autowired
     RestaurantTablesRepository restaurantTablesRepository;
+    @Autowired
+    OrderDishService orderDishService;
+   // OrderDrinkService orderDrinkService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     public Order getOrderByTableId(Optional<RestaurantTable> tId){
         Order order = orderRepository.getOrderByTableId(tId);
             return order;
     }
-    public boolean isAbleToChangeStatus(OrderStatus status, boolean isWaiter){
-        if (isWaiter && (status==OrderStatus.TAKING || status==OrderStatus.COOKED || status==OrderStatus.SERVED)){
+    public boolean isAbleToChangeStatus(OrderStatus status,  User orderWaiter,User orderCook,User loggedUser){
+        if (loggedUser.getRole()==Role.WAITER && loggedUser==orderWaiter &&(status==OrderStatus.TAKING || status==OrderStatus.COOKED || status==OrderStatus.SERVED)){
             return true;
-        }else if(!isWaiter && (status==OrderStatus.TAKEN || status==OrderStatus.COOKING)) {
+        }else if(loggedUser.getRole()==Role.COOK && (status==OrderStatus.TAKEN || status==OrderStatus.COOKING)) {
+            if(status==OrderStatus.COOKING && loggedUser!=orderCook) {
+                return false;
+            }
             return true;
         }
         return false;
     }
     public void ChangeStatus(Order order){
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        User user = userRepository.getUserByUsername(username);
-
-        if (isAbleToChangeStatus(order.getOrderStatus(), (user.getRole() == Role.WAITER))){
+       User loggedUser=userDetailsService.getLoggedUser();
+       if (isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser)){
             switch (order.getOrderStatus()){
                 case TAKING -> order.setOrderStatus(OrderStatus.TAKEN);
                 case TAKEN -> {
                     order.setOrderStatus(OrderStatus.COOKING);
-                    order.setCook(user);
+                    order.setCook(loggedUser);
                 }
                 case COOKING -> order.setOrderStatus(OrderStatus.COOKED);
                 case COOKED -> order.setOrderStatus(OrderStatus.SERVED);
@@ -65,5 +68,31 @@ public class OrderService {
             }
         }
         orderRepository.save(order);
+    }
+
+    public String viewOrderByTableId(Integer tId, Model model) {
+        Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
+        Order order = getOrderByTableId(t);
+        model.addAttribute("order", order);
+
+        List<OrderDish> orderDish= orderDishService.getOrderInfo(order);
+        model.addAttribute("orderDish", orderDish);
+
+        boolean orderDishNull = isOrderDishNull(orderDish);
+        model.addAttribute("isOrderDishNull", orderDishNull);
+
+        User loggedUser = userDetailsService.getLoggedUser();
+        model.addAttribute("loggedUser", loggedUser);
+
+        boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
+        model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
+
+        return "/orders/view-order";
+    }
+    public boolean isOrderDishNull(List<OrderDish> orderDish){
+        if (orderDish.isEmpty()) {
+            return true;
+        }
+        return  false;
     }
 }
