@@ -15,6 +15,10 @@ public class RestaurantTable {
 
     private boolean hasOrder = false;
 
+    public RestaurantTable() {
+
+    }
+
     public boolean isHasOrder() {
         return hasOrder;
     }

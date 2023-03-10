@@ -55,20 +55,9 @@ public class OrderController {
         order.setOrderStatus(OrderStatus.TAKING);
 
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        User user = userRepository.getUserByUsername(username);
-        if (user.getRole() == Role.WAITER) {
-            order.setWaiter(user);
-        }
+        User user=userDetailsService.getLoggedUser();
 
         orderRepository.save(order);
-        //return "/orders/add-order";
         model.addAttribute(order);
         model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
         boolean orderDishNull = false;
@@ -76,35 +65,17 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "/orders/view-order";
+        return "redirect:/orders/view/{tId}";
     }
 
     @PostMapping("/view/{tId}")
     private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
-        Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
-        Order order = orderService.getOrderByTableId(t);
-        model.addAttribute("order", order);
-
-        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
-        boolean orderDishNull = false;
-        if (orderDishService.getOrderInfo(order).isEmpty()) {
-            orderDishNull = true;
-        }
-        model.addAttribute("orderDishNull", orderDishNull);
-
-        User user = userDetailsService.getLoggedUser();
-        user.toString();
-
-
-        boolean isWaiter = false;
-        if (user.getRole() == Role.WAITER) {
-            isWaiter = true;
-        }
-        boolean isAbleToChangeStatus = orderService.isAbleToChangeStatus(order.getOrderStatus(), isWaiter);
-        model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
-        model.addAttribute("user", user);
-
-
+        orderService.viewOrderByTableId(tId, model);
+        return "/orders/view-order";
+    }
+    @GetMapping("/view/{tId}")
+    private String viewOrderByTableId1(@PathVariable(name = "tId") Integer tId, Model model) {
+        orderService.viewOrderByTableId(tId, model);
         return "/orders/view-order";
     }
 
@@ -153,10 +124,6 @@ public class OrderController {
         model.addAttribute("orders", orders);
         return "/orders/orders-list";
     }
-
-    //<form th:action="@{/orders/delete-dishes/{orderId}(orderId=${order.id})}" method="post">
-    //  <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit" width="40" height="40">
-    //</form>
     @PostMapping("/delete-dishes/{orderDishId}")
     private String deleteDishesInOrder(@PathVariable(name = "orderDishId") Integer orderDishId,
                                        Model model) {

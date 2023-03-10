@@ -68,9 +68,9 @@ img.white-image {
         <li><a href="/orders">Поръчки</a></li>
         <Li><a href="/tables" class="active">Маси</a></Li>
         <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
-             width="50" height="50" style="float:right" th:if="${user.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
         <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
-             width="50" height="50" style="float:right" th:if="${user.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 </div>
@@ -99,7 +99,7 @@ img.white-image {
 </td>-->
     <table class="table table-striped">
         <thead>
-        <span th:if="${orderDishNull == false}">
+        <span th:if="${isOrderDishNull == false}">
         <tr>
             <th>Ястие</th>
             <th>Единична цена</th>
