@@ -56,6 +56,7 @@ public class OrderController {
 
 
         User user=userDetailsService.getLoggedUser();
+        order.setWaiter(user);
 
         orderRepository.save(order);
         model.addAttribute(order);
