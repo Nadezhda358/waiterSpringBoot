@@ -4,7 +4,6 @@ import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
-import com.waiter.waiter.enums.OrderDishStatus;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.DishRepository;

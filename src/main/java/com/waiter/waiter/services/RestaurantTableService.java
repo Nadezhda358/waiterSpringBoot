@@ -1,6 +1,5 @@
 package com.waiter.waiter.services;
 
-import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.RestaurantTable;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
@@ -8,15 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Optional;
 
 @Service
 public class RestaurantTableService {
     @Autowired
     RestaurantTablesRepository restaurantTablesRepository;
-    @Autowired
-    FilterService filterService;
     @Autowired
     OrderRepository orderRepository;
     @Autowired

@@ -2,6 +2,7 @@ package com.waiter.waiter.controllers;
 
 import com.waiter.waiter.entities.RestaurantTable;
 import com.waiter.waiter.services.RestaurantTableService;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +21,8 @@ import java.util.ArrayList;
 public class RestaurantTableController {
     @Autowired
     RestaurantTableService restaurantTableService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
     //@GetMapping
     //private String getTables(Model model){
     //    model.addAttribute("restaurantTables",restaurantTableService.getAllTables());
@@ -39,6 +42,7 @@ public class RestaurantTableController {
         //} else if (filter.equals("your")) {
         //    tables = orderRepository.getWaiterTables(userDetailsService.getLoggedUser().getId());
         //}
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
         model.addAttribute("restaurantTables", restaurantTableService.getTables(filter));
         model.addAttribute("filter", filter);
         return "/orders/restaurant-tables";
