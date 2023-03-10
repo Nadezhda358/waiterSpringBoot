@@ -65,7 +65,14 @@ li a:hover:not(.active) {
     </ul>
 </div>
 <br/>
-
+<form action="/tables" method="get">
+    <label for="filter">Show:</label>
+    <select id="filter" name="filter">
+        <option value="all" th:selected="${filter == 'all'}">All Tables</option>
+        <option value="your" th:selected="${filter == 'your'}">Your Tables</option>
+    </select>
+    <button type="submit">Apply Filter</button>
+</form><br>
 <div class="container text-center">
 <!-- button modal-->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -96,7 +103,7 @@ li a:hover:not(.active) {
 
     <h1>Маси</h1>
     <div class="row">
-        <div class="col-md-4"  th:each="t : ${restaurantTables}">
+        <div class="col-md-4"  th:each="t : ${restaurantTables}"><!-- th:if="${restaurantTables} is not null">-->
             <div class="card" style="width: 18rem;">
 
                 <div class="card-body">
@@ -120,7 +127,6 @@ li a:hover:not(.active) {
         </div>
     </div>
 </div>
-
 
 </div>
 </body>
