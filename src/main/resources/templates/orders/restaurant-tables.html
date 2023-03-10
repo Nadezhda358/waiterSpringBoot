@@ -51,6 +51,13 @@ li a:hover:not(.active) {
     margin-bottom: 50px;
     background-color: white;
 }
+img.white-image {
+  filter: brightness(0%) invert(100%);
+  -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
+  -moz-filter: brightness(0%) invert(100%); /* Firefox */
+  -ms-filter: brightness(0%) invert(100%); /* IE */
+  -o-filter: brightness(0%) invert(100%); /* Opera */
+}
 
     </style>
 </head>
@@ -61,11 +68,22 @@ li a:hover:not(.active) {
         <li><a href="/menu">Меню</a></li>
         <li><a href="/orders">Поръчки</a></li>
         <Li><a href="/tables" class="active">Маси</a></Li>
+        <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+        <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 </div>
 <br/>
-
+<form action="/tables" method="get">
+    <label for="filter">Show:</label>
+    <select id="filter" name="filter">
+        <option value="all" th:selected="${filter == 'all'}">All Tables</option>
+        <option value="your" th:selected="${filter == 'your'}">Your Tables</option>
+    </select>
+    <button type="submit">Apply Filter</button>
+</form><br>
 <div class="container text-center">
 <!-- button modal-->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
@@ -96,7 +114,7 @@ li a:hover:not(.active) {
 
     <h1>Маси</h1>
     <div class="row">
-        <div class="col-md-4"  th:each="t : ${restaurantTables}">
+        <div class="col-md-4"  th:each="t : ${restaurantTables}"><!-- th:if="${restaurantTables} is not null">-->
             <div class="card" style="width: 18rem;">
 
                 <div class="card-body">
@@ -120,7 +138,6 @@ li a:hover:not(.active) {
         </div>
     </div>
 </div>
-
 
 </div>
 </body>

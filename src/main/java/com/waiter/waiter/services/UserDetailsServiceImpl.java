@@ -4,6 +4,7 @@ import com.waiter.waiter.auth.MyUserDetails;
 import com.waiter.waiter.entities.User;
 import com.waiter.waiter.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -54,5 +55,18 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         }
         return new MyUserDetails(user);
     }
+
+    public User getLoggedUser() {
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username;
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails) principal).getUsername();
+        } else {
+            username = principal.toString();
+        }
+        User user = userRepo.getUserByUsername(username);
+        return user;
+    }
+
 
 }

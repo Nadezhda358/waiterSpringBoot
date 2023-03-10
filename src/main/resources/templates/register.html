@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8">
     <title>Register</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
@@ -16,7 +17,7 @@
     </style>
 </head>
 <body>
-<div class="container">
+<!--<div class="container">
 <form th:action="@{/register}" th:object="${user}" method="post">
     <h2>Registration</h2><br/>
     <input type="text" th:field="*{username}" placeholder="Username" minlength="5" maxlength="30" required/>
@@ -72,107 +73,137 @@
     <a th:href="@{|/login|}" th:text="'Log in'"></a><br/><br/>
     <span th:utext="${successMessage}"></span>
 </form>
-    </div>
+    </div> -->
 
 <section class="vh-100 gradient-custom">
     <div class="container py-5 h-100">
         <div class="row justify-content-center align-items-center h-100">
             <div class="col-12 col-lg-9 col-xl-7">
                 <div class="card shadow-2-strong card-registration" style="border-radius: 15px;">
+
+                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                        <a href="/login" class="list-group-item list-group-item-action text-center p-3">Вход</a>
+                        <a href="/register" class="list-group-item list-group-item-action active text-center p-3">Регистрация</a>
+
+                    </div>
+
+
                     <div class="card-body p-4 p-md-5">
-                        <h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Registration Form</h3>
-                        <form>
+                        <!--<h3 class="mb-4 pb-2 pb-md-0 mb-md-5">Регистрация</h3>-->
+
+                        <form th:action="@{/register}" th:object="${user}" method="post">
 
                             <div class="row">
-                                <div class="col-md-6 mb-4">
-
+                                <div class="col-md-6 mb-4"> <!--Име 1/2-->
                                     <div class="form-outline">
-                                        <input type="text" id="firstName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="firstName">First Name</label>
+                                        <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>-->
+                                        <label class="form-label" for="firstName">Име: </label>
+                                        <input type="text" id="firstName" th:field="*{firstName}" minlength="2" maxlength="30"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">name error</p>
                                     </div>
-
                                 </div>
-                                <div class="col-md-6 mb-4">
-
+                                <div class="col-md-6 mb-4"><!--Фамилия 1/2-->
                                     <div class="form-outline">
-                                        <input type="text" id="lastName" class="form-control form-control-lg" />
-                                        <label class="form-label" for="lastName">Last Name</label>
+                                        <!--<input type="text" id="lastName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="lastName">Last Name</label>-->
+                                        <label class="form-label" for="lastName">Фамилия: </label>
+                                        <input type="text" id="lastName" th:field="*{lastName}" minlength="2" maxlength="30"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">last name error</p>
                                     </div>
-
                                 </div>
                             </div>
+
+
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4"> <!--Потребителско име 1/2-->
+                                    <div class="form-outline">
+                                        <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>-->
+                                        <label class="form-label" for="username">Потребителско име: </label>
+                                        <input type="text" id="username" th:field="*{username}" minlength="2" maxlength="30"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">username error</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4"> <!--Парола 1/2-->
+                                    <div class="form-outline">
+                                        <!--<input type="text" id="firstName" class="form-control form-control-lg" />
+                                        <label class="form-label" for="firstName">First Name</label>-->
+                                        <label class="form-label" for="password">Парола: </label>
+                                        <input type="password" id="password" th:field="*{password}" minlength="2" maxlength="30"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">password error</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="row">
+                                <div class="col-md-6 mb-4 pb-2"> <!-- Имейл 1/2 -->
+                                    <div class="form-outline">
+                                        <label class="form-label" for="emailAddress">Email:</label>
+                                        <input type="email" id="emailAddress" th:field="*{email}" minlength="2" maxlength="30"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-4 pb-2"> <!-- Тел номер 1/2 -->
+                                    <div class="form-outline">
+                                        <label class="form-label" for="phoneNumber">Телефонен номер: </label>
+                                        <input type="text" id="phoneNumber" th:field="*{phoneNumber}" minlength="3" maxlength="13"
+                                               class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger">phone number error</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+
 
                             <div class="row">
                                 <div class="col-md-6 mb-4 d-flex align-items-center">
-
                                     <div class="form-outline datepicker w-100">
-                                        <input type="text" class="form-control form-control-lg" id="birthdayDate" />
-                                        <label for="birthdayDate" class="form-label">Birthday</label>
+                                        <label for="birthdayDate" class="form-label">Дата на раждане: </label>
+                                        <input type="date" id="birthdayDate" th:field="*{dateOfBirth}" class="form-control form-control-lg" required>
+                                        <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="text-danger">date error</p>
                                     </div>
-
                                 </div>
                                 <div class="col-md-6 mb-4">
-
-                                    <h6 class="mb-2 pb-1">Gender: </h6>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="femaleGender"
-                                               value="option1" checked />
-                                        <label class="form-check-label" for="femaleGender">Female</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="maleGender"
-                                               value="option2" />
-                                        <label class="form-check-label" for="maleGender">Male</label>
-                                    </div>
-
-                                    <div class="form-check form-check-inline">
-                                        <input class="form-check-input" type="radio" name="inlineRadioOptions" id="otherGender"
-                                               value="option3" />
-                                        <label class="form-check-label" for="otherGender">Other</label>
-                                    </div>
+                                    <label class="form-label" for="address">Адрес: </label>
+                                    <input type="text" id="address" th:field="*{address}" minlength="3" maxlength="50"
+                                           class="form-control form-control-lg" required>
+                                    <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger">address error</p>
 
                                 </div>
                             </div>
-
                             <div class="row">
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="email" id="emailAddress" class="form-control form-control-lg" />
-                                        <label class="form-label" for="emailAddress">Email</label>
-                                    </div>
-
-                                </div>
-                                <div class="col-md-6 mb-4 pb-2">
-
-                                    <div class="form-outline">
-                                        <input type="tel" id="phoneNumber" class="form-control form-control-lg" />
-                                        <label class="form-label" for="phoneNumber">Phone Number</label>
-                                    </div>
-
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="col-12">
-
-                                    <select class="select form-control-lg">
-                                        <option value="1" disabled>Choose option</option>
-                                        <option value="2">Subject 1</option>
-                                        <option value="3">Subject 2</option>
-                                        <option value="4">Subject 3</option>
+                                <div class="col-6">
+                                    <div class="form-label select-label">Роля: </div>
+                                    <select th:field="${user.role}" class="select form-control-lg col-12" >
+                                        <option th:each="userRole : ${T(com.waiter.waiter.enums.Role).values()}"
+                                                th:value="${userRole}"
+                                                th:text="${userRole.getValue}">
+                                        </option>
                                     </select>
-                                    <label class="form-label select-label">Choose option</label>
-
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2 pb-1">Пол: </div>
+                                    <div th:each="gender : ${T(com.waiter.waiter.enums.Gender).values()}"
+                                         class="form-check form-check-inline">
+                                        <input class="form-check-input" type="radio" name="gender" th:id="${gender}" th:value="${gender}"
+                                               th:checked="${user.gender == gender}" />
+                                        <label class="form-check-label" th:for="${gender}" th:text="${gender.getValue()}"></label>
+                                    </div>
                                 </div>
                             </div>
 
                             <div class="mt-4 pt-2">
-                                <input class="btn btn-primary btn-lg" type="submit" value="Submit" />
+                                <button type="submit" class="btn btn-primary btn-lg">Регистрация</button>
                             </div>
-
                         </form>
                     </div>
                 </div>

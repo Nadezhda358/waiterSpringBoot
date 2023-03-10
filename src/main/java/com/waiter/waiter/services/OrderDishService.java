@@ -1,35 +1,36 @@
 package com.waiter.waiter.services;
 
 import com.waiter.waiter.entities.Dish;
+import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
+import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
+import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class OrderDishService {
     @Autowired
     OrderDishRepository orderDishRepository;
-
+    @Autowired
+    DishRepository dishRepository;
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
-        //System.out.println("Order id = "+orderDishHelp.getOrder().getId());
-        for (Dish d:orderDishHelp.getDishes()) {
-            System.out.println("Dish id = "+d.getId()+" and name = "+d.getName());
-        }
-        System.out.println();
         List<Dish> dishes=orderDishHelp.getDishes();
         for (Dish d:dishes) {
             OrderDish orderDish=new OrderDish();
             orderDish.setOrder(order);
             orderDish.setQuantity(1);
             orderDish.setCurrentPrice(d.getPrice());
+            orderDish.setPricePerItem(d.getPrice());
             orderDish.setDish(d);
             orderDishRepository.save(orderDish);
         }
@@ -42,5 +43,26 @@ public class OrderDishService {
         }
         return  orderInfo;
     }
+    public OrderDish getOrderDishById(Integer orderDrinkId){
+        Optional<OrderDish> oe = orderDishRepository.findById(orderDrinkId);
+        if(oe.isPresent()) {
+            return oe.get();
+        } else {
+            return new OrderDish();
+        }
+    }
 
+    public Iterable<Dish> findAllNotAddedDishesToOrder(Order order) {
+        Iterable<Dish> dishes=orderDishRepository.getAllNotAddedDishesToOrder(order);
+        for (Dish d: dishes) {
+            d.toString();
+        }
+        return dishes;
+    }
+    public void deleteOrderDishById(Integer orderDishId){
+        OrderDish orderDish = getOrderDishById(orderDishId);
+        if (orderDish.getOrder().getOrderStatus() == OrderStatus.TAKING) {
+            orderDishRepository.deleteById(orderDishId);
+        }
+    }
 }

@@ -82,7 +82,7 @@ li a:hover:not(.active) {
             </tr>
             </thead>
             <tbody>
-            <tr th:each="dish : ${dishes}">
+            <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                 <td th:text="${dish.name}"></td>
                 <td th:text="${dish.price} + ' лв.'"></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
@@ -94,26 +94,26 @@ li a:hover:not(.active) {
 
 
                     <button type="button" class="btn btn-outline-primary btn-md" data-toggle="modal"
-                            th:attr="data-target='#exampleModalCenter'+${dish.id}">Още</button>
+                            th:attr="data-target='#exampleModalCenter1'+${dish.id}">Още</button>
 
                     <!-- Modal -->
-                    <div class="modal fade" th:id="*{'exampleModalCenter'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" th:id="*{'exampleModalCenter1'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
+                            <div class="modal-content p-3">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="viewDishModal">Още</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body">
-                                    <h5 th:text="${dish.name}" class="text-center"></h5>
+                                    <div class="modal-body">
+                                        <h5 th:text="${dish.name}" class="text-center"></h5>
+                                    </div>
                                     <div class="card-text">
                                         <p>Тип: <span th:text="${dish.dishType}"></span></p>
                                         <p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>
                                         <p>Количество: <span th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></span></p>
                                         <p>Описание: <span th:text="${dish.description}"></span></p>
-                                    </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
@@ -129,21 +129,53 @@ li a:hover:not(.active) {
                     <!-- Button trigger modal -->
 
 
-                    <button type="button" class="btn btn-outline-primary btn-md" data-toggle="modal"
-                            th:attr="data-target='#exampleModalCenter'+${dish.id}">Промяна</button>
+                    <button type="button" class="btn btn-outline-warning btn-md" data-toggle="modal"
+                            th:attr="data-target='#exampleModalCenter2'+${dish.id}">Промяна</button>
 
                     <!-- Modal -->
-                    <div class="modal fade" th:id="*{'exampleModalCenter'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" th:id="*{'exampleModalCenter2'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="updateDishModal">Още</h5>
+                                    <h5 class="modal-title" id="updateDishModal">Промяна</h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    Ще има update
+                                    <form th:action="@{/dishes/update}" method="post">
+                                        <input type="hidden" th:value="*{dish.id}" name="id">
+                                        <p>Име: <input type="text" th:value="*{dish.name}" name="name" placeholder="Въведете име" minlength="2" maxlength="30"
+                                                       class="form-control border-3" required></p>
+
+                                       <p>Цена: <input type="number" th:value="*{dish.price}" name="price"placeholder="Въведете цена" min="0" step=".01"
+                                                        class="form-control border-3" required></p>
+
+                                      <p>Описание: <textarea th:value="*{dish.description}" name="description" placeholder="Въведете описание" minlength="2" maxlength="150"
+                                                               class="form-control border-3"></textarea></p>
+                                        <p>Количество: <input type="number" th:value="*{dish.quantity}" name="quantity" placeholder="Въведете количество" min="1"
+                                                              class="form-control border-3" required>
+                                            <select th:value="${dish.dishQuantityType}" name="dishQuantityType">
+                                                <option th:each="type : ${T(com.waiter.waiter.enums.DishQuantityType).values()}"
+                                                        th:value="${type.getValue}"
+                                                        th:text="${type.getValue}">
+                                                </option>
+                                            </select>
+                                        </p>
+
+                                        <p>Тип:
+                                            <select th:value="${dish.dishType}" name="dishType">
+                                                <option th:each="state : ${T(com.waiter.waiter.enums.DishType).values()}"
+                                                        th:value="${state.getValue}"
+                                                        th:text="${state.getValue}">
+                                                </option>
+                                            </select>
+                                        </p>
+                                        <input type="submit" value="Запази" class="btn btn-outline-success">
+                                        <!--<a href="/menu" class="btn btn-outline-secondary">Back</a>-->
+                                    </form>
+
+
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
@@ -160,10 +192,10 @@ li a:hover:not(.active) {
 
 
                     <button type="button" class="btn btn-outline-danger btn-md" data-toggle="modal"
-                            th:attr="data-target='#exampleModalCenter'+${dish.id}">Премахване</button>
+                            th:attr="data-target='#exampleModalCenter3'+${dish.id}">Премахване</button>
 
                     <!-- Modal -->
-                    <div class="modal fade" th:id="*{'exampleModalCenter'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" th:id="*{'exampleModalCenter3'+{dish.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -211,12 +243,101 @@ li a:hover:not(.active) {
                 <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
 
                 <td>
-                    <!--<form th:action="@{/drinks/more-info/{drinkId}(drinkId=${drink.id})}" method="post">
-                        <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
-                    </form>-->
-                    <a th:href="@{/drinks/more-info/{drinkId}(drinkId=${drink.id})}" class="btn btn-outline-warning">Още</a>
+
+
+                    <!-- Button trigger modal -->
+
+
+                    <button type="button" class="btn btn-outline-primary btn-md" data-toggle="modal"
+                            th:attr="data-target='#exampleModalCenter4'+${drink.id}">Още</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="*{'exampleModalCenter4'+{drink.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content p-3">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="viewDrinkModal">Още</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <h5 th:text="${drink.name}" class="text-center"></h5>
+                                </div>
+                                <div class="card-text">
+                                    <p>Тип: <span th:text="${drink.drinkType}"></span></p>
+                                    <p>Цена: <span th:text="${drink.price} + ' лв.'"></span></p>
+                                    <p>Количество: <span th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></span></p>
+                                    <p>Описание: <span th:text="${drink.description}"></span></p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </td>
-                <td><a th:href="@{/drinks/edit/{drinkId}(drinkId=${drink.id})}" class="btn btn-outline-warning">Промяна</a></td>
+                <td>
+
+
+                    <!-- Button trigger modal -->
+
+
+                    <button type="button" class="btn btn-outline-warning btn-md" data-toggle="modal"
+                            th:attr="data-target='#exampleModalCenter5'+${drink.id}">Промяна</button>
+
+                    <!-- Modal -->
+                    <div class="modal fade" th:id="*{'exampleModalCenter5'+{drink.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="updateDrinkModal">Промяна</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <form th:action="@{/drinks/update}" method="post">
+                                        <input type="hidden" th:value="*{drink.id}" name="id">
+                                        <p>Име: <input type="text" th:value="*{drink.name}" name="name" placeholder="Въведете име" minlength="2" maxlength="30"
+                                                       class="form-control border-3" required></p>
+
+                                        <p>Цена: <input type="number" th:value="*{drink.price}" name="price"placeholder="Въведете цена" min="0" step=".01"
+                                                        class="form-control border-3" required></p>
+
+                                        <p>Описание: <textarea th:value="*{drink.description}" name="description" placeholder="Въведете описание" minlength="2" maxlength="150"
+                                                               class="form-control border-3"></textarea></p>
+                                        <p>Количество: <input type="number" th:value="*{drink.quantity}" name="quantity" placeholder="Въведете количество" min="1"
+                                                              class="form-control border-3" required>
+                                            <select th:value="${drink.drinkQuantityType}" name="drinkQuantityType">
+                                                <option th:each="type : ${T(com.waiter.waiter.enums.DrinkQuantityType).values()}"
+                                                        th:value="${type.getValue}"
+                                                        th:text="${type.getValue}">
+                                                </option>
+                                            </select>
+                                        </p>
+
+                                        <p>Тип:
+                                            <select th:value="${drink.drinkType}" name="drinkType">
+                                                <option th:each="state : ${T(com.waiter.waiter.enums.DrinkType).values()}"
+                                                        th:value="${state.getValue}"
+                                                        th:text="${state.getValue}">
+                                                </option>
+                                            </select>
+                                        </p>
+                                        <input type="submit" value="Запази" class="btn btn-outline-success">
+                                        <!--<a href="/menu" class="btn btn-outline-secondary">Back</a>-->
+                                    </form>
+
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
                 <td>
 
 
@@ -224,10 +345,10 @@ li a:hover:not(.active) {
 
 
                     <button type="button" class="btn btn-outline-danger btn-md" data-toggle="modal"
-                            th:attr="data-target='#exampleModalCenter'+${drink.id}">Премахване</button>
+                            th:attr="data-target='#exampleModalCenter6'+${drink.id}">Премахване</button>
 
                     <!-- Modal -->
-                    <div class="modal fade" th:id="*{'exampleModalCenter'+{drink.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal fade" th:id="*{'exampleModalCenter6'+{drink.id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
