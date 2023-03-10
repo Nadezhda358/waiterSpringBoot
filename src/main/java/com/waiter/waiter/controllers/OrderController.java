@@ -119,9 +119,15 @@ public class OrderController {
         return "/orders/view-order";
     }
 
-    @GetMapping
+    //@GetMapping
+    //public String getAllOrders(Model model) {
+    //    Iterable<Order> orders = orderRepository.findAll();
+    //    model.addAttribute("orders", orders);
+    //    return "/orders/orders-list";
+    //}
+    @GetMapping("/active")
     public String getAllOrders(Model model) {
-        Iterable<Order> orders = orderRepository.findAll();
+        Iterable<Order> orders = orderService.getActiveOrders();
         model.addAttribute("orders", orders);
         return "/orders/orders-list";
     }

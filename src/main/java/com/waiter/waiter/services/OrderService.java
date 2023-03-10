@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -92,5 +93,14 @@ public class OrderService {
             return true;
         }
         return  false;
+    }
+    public Iterable<Order> getActiveOrders(){
+        Iterable<Order> orders = new ArrayList<>();
+        if (userDetailsService.getLoggedUser().getRole() == Role.WAITER){
+            orders = orderRepository.getAllActiveOrdersForWaiter();
+        } else if (userDetailsService.getLoggedUser().getRole() == Role.COOK) {
+            orders = orderRepository.getAllActiveOrdersForCook();
+        }
+        return orders;
     }
 }

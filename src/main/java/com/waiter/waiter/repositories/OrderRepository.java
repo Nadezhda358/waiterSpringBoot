@@ -13,4 +13,8 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Order getOrderByTableId(@Param("t") Optional<RestaurantTable> t);
     @Query("SELECT o.table FROM Order o WHERE o.waiter.id=:waiterId AND o.orderStatus <> 'PAID'")
     Iterable<RestaurantTable> getWaiterTables(@Param("waiterId") Integer id);
+    @Query("SELECT o FROM Order o WHERE o.orderStatus <> 'PAID'")
+    Iterable<Order> getAllActiveOrdersForWaiter();
+    @Query("SELECT o FROM Order o WHERE o.orderStatus = 'TAKEN' OR o.orderStatus = 'COOKING'") //OR o.cook is null")
+    Iterable<Order> getAllActiveOrdersForCook();
 }
