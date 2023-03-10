@@ -8,6 +8,7 @@ import com.waiter.waiter.repositories.*;
 import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.RestaurantTableService;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,9 +41,12 @@ public class OrderController {
     OrderDishRepository orderDishRepository;
     @Autowired
     UserRepository userRepository;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
     @PostMapping("/create/{tId}")
-    private String createOrder(@PathVariable(name="tId") Integer tId, Model model) {
-        Order order=new Order();
+    private String createOrder(@PathVariable(name = "tId") Integer tId, Model model) {
+        Order order = new Order();
         RestaurantTable table = restaurantTableService.getTableById(tId);
         table.setHasOrder(true);
         restaurantTablesRepository.save(table);
@@ -59,132 +63,125 @@ public class OrderController {
             username = principal.toString();
         }
         User user = userRepository.getUserByUsername(username);
-        if(user.getRole() == Role.WAITER){
+        if (user.getRole() == Role.WAITER) {
             order.setWaiter(user);
         }
 
         orderRepository.save(order);
         //return "/orders/add-order";
         model.addAttribute(order);
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
         return "/orders/view-order";
     }
 
     @PostMapping("/view/{tId}")
-    private String viewOrderByTableId(@PathVariable(name="tId") Integer tId, Model model){
+    private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
         Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
         Order order = orderService.getOrderByTableId(t);
-        model.addAttribute("order",order);
+        model.addAttribute("order", order);
 
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order).isEmpty()) {
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order).isEmpty()) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
 
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        User user = userRepository.getUserByUsername(username);
+        User user = userDetailsService.getLoggedUser();
 
         boolean isWaiter = false;
-        if (user.getRole() == Role.WAITER){
+        if (user.getRole() == Role.WAITER) {
             isWaiter = true;
         }
         boolean isAbleToChangeStatus = orderService.isAbleToChangeStatus(order.getOrderStatus(), isWaiter);
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
-
-
+        model.addAttribute("user", user);
 
 
         return "/orders/view-order";
     }
 
     @PostMapping("/add-dishes/{orderId}")
-    private String addDishesInOrder(@PathVariable(name="orderId") Integer orderId, Model model){
-        Optional<Order> orders=orderRepository.findById(orderId);
-        Order order=orders.get();
+    private String addDishesInOrder(@PathVariable(name = "orderId") Integer orderId, Model model) {
+        Optional<Order> orders = orderRepository.findById(orderId);
+        Order order = orders.get();
         //Iterable<Dish> dishes1=dishRepository.findAll();
 
-        Iterable<Dish> dishes1=orderDishService.findAllNotAddedDishesToOrder(order);
+        Iterable<Dish> dishes1 = orderDishService.findAllNotAddedDishesToOrder(order);
         /*if(dishes==null){
             return "";//ако няма ястия в менюто, да не се добавят ястия в поръчка
         }*/
-        OrderDishHelp orderDishHelp=new OrderDishHelp();
+        OrderDishHelp orderDishHelp = new OrderDishHelp();
         orderDishHelp.setOrder(order);
-        model.addAttribute("orderdish",orderDishHelp);
-        model.addAttribute("selectabledishes",dishes1);
-        model.addAttribute("order",order);
+        model.addAttribute("orderdish", orderDishHelp);
+        model.addAttribute("selectabledishes", dishes1);
+        model.addAttribute("order", order);
 
         return "/orders/add-dish-to-order";
     }
 
     @PostMapping("/order-dish/add-to-order/submit/{orderId}")
-    private String saveDishesToOrder(@PathVariable(name="orderId")Integer orderId,OrderDishHelp orderDishHelp,Model model){
-        Optional<Order> orders=orderRepository.findById(orderId);
-        Order order=orders.get();
+    private String saveDishesToOrder(@PathVariable(name = "orderId") Integer orderId, OrderDishHelp orderDishHelp, Model model) {
+        Optional<Order> orders = orderRepository.findById(orderId);
+        Order order = orders.get();
         orderDishHelp.setOrder(order);
         orderDishService.saveDishesToOrder(orderDishHelp);
         order.setTotalCost(orderDishRepository.getTotalCost(order));
         orderRepository.save(order);
 
 
-
-        model.addAttribute("order",order);
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        model.addAttribute("order", order);
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
         return "/orders/view-order";
     }
+
     @GetMapping
-    public String getAllOrders(Model model){
+    public String getAllOrders(Model model) {
         Iterable<Order> orders = orderRepository.findAll();
         model.addAttribute("orders", orders);
         return "/orders/orders-list";
     }
+
     //<form th:action="@{/orders/delete-dishes/{orderId}(orderId=${order.id})}" method="post">
     //  <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit" width="40" height="40">
     //</form>
     @PostMapping("/delete-dishes/{orderDishId}")
-    private String deleteDishesInOrder(@PathVariable(name="orderDishId") Integer orderDishId,
-                                       Model model){
-        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+    private String deleteDishesInOrder(@PathVariable(name = "orderDishId") Integer orderDishId,
+                                       Model model) {
+        Order order = orderDishRepository.findById(orderDishId).get().getOrder();
 
         orderDishService.deleteOrderDishById(orderDishId);
 
         order.setTotalCost(orderDishRepository.getTotalCost(order));
         orderRepository.save(order);
 
-        model.addAttribute("order",order);
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        model.addAttribute("order", order);
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
         return "/orders/view-order";
     }
 
     @PostMapping("/add-one-to-quantity/{orderDishId}")
-    private String addOneToQuantity(@PathVariable(name="orderDishId") Integer orderDishId,
-                                       Model model){
-        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+    private String addOneToQuantity(@PathVariable(name = "orderDishId") Integer orderDishId,
+                                    Model model) {
+        Order order = orderDishRepository.findById(orderDishId).get().getOrder();
         Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
         OrderDish orderDish;
-        if(orderDishes.isPresent()) {
+        if (orderDishes.isPresent()) {
             orderDish = orderDishes.get();
         } else {
             orderDish = new OrderDish();
@@ -196,28 +193,28 @@ public class OrderController {
         order.setTotalCost(orderDishRepository.getTotalCost(order));
         orderRepository.save(order);
 
-        model.addAttribute("order",order);
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        model.addAttribute("order", order);
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
         return "/orders/view-order";
     }
 
     @PostMapping("/remove-one-from-quantity/{orderDishId}")
-    private String removeOneFromQuantity(@PathVariable(name="orderDishId") Integer orderDishId,
-                                    Model model){
-        Order order=orderDishRepository.findById(orderDishId).get().getOrder();
+    private String removeOneFromQuantity(@PathVariable(name = "orderDishId") Integer orderDishId,
+                                         Model model) {
+        Order order = orderDishRepository.findById(orderDishId).get().getOrder();
         Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
         OrderDish orderDish;
-        if(orderDishes.isPresent()) {
+        if (orderDishes.isPresent()) {
             orderDish = orderDishes.get();
         } else {
             orderDish = new OrderDish();
         }
-        if (orderDish.getQuantity() > 1){
+        if (orderDish.getQuantity() > 1) {
             orderDish.setQuantity(orderDish.getQuantity() - 1);
             orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
             orderDishRepository.save(orderDish);
@@ -226,20 +223,21 @@ public class OrderController {
             orderRepository.save(order);
         }
 
-        model.addAttribute("order",order);
-        model.addAttribute("orderDish",orderDishService.getOrderInfo(order));
-        boolean orderDishNull=false;
-        if(orderDishService.getOrderInfo(order)==null) {
+        model.addAttribute("order", order);
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
             orderDishNull = true;
         }
-        model.addAttribute("orderDishNull",orderDishNull);
+        model.addAttribute("orderDishNull", orderDishNull);
         return "/orders/view-order";
     }
+
     @PostMapping("/change-status/{orderId}")
-    public String changeStatus(@PathVariable(name="orderId")Integer orderId ,Model model){
+    public String changeStatus(@PathVariable(name = "orderId") Integer orderId, Model model) {
         Optional<Order> order = orderRepository.findById(orderId);
         Order order1;
-        if(order.isPresent()) {
+        if (order.isPresent()) {
             order1 = order.get();
         } else {
             order1 = new Order();

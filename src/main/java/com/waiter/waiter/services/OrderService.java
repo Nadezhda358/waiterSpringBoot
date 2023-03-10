@@ -2,6 +2,7 @@ package com.waiter.waiter.services;
 
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.entities.User;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
@@ -44,7 +45,7 @@ public class OrderService {
         } else {
             username = principal.toString();
         }
-        com.waiter.waiter.entities.User user = userRepository.getUserByUsername(username);
+        User user = userRepository.getUserByUsername(username);
 
         if (isAbleToChangeStatus(order.getOrderStatus(), (user.getRole() == Role.WAITER))){
             switch (order.getOrderStatus()){
