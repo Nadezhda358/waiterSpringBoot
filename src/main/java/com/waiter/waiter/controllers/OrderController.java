@@ -93,6 +93,8 @@ public class OrderController {
         model.addAttribute("orderDishNull", orderDishNull);
 
         User user = userDetailsService.getLoggedUser();
+        user.toString();
+
 
         boolean isWaiter = false;
         if (user.getRole() == Role.WAITER) {

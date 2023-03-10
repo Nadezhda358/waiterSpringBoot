@@ -50,6 +50,13 @@ li a:hover:not(.active) {
     margin-bottom: 50px;
     background-color: white;
 }
+img.white-image {
+  filter: brightness(0%) invert(100%);
+  -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
+  -moz-filter: brightness(0%) invert(100%); /* Firefox */
+  -ms-filter: brightness(0%) invert(100%); /* IE */
+  -o-filter: brightness(0%) invert(100%); /* Opera */
+}
     </style>
 </head>
 <body>
@@ -60,12 +67,14 @@ li a:hover:not(.active) {
         <li><a href="/menu">Меню</a></li>
         <li><a href="/orders">Поръчки</a></li>
         <Li><a href="/tables" class="active">Маси</a></Li>
-        <img src="https://cdn2.iconfinder.com/data/icons/food-and-drink-49/100/Waiter-03-512.png" width="50" height="50" style="float:right">
+        <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+             width="50" height="50" style="float:right" th:if="${user.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+        <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+             width="50" height="50" style="float:right" th:if="${user.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 </div>
 <br/>
-
 <div class="container">
     <div class="text-center">
         <h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'"></h3>
