@@ -171,5 +171,10 @@ public class OrderController {
         model.addAttribute("filter", filter);
         return "/orders/orders-reference-cook";
     }
-
+    @GetMapping("/orders-for-date")
+    public String showOrdersForDate(@RequestParam(name = "date") String dateString, @RequestParam(required = false, defaultValue = "your") String filter, Model model){
+        Iterable<Order> orders = orderService.getOrdersForCertainDate(dateString, filter);
+        model.addAttribute("orders", orders);
+        return "/orders/orders-for-date";
+    }
 }

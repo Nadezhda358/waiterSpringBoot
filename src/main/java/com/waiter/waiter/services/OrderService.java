@@ -150,4 +150,13 @@ public class OrderService {
         restaurantTableService.saveTable(table);
         orderRepository.save(order);
     }
+    public Iterable<Order> getOrdersForCertainDate(String date, String filter){
+        Iterable<Order> orders = new ArrayList<>();
+        if (filter.equalsIgnoreCase("all")){
+            orders = orderRepository.getAllOrdersForCertainDate(date);
+        } else if (filter.equalsIgnoreCase("your")) {
+            orders = orderRepository.getCookOrdersForCertainDate(date, userDetailsService.getLoggedUser().getId());
+        }
+        return orders;
+    }
 }

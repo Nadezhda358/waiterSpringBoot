@@ -33,4 +33,13 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     @Query("SELECT DATE(o.createdOn) as orderDate, COUNT(*) as orderCount " +
             "FROM Order o WHERE o.cook.id=:cookId GROUP BY DATE(o.createdOn) ORDER BY orderDate DESC")
     Iterable<Object[]> getOrdersCountByDateForCertainCook(@Param("cookId") Integer id);
+    //@Query("SELECT o FROM Order o WHERE o.createdOn LIKE ':date%'")
+    //Iterable<Order> getAllOrdersForCertainDate(@Param("date") String date);
+    //@Query("SELECT o FROM Order o WHERE o.createdOn LIKE ':date%' AND o.cook.id=:cookId")
+    //Iterable<Order> getCookOrdersForCertainDate(@Param("date") String date, @Param("cookId") Integer cookId);
+    @Query("SELECT o FROM Order o WHERE o.createdOn BETWEEN CONCAT(:date, ' 00:00:00') AND CONCAT(:date, ' 23:59:59')")
+    Iterable<Order> getAllOrdersForCertainDate(@Param("date") String date);
+    @Query("SELECT o FROM Order o WHERE o.createdOn BETWEEN CONCAT(:date, ' 00:00:00') AND CONCAT(:date, ' 23:59:59') AND o.cook.id = :cookId")
+    Iterable<Order> getCookOrdersForCertainDate(@Param("date") String date, @Param("cookId") Integer cookId);
+
 }

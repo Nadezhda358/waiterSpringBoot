@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Orders Cook</title>
@@ -78,7 +78,7 @@ img.white-image {
             <option value="all" th:selected="${filter == 'all'}">Всички</option>
             <option value="your" th:selected="${filter == 'your'}">Ваши</option>
         </select>
-        <button type="submit">Apply Filter</button>
+        <button type="submit">Приложи</button>
     </form><br>
 
     <table  class="table table-striped">
@@ -93,7 +93,13 @@ img.white-image {
         <tr th:each="row : ${ordersCountByDate}">
             <td th:text="${row[0]}"></td>
             <td th:text="${row[1]}"></td>
-            <td></td>
+            <td>
+                <form th:action="@{/orders/orders-for-date}" method="get">
+                    <input type="hidden" name="date" th:value="${row[0]}">
+                    <input type="hidden" name="filter" th:value="${filter}">
+                    <button class="btn btn-outline-primary" type="submit">Още</button>
+                </form>
+            </td>
         </tr>
         </tbody>
     </table>

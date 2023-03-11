@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders For Date</title>
+</head>
+<body>
+<div>
+    <table class="table table-striped">
+        <thead>
+        <tr>
+            <th>Маса</th>
+            <th>Създадена на</th>
+            <th>Платена на</th>
+            <th>Статус</th>
+            <th>Текуща цена</th>
+            <th>Сервитьор</th>
+            <th>Готвач</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="order : ${orders}">
+            <td th:text="${order.table.number}"></td>
+            <td th:text="${order.createdOn}"></td>
+            <td>
+                <span th:text="${order.finishDate}" th:if="${order.finishDate} != null"></span>
+            </td>
+            <td th:text="${order.orderStatus.getValue}"></td>
+            <td th:text="${order.totalCost}"></td>
+            <td th:text="${order.waiter.firstName}"></td>
+            <td>
+                <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
+            </td>
+            <td></td>
+
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>
