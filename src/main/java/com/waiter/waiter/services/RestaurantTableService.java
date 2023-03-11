@@ -46,8 +46,14 @@ public class RestaurantTableService {
             return new RestaurantTable();
         }
     }
-
-    public void saveTable(RestaurantTable table) {
-        restaurantTablesRepository.save(table);
+    public int getTableIdByOrderId(Integer orderId) {
+        Optional<Order> order1=orderRepository.findById(orderId);
+        Order order;
+        if(order1.isPresent()) {
+            order=order1.get();
+        } else {
+            order=new Order();
+        }
+        return order.getTable().getId();
     }
 }
