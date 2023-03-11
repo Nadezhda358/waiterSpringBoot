@@ -94,12 +94,22 @@ public class OrderService {
         }
         return  false;
     }
-    public Iterable<Order> getActiveOrders(){
+    public Iterable<Order> getActiveOrders(String filter){
         Iterable<Order> orders = new ArrayList<>();
         if (userDetailsService.getLoggedUser().getRole() == Role.WAITER){
-            orders = orderRepository.getAllActiveOrdersForWaiter();
+            if (filter.equalsIgnoreCase("all")){
+                orders = orderRepository.getAllActiveOrdersForWaiter();
+            } else if (filter.equalsIgnoreCase("your")) {
+                orders = orderRepository.getActiveOrdersForCertainWaiter(userDetailsService.getLoggedUser().getId());
+            }
         } else if (userDetailsService.getLoggedUser().getRole() == Role.COOK) {
-            orders = orderRepository.getAllActiveOrdersForCook();
+            if (filter.equalsIgnoreCase("all")) {
+                orders = orderRepository.getAllActiveOrdersForCook();
+            }else if (filter.equalsIgnoreCase("your")){
+                orders = orderRepository.getActiveOrdersForCertainCook(userDetailsService.getLoggedUser().getId());
+            }else if (filter.equalsIgnoreCase("free")){
+                orders = orderRepository.getActiveOrderWithoutCook();
+            }
         }
         return orders;
     }

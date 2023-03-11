@@ -14,10 +14,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
@@ -126,9 +123,13 @@ public class OrderController {
     //    return "/orders/orders-list";
     //}
     @GetMapping("/active")
-    public String getAllOrders(Model model) {
-        Iterable<Order> orders = orderService.getActiveOrders();
+    public String getActiveOrders(@RequestParam(required = false, defaultValue = "your") String filter, Model model) {
+        Iterable<Order> orders = orderService.getActiveOrders(filter);
         model.addAttribute("orders", orders);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter", filter);
+
         return "/orders/orders-list";
     }
     @PostMapping("/delete-dishes/{orderDishId}")

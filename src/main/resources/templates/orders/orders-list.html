@@ -58,14 +58,25 @@ li a:hover:not(.active) {
     <ul>
         <li><a  href="/">Начало</a></li>
         <li><a href="/menu">Меню</a></li>
-        <li><a href="/orders/active" class="active">Поръчки</a></li>
+        <li><a href="/orders/active" class="active">Активни поръчки</a></li>
         <Li><a href="/tables">Маси</a></Li>
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 
 </div>
 <div class="container">
+    <!-- -------------------------------------------------------------------------------------------- -->
+    <form action="/orders/active" method="get">
+        <label for="filter">Поръчки:</label>
+        <select id="filter" name="filter">
+            <option value="all" th:selected="${filter == 'all'}">Всички</option>
+            <option value="your" th:selected="${filter == 'your'}">Ваши</option>
+            <option th:hidden="${loggedUser.role} != ${T(com.waiter.waiter.enums.Role).COOK}" value="free" th:selected="${filter == 'free'}">Без готвач</option>
+        </select>
+        <button type="submit">Apply Filter</button>
+    </form><br>
     <br>
+    <!-- -------------------------------------------------------------------------------------------- -->
     <div>
         <table class="table table-striped">
             <thead>
