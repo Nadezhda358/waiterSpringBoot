@@ -21,8 +21,6 @@ public class OrderDishService {
     OrderDishRepository orderDishRepository;
     @Autowired
     OrderRepository orderRepository;
-    @Autowired
-    OrderDishService orderDishService;
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
@@ -73,7 +71,7 @@ public class OrderDishService {
         Optional<Order> orders = orderRepository.findById(orderId);
         Order order = orders.get();
 
-        Iterable<Dish> selectableDishes = orderDishService.findAllNotAddedDishesToOrder(order);
+        Iterable<Dish> selectableDishes = findAllNotAddedDishesToOrder(order);
 
         OrderDishHelp orderDishHelp = new OrderDishHelp(order);
         model.addAttribute("orderdish", orderDishHelp);
@@ -85,16 +83,26 @@ public class OrderDishService {
         Optional<Order> orders = orderRepository.findById(orderId);
         Order order = orders.get();
         orderDishHelp.setOrder(order);
-        orderDishService.saveDishesToOrder(orderDishHelp);
+        saveDishesToOrder(orderDishHelp);
         order.setTotalCost(orderDishRepository.getTotalCost(order));
         orderRepository.save(order);
 
         model.addAttribute("order", order);
-        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        model.addAttribute("orderDish", getOrderInfo(order));
         boolean orderDishNull = false;
-        if (orderDishService.getOrderInfo(order) == null) {
+        if (getOrderInfo(order) == null) {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
+    }
+    public int getTableIdByOrderId(Integer orderId) {
+        Optional<Order> order1=orderRepository.findById(orderId);
+        Order order;
+        if(order1.isPresent()) {
+            order=order1.get();
+        } else {
+            order=new Order();
+        }
+        return order.getTable().getId();
     }
 }

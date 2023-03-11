@@ -29,7 +29,6 @@ public class OrderService {
     RestaurantTablesRepository restaurantTablesRepository;
     @Autowired
     OrderDishService orderDishService;
-   // OrderDrinkService orderDrinkService;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -99,7 +98,7 @@ public class OrderService {
         User user=userDetailsService.getLoggedUser();
         Order order = new Order(table,user);
         table.setHasOrder(true);
-        restaurantTablesRepository.save(table);
+        restaurantTableService.saveTable(table);
         orderRepository.save(order);
     }
 }
