@@ -26,7 +26,7 @@
                 <div class="card-body">
                     <form class="ui form p-3" th:action="@{/orders/order-dish/add-to-order/submit/{orderId}(orderId=${orderdish.getOrder.id})}" method="post" th:object="${orderdish}">
                         <ul class="list-unstyled">
-                            <li th:each="dish : ${selectabledishes}">
+                            <li th:each="dish : ${selectableDishes}">
                                 <input type="checkbox" th:field="${orderdish.dishes}"th:value="${dish.id}" class="form-check-input">
                                 <label th:text="${dish.name}"></label>
                             </li>

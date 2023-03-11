@@ -23,46 +23,17 @@ import java.util.Optional;
 @RequestMapping("/orders")
 public class OrderController {
     @Autowired
-    DishRepository dishRepository;
-    @Autowired
     OrderService orderService;
     @Autowired
-    RestaurantTablesRepository restaurantTablesRepository;
-    @Autowired
     OrderRepository orderRepository;
-    @Autowired
-    RestaurantTableService restaurantTableService;
     @Autowired
     OrderDishService orderDishService;
     @Autowired
     OrderDishRepository orderDishRepository;
-    @Autowired
-    UserRepository userRepository;
-    @Autowired
-    UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name = "tId") Integer tId, Model model) {
-        Order order = new Order();
-        RestaurantTable table = restaurantTableService.getTableById(tId);
-        table.setHasOrder(true);
-        restaurantTablesRepository.save(table);
-        order.setTable(table);
-        order.setCreatedOn(LocalDateTime.now());
-        order.setOrderStatus(OrderStatus.TAKING);
-
-
-        User user=userDetailsService.getLoggedUser();
-        order.setWaiter(user);
-
-        orderRepository.save(order);
-        model.addAttribute(order);
-        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
-        boolean orderDishNull = false;
-        if (orderDishService.getOrderInfo(order) == null) {
-            orderDishNull = true;
-        }
-        model.addAttribute("orderDishNull", orderDishNull);
+       orderService.createOrder(tId);
         return "redirect:/orders/view/"+tId;
     }
 
@@ -77,6 +48,9 @@ public class OrderController {
         return "/orders/view-order";
     }
 
+    @GetMapping
+    public String getAllOrders(Model model) {
+        Iterable<Order> orders = orderRepository.findAll();
     @PostMapping("/add-dishes/{orderId}")
     private String addDishesInOrder(@PathVariable(name = "orderId") Integer orderId, Model model) {
         Optional<Order> orders = orderRepository.findById(orderId);
