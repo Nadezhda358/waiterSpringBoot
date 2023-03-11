@@ -18,8 +18,6 @@ public class RestaurantTableService {
     OrderRepository orderRepository;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
-    @Autowired
-    OrderService orderService;
     public void createNewTable(){
         int newTableNumber = restaurantTablesRepository.count() > 0 ? restaurantTablesRepository.getLastTableNumber() + 1 : 1;
         RestaurantTable restaurantTable = new RestaurantTable();
@@ -49,14 +47,7 @@ public class RestaurantTableService {
         }
     }
 
-    public int getTableIdByOrderId(Integer orderId) {
-        Optional<Order> order1=orderRepository.findById(orderId);
-        Order order;
-        if(order1.isPresent()) {
-            order=order1.get();
-        } else {
-            order=new Order();
-        }
-        return order.getTable().getId();
+    public void saveTable(RestaurantTable table) {
+        restaurantTablesRepository.save(table);
     }
 }

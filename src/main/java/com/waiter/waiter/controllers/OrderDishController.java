@@ -7,21 +7,18 @@ import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.Optional;
-
+@Controller
+@RequestMapping("/order-dish")
 public class OrderDishController {
     @Autowired
-    OrderRepository orderRepository;
-    @Autowired
     OrderDishService orderDishService;
-    @Autowired
-    OrderService orderService;
-    @Autowired
-    RestaurantTableService restaurantTableService;
     @PostMapping("/add-dishes/{orderId}")
     private String addDishesInOrder(Integer orderId, Model model) {
         orderDishService.prepareToAddDishes(orderId,model);
@@ -31,7 +28,7 @@ public class OrderDishController {
     @PostMapping("/order-dish/add-to-order/submit/{orderId}")
     private String saveDishesToOrder(@PathVariable(name = "orderId") Integer orderId, OrderDishHelp orderDishHelp, Model model) {
         orderDishService.saveAddedDishes(orderId,orderDishHelp,model);
-        int tId=restaurantTableService.getTableIdByOrderId(orderId);
+        int tId=orderDishService.getTableIdByOrderId(orderId);
         return "redirect:/orders/view/"+tId;
         //return "redirect:/orders/active";
     }
