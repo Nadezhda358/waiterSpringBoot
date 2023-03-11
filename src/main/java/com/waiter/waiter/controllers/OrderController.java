@@ -2,21 +2,15 @@ package com.waiter.waiter.controllers;
 
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
-import com.waiter.waiter.enums.Role;
-import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.repositories.*;
 import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
-import com.waiter.waiter.services.RestaurantTableService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDateTime;
 import java.util.Optional;
 
 @Controller
@@ -165,7 +159,17 @@ public class OrderController {
 
         model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
         model.addAttribute("filter1", filter1);
+        model.addAttribute("filter2", filter2);
         return "/orders/orders-reference-waiter";
+    }
+    @GetMapping("/reference-cook")
+    public String getOrderReferenceCook(Model model, @RequestParam(required = false, defaultValue = "your") String filter){
+        Iterable<Object[]> ordersCountByDate = orderService.getOrdersForCookByDate(filter);
+        model.addAttribute("ordersCountByDate", ordersCountByDate);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter", filter);
+        return "/orders/orders-reference-cook";
     }
 
 }

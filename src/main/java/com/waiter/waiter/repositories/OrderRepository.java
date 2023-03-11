@@ -23,8 +23,14 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Iterable<Order> getAllActiveOrdersForCook();
     @Query("SELECT o FROM Order o WHERE (o.orderStatus = 'TAKEN' OR o.orderStatus = 'COOKING') AND o.cook.id=:cookId") //OR o.cook is null")
     Iterable<Order> getActiveOrdersForCertainCook(@Param("cookId") Integer id);
-    @Query("SELECT o FROM Order o WHERE o.cook.id=:cookId") //OR o.cook is null")
-    Iterable<Order> getAllOrdersForCertainCook(@Param("cookId") Integer id);
+    //@Query("SELECT o FROM Order o WHERE o.cook.id=:cookId") //OR o.cook is null")
+    //Iterable<Order> getAllOrdersForCertainCook(@Param("cookId") Integer id);
     @Query("SELECT o FROM Order o WHERE o.orderStatus = 'TAKEN' AND o.cook.id is null") //OR o.cook is null")
     Iterable<Order> getActiveOrderWithoutCook();
+    @Query("SELECT DATE(o.createdOn) as orderDate, COUNT(*) as orderCount " +
+            "FROM Order o GROUP BY DATE(o.createdOn) ORDER BY orderDate DESC")
+    Iterable<Object[]> getOrdersCountByDate();
+    @Query("SELECT DATE(o.createdOn) as orderDate, COUNT(*) as orderCount " +
+            "FROM Order o WHERE o.cook.id=:cookId GROUP BY DATE(o.createdOn) ORDER BY orderDate DESC")
+    Iterable<Object[]> getOrdersCountByDateForCertainCook(@Param("cookId") Integer id);
 }

@@ -119,15 +119,6 @@ public class OrderService {
         } else if (filter1.equalsIgnoreCase("your")) {
             orders = orderRepository.getAllOrdersForCertainWaiter(userDetailsService.getLoggedUser().getId());
         }
-        //orders = StreamSupport.stream(orders.spliterator(), false)
-        //        .sorted(Comparator.comparing(Order::getCreatedOn))
-        //        .collect(Collectors.toList());
-        //if (filter2.equalsIgnoreCase("newest")){
-        //    orders = StreamSupport.stream(
-        //                    Spliterators.spliteratorUnknownSize(orders.iterator(), 0), false)
-        //            .sorted(Comparator.comparing(Order::getCreatedOn).reversed())
-        //            .collect(Collectors.toList());
-        //}
         if (filter2.equalsIgnoreCase("newest")) {
             // sort the Iterable by createdOn in descending order
             orders = StreamSupport.stream(orders.spliterator(), false)
@@ -138,6 +129,15 @@ public class OrderService {
             orders = StreamSupport.stream(orders.spliterator(), false)
                     .sorted(Comparator.comparing(Order::getCreatedOn))
                     .collect(Collectors.toList());
+        }
+        return orders;
+    }
+    public Iterable<Object[]> getOrdersForCookByDate(String filter1){
+        Iterable<Object[]> orders = new ArrayList<>();
+        if (filter1.equalsIgnoreCase("all")){
+            orders = orderRepository.getOrdersCountByDate();
+        } else if (filter1.equalsIgnoreCase("your")) {
+            orders = orderRepository.getOrdersCountByDateForCertainCook(userDetailsService.getLoggedUser().getId());
         }
         return orders;
     }

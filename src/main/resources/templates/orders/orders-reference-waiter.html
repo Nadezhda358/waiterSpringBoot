@@ -61,12 +61,12 @@ li a:hover:not(.active) {
         <li><a href="/orders/active">Активни поръчки</a></li>
         <Li><a href="/tables">Маси</a></Li>
         <Li><a href="/orders/reference-waiter" class="active">Справки</a></Li>
+        <Li><a href="/orders/reference-cook">Справки2</a></Li>
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 </div>
 
 <div class="container">
-    <!-- ------------------------------------------------------------------------------- -->
     <form action="/orders/reference-waiter" method="get">
         <label for="filter1">Поръчки:</label>
         <select id="filter1" name="filter1">
@@ -81,7 +81,6 @@ li a:hover:not(.active) {
         </select>
         <button type="submit">Apply Filter</button>
     </form><br>
-    <!-- ------------------------------------------------------------------------------- -->
     <br>
     <div>
         <table class="table table-striped">
