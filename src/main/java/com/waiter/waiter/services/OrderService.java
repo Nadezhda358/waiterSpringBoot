@@ -20,6 +20,8 @@ import java.util.Optional;
 @Service
 public class OrderService {
     @Autowired
+    RestaurantTableService restaurantTableService;
+    @Autowired
     OrderRepository orderRepository;
     @Autowired
     UserRepository userRepository;
@@ -68,7 +70,7 @@ public class OrderService {
         orderRepository.save(order);
     }
 
-    public String viewOrderByTableId(Integer tId, Model model) {
+    public void viewOrderByTableId(Integer tId, Model model) {
         Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
         Order order = getOrderByTableId(t);
         model.addAttribute("order", order);
@@ -84,13 +86,20 @@ public class OrderService {
 
         boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
-
-        return "/orders/view-order";
     }
     public boolean isOrderDishNull(List<OrderDish> orderDish){
         if (orderDish.isEmpty()) {
             return true;
         }
         return  false;
+    }
+
+    public void createOrder(Integer tId) {
+        RestaurantTable table = restaurantTableService.getTableById(tId);
+        User user=userDetailsService.getLoggedUser();
+        Order order = new Order(table,user);
+        table.setHasOrder(true);
+        restaurantTablesRepository.save(table);
+        orderRepository.save(order);
     }
 }

@@ -1,5 +1,6 @@
 package com.waiter.waiter.services;
 
+import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
@@ -17,6 +18,8 @@ public class RestaurantTableService {
     OrderRepository orderRepository;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
+    @Autowired
+    OrderService orderService;
     public void createNewTable(){
         int newTableNumber = restaurantTablesRepository.count() > 0 ? restaurantTablesRepository.getLastTableNumber() + 1 : 1;
         RestaurantTable restaurantTable = new RestaurantTable();
@@ -44,5 +47,16 @@ public class RestaurantTableService {
         } else {
             return new RestaurantTable();
         }
+    }
+
+    public int getTableIdByOrderId(Integer orderId) {
+        Optional<Order> order1=orderRepository.findById(orderId);
+        Order order;
+        if(order1.isPresent()) {
+            order=order1.get();
+        } else {
+            order=new Order();
+        }
+        return order.getTable().getId();
     }
 }

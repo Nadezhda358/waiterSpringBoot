@@ -33,8 +33,24 @@ public class Order {
     private LocalDateTime finishDate;
     private double totalCost;
 
-    public Order() {
+    public Order(RestaurantTable table, User user) {
+        this.table = table;
+        this.waiter=user;
+        this.createdOn=LocalDateTime.now();
+        this.orderStatus=OrderStatus.TAKING;
+    }
+    public Order(){}
 
+    public Order(Integer id, LocalDateTime createdOn, RestaurantTable table, User waiter, User cook, boolean isPaid, OrderStatus orderStatus, LocalDateTime finishDate, double totalCost) {
+        this.id = id;
+        this.createdOn = createdOn;
+        this.table = table;
+        this.waiter = waiter;
+        this.cook = cook;
+        this.isPaid = isPaid;
+        this.orderStatus = orderStatus;
+        this.finishDate = finishDate;
+        this.totalCost = totalCost;
     }
 
     public User getCook() {

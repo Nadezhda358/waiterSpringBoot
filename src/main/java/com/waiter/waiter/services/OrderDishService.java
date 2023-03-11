@@ -1,15 +1,15 @@
 package com.waiter.waiter.services;
 
 import com.waiter.waiter.entities.Dish;
-import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.helpingClasses.OrderDishHelp;
-import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.OrderDishRepository;
+import com.waiter.waiter.repositories.OrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,7 +20,9 @@ public class OrderDishService {
     @Autowired
     OrderDishRepository orderDishRepository;
     @Autowired
-    DishRepository dishRepository;
+    OrderRepository orderRepository;
+    @Autowired
+    OrderDishService orderDishService;
 
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order=orderDishHelp.getOrder();
@@ -64,5 +66,35 @@ public class OrderDishService {
         if (orderDish.getOrder().getOrderStatus() == OrderStatus.TAKING) {
             orderDishRepository.deleteById(orderDishId);
         }
+    }
+
+    public void prepareToAddDishes(Integer orderId, Model model) {
+
+        Optional<Order> orders = orderRepository.findById(orderId);
+        Order order = orders.get();
+
+        Iterable<Dish> selectableDishes = orderDishService.findAllNotAddedDishesToOrder(order);
+
+        OrderDishHelp orderDishHelp = new OrderDishHelp(order);
+        model.addAttribute("orderdish", orderDishHelp);
+        model.addAttribute("selectableDishes", selectableDishes);
+        model.addAttribute("order", order);
+    }
+
+    public void saveAddedDishes(Integer orderId, OrderDishHelp orderDishHelp, Model model) {
+        Optional<Order> orders = orderRepository.findById(orderId);
+        Order order = orders.get();
+        orderDishHelp.setOrder(order);
+        orderDishService.saveDishesToOrder(orderDishHelp);
+        order.setTotalCost(orderDishRepository.getTotalCost(order));
+        orderRepository.save(order);
+
+        model.addAttribute("order", order);
+        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
+        boolean orderDishNull = false;
+        if (orderDishService.getOrderInfo(order) == null) {
+            orderDishNull = true;
+        }
+        model.addAttribute("orderDishNull", orderDishNull);
     }
 }
