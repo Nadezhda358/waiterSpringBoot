@@ -3,9 +3,7 @@ package com.waiter.waiter.helpingClasses;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
-import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Drink;
-import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.DrinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,7 +16,7 @@ public class DrinkConverter implements Converter<String, Optional<Drink>> {
     DrinkRepository drinkRepository;
     @Override
     public Optional<Drink> convert(String id){
-         //System.out.println("Trying to convert id="+id+" into a drink.");
+        System.out.println("Trying to convert id="+id+" into a drink.");
         int parsedId=Integer.parseInt(id);
          return drinkRepository.findById(parsedId);
     }

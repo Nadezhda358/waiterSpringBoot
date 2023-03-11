@@ -27,6 +27,7 @@ public class OrderDrinkService {
     public void saveDrinksToOrder(OrderDrinkHelp orderDrinkHelp) {
         Order order=orderDrinkHelp.getOrder();
         List<Drink> drinks=orderDrinkHelp.getDrinks();
+        if(drinks!=null){
         for (Drink d:drinks) {
             OrderDrink orderDrink=new OrderDrink();
             orderDrink.setOrder(order);
@@ -35,7 +36,8 @@ public class OrderDrinkService {
             orderDrink.setPricePerItem(d.getPrice());
             orderDrink.setDrink(d);
             orderDrinkRepository.save(orderDrink);
-        }
+            order.setTotalCost(orderDrinkRepository.getTotalCost(order));
+        }}
     }
     public List<OrderDrink> getOrderInfo(Order order){
         List<OrderDrink> orderDrinks1=orderDrinkRepository.getOrderInfo(order);
@@ -76,6 +78,7 @@ public class OrderDrinkService {
 
         OrderDrinkHelp orderDrinkHelp = new OrderDrinkHelp(order);
         model.addAttribute("orderdrink", orderDrinkHelp);
+        System.out.println("Orderdrinkhelp for order with id="+orderDrinkHelp.getOrder().getId());
         model.addAttribute("selectableDrinks", selectableDrinks);
         model.addAttribute("order", order);
     }
@@ -84,7 +87,6 @@ public class OrderDrinkService {
         Order order=orderService.getOrderById(orderId);
         orderDrinkHelp.setOrder(order);
         saveDrinksToOrder(orderDrinkHelp);
-        order.setTotalCost(orderDrinkRepository.getTotalCost(order));
         orderRepository.save(order);
 
         model.addAttribute("order", order);

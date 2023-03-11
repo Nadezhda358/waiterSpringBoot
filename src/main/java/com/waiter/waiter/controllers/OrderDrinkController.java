@@ -26,7 +26,9 @@ public class OrderDrinkController {
     }
     @PostMapping("/add-to-order/submit/{orderId}")
     private String saveDrinksToOrder(@PathVariable(name = "orderId") Integer orderId, OrderDrinkHelp orderDrinkHelp, Model model) {
+        System.out.println("1. got here");
         orderDrinkService.saveAddedDrinks(orderId,orderDrinkHelp,model);
+        System.out.println("2. yay");
         int tId=restaurantTableService.getTableIdByOrderId(orderId);
         return "redirect:/orders/view/"+tId;
     }

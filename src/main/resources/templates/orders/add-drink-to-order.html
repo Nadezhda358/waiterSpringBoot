@@ -26,10 +26,10 @@
 
                 </div>
                 <div class="card-body">
-                    <form class="ui form p-3" th:action="@{/order-drink/add-to-order/submit/{orderId}(orderId=${orderdrink.getOrder.id})}" method="post" th:object="${orderdrink}">
+                    <form class="ui form p-3" th:action="@{/order-drink/add-to-order/submit/{orderId}(orderId=${order.id})}" method="post" th:object="${orderdrink}">
                         <ul class="list-unstyled">
                             <li th:each="drink : ${selectableDrinks}">
-                                <input type="checkbox" th:field="${orderdrink.drinks}"th:value="${drink.id}" class="form-check-input">
+                                <input type="checkbox" th:field="${orderdrink.drinks}" th:value="${drink.id}" class="form-check-input">
                                 <label th:text="${drink.name}"></label>
                             </li>
                         </ul>
