@@ -77,10 +77,12 @@ public class OrderDrinkService {
         Iterable<Drink> selectableDrinks = findAllNotAddedDrinksToOrder(order);
 
         OrderDrinkHelp orderDrinkHelp = new OrderDrinkHelp(order);
+        System.out.println(orderDrinkHelp.toString());
         model.addAttribute("orderdrink", orderDrinkHelp);
         System.out.println("Orderdrinkhelp for order with id="+orderDrinkHelp.getOrder().getId());
         model.addAttribute("selectableDrinks", selectableDrinks);
         model.addAttribute("order", order);
+
     }
 
     public void saveAddedDrinks(Integer orderId, OrderDrinkHelp orderDrinkHelp, Model model) {

@@ -1,6 +1,5 @@
 package com.waiter.waiter.helpingClasses;
 
-import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Drink;
 import com.waiter.waiter.entities.Order;
 
@@ -26,7 +25,15 @@ public class OrderDrinkHelp {
         return drinks;
     }
 
-    public void setDishes(List<Drink> drinks) {
+    public void setDrinks(List<Drink> drinks) {
         this.drinks = drinks;
+    }
+
+    @Override
+    public String toString() {
+        return "OrderDrinkHelp{" +
+                "order=" + order +
+                ", drinks=" + drinks +
+                '}';
     }
 }

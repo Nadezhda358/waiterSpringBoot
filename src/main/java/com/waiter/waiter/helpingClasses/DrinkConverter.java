@@ -9,16 +9,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
 @Component
-public class DrinkConverter implements Converter<String, Optional<Drink>> {
+public class DrinkConverter implements Converter <String, Optional<Drink>>{
     @Autowired
     DrinkRepository drinkRepository;
     @Override
     public Optional<Drink> convert(String id){
-        System.out.println("Trying to convert id="+id+" into a drink.");
-        int parsedId=Integer.parseInt(id);
-         return drinkRepository.findById(parsedId);
+
+    System.out.println("Converting dish with id="+id);
+    int parseId=Integer.parseInt(id);
+    return drinkRepository.findById(parseId);
     }
 
     @Override
@@ -30,6 +30,4 @@ public class DrinkConverter implements Converter<String, Optional<Drink>> {
     public JavaType getOutputType(TypeFactory typeFactory) {
         return null;
     }
-
-
 }

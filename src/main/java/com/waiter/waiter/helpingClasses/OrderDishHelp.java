@@ -9,9 +9,7 @@ public class OrderDishHelp {
     private Order order;
     private List<Dish> dishes;
 
-    public OrderDishHelp(Order order) {
-        this.order = order;
-    }
+    public OrderDishHelp(Order order) {this.order = order;}
 
     public Order getOrder() {
         return order;
