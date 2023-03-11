@@ -1,7 +1,5 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.OrderDrinkStatus;
-
 import javax.persistence.*;
 
 @Entity

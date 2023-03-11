@@ -6,6 +6,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderDrinkRepository extends CrudRepository<OrderDrink, Integer> {
     @Query("SELECT o FROM OrderDrink o where o.order=:order")
@@ -15,5 +16,5 @@ public interface OrderDrinkRepository extends CrudRepository<OrderDrink, Integer
     public List<Drink> getAllNotAddedDrinksToOrder(@Param("order") Order order);
 
     @Query("SELECT sum(od.currentPrice) FROM OrderDrink od WHERE od.order = :order")
-    public double getTotalCost(@Param("order") Order order);
+    public Optional<Double> getTotalCost(@Param("order") Order order);
 }

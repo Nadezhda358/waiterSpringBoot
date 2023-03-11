@@ -1,8 +1,5 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.DrinkQuantityType;
-import com.waiter.waiter.enums.DrinkType;
-
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.Size;

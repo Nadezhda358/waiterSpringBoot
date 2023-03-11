@@ -18,5 +18,5 @@ public interface OrderDishRepository extends CrudRepository<OrderDish, Integer> 
     public List<Dish> getAllNotAddedDishesToOrder(@Param("order") Order order);
 
     @Query("SELECT sum(od.currentPrice) FROM OrderDish od WHERE od.order = :order")
-    public double getTotalCost(@Param("order") Order order);
+    public Optional<Double> getTotalCost(@Param("order") Order order);
 }

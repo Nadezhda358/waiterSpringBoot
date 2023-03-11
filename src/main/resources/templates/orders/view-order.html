@@ -57,22 +57,28 @@ img.white-image {
   -ms-filter: brightness(0%) invert(100%); /* IE */
   -o-filter: brightness(0%) invert(100%); /* Opera */
 }
+
+
+
     </style>
 </head>
 <body>
 <!-- https://ed100.org/uploads/images/shares/academy/pencil-orange.png снимка на моливче-->
 <div class="navdiv">
     <ul>
-        <li><a  href="/">Начало</a></li>
+        <li><a href="/">Начало</a></li>
         <li><a href="/menu">Меню</a></li>
         <li><a href="/orders/active">Активни поръчки</a></li>
         <Li><a href="/tables" class="active">Маси</a>
         <Li><a href="/orders/reference-waiter">Справки</a></Li>
         <Li><a href="/orders/reference-cook">Справки2</a></Li>
-        <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+        <img class="white-image"
+             src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+             width="50" height="50" style="float:right"
+             th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
         <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+             width="50" height="50" style="float:right"
+             th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
 </div>
@@ -82,19 +88,121 @@ img.white-image {
         <h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'"></h3>
         <h4 th:text="'Статус: '+${order.orderStatus.getValue}"></h4>
         <!--<a href="/orders/change-status" class="btn btn-outline-primary">Промяна на статуса(Още не работи)</a>-->
+        <span th:if="${order.orderStatus}!=${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
         <form th:action="@{/orders/change-status/{orderId}(orderId=${order.id})}" method="post">
-            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true" th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса</button>
+            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true"
+                    th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса
+            </button>
             <div th:if="${isOrderDishNull} == true">Няма добавени ястия или напитки</div>
             <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
         </form>
-    </div>
-<!--<a href="/orders/addProducts">+</a>-->
+        </span>
+            <span th:if="${order.orderStatus}==${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1">Промяна на статуса
+    </button>
+            <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle1">Касова бележка</h5>
+                    <button type="button" href="/tables" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDishNull == false}">
+        <tr>
+            <th>Ястие</th>
+            <th>Единична цена</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </span>
+                        </thead>
+                        <tbody>
+                        <div th:each="od : ${orderDish}">
+                            <tr>
+                                <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
+                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td th:text="${od.quantity}"></td>
+                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                            </tr>
+                        </div>
+                        </tbody>
 
-<form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post">
-    <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left" width="40" height="40">
-    <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
-</form>
-<br/><br/><br/>
+                    </table>
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th>Напитка</th>
+            <th>Единична цена</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </span>
+                        </thead>
+                        <tbody>
+                        <div th:each="od : ${orderDrink}">
+                            <tr>
+                                <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]
+                                </td>
+                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td th:text="${od.quantity}"></td>
+                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                            </tr>
+                        </div>
+                        </tbody>
+
+                    </table>
+                    </table>
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th>Общо:</th>
+            <th>[[${order.totalCost}]]</th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+        </tr>
+        </span>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" href="/tables" class="btn btn-secondary" data-dismiss="modal">Затвори</button>
+                <form th:action="@{/orders/change-status/{orderId}(orderId=${order.id})}" method="post">
+            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true"
+                    th:disabled="${isAbleToChangeStatus} == false">Потвърди край <br/>на поръчката
+            </button>
+                   </form>
+                </div>
+            </div>
+        </div>
+    </div>
+        </span>
+    </div>
+
+    <form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post">
+        <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left"
+               width="40" height="40">
+        <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
+    </form>
+    <br/><br/><br/>
     <!--<td>
     <span th:if="${teacher.gender == 'F'}">Female</span>
     <span th:unless="${teacher.gender == 'F'}">Male</span>
@@ -114,69 +222,222 @@ img.white-image {
         </span>
         </thead>
         <tbody>
-            <div th:each="od : ${orderDish}">
-                <tr>
-                    <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
-                    <td th:text="${od.pricePerItem} + ' лв.'"></td>
-                    <td th:text="${od.quantity}"></td>
-                    <td th:text="${od.currentPrice} + ' лв.'"></td>
+        <div th:each="od : ${orderDish}">
+            <tr>
+                <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
+                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                <td th:text="${od.quantity}"></td>
+                <td th:text="${od.currentPrice} + ' лв.'"></td>
 
-                    <td>
-                        <form th:action="@{/order-dish/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
-                            <input type="image" src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png" alt="Submit"
-                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
-                        </form>
-                    </td>
-                    <td>
-                        <form th:action="@{/order-dish/remove-one-from-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
-                            <input type="image" src="https://as1.ftcdn.net/v2/jpg/01/13/16/86/1000_F_113168648_v07Gg3cMYXA15H6GK5pAV0vYevGLy8jk.jpg" alt="Submit"
-                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
-                        </form>
-                    </td>
-                    <td>
-                        <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
-                        <form th:action="@{/order-dish/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
-                            <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit"
-                                   width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
-                        </form>
-                        <!--https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png-->
-                        <!--@{/orders/create/{tId}/{waiterId}(tId=${t.id}, waiterId=${waiter.id})}-->
+                <td>
+                    <form th:action="@{/order-dish/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}"
+                          method="post">
+                        <input type="image"
+                               src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/order-dish/remove-one-from-quantity/{orderDishId}(orderDishId=${od.id})}"
+                          method="post">
+                        <input type="image"
+                               src="https://as1.ftcdn.net/v2/jpg/01/13/16/86/1000_F_113168648_v07Gg3cMYXA15H6GK5pAV0vYevGLy8jk.jpg"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                </td>
+                <td>
+                    <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
+                    <form th:action="@{/order-dish/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
+                        <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                    <!--https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png-->
+                    <!--@{/orders/create/{tId}/{waiterId}(tId=${t.id}, waiterId=${waiter.id})}-->
 
-                    </td>
-                </tr>
-            </div>
+                </td>
+            </tr>
+        </div>
         </tbody>
 
     </table>
+    <table class="table table-striped">
+        <thead>
+        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th>Напитка</th>
+            <th>Единична цена</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </span>
+        </thead>
+        <tbody>
+        <div th:each="od : ${orderDrink}">
+            <tr>
+                <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]</td>
+                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                <td th:text="${od.quantity}"></td>
+                <td th:text="${od.currentPrice} + ' лв.'"></td>
 
-<br/><br/><br/>
-<a href="/tables" class="btn btn-outline-secondary">Назад</a>
-<!-- Button trigger modal -->
-<!--<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-    Launch demo modal
-</button>-->
+                <td>
+                    <form th:action="@{/order-drink/add-one-to-quantity/{orderDrinkId}(orderDrinkId=${od.id})}"
+                          method="post">
+                        <input type="image"
+                               src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                </td>
+                <td>
+                    <form th:action="@{/order-drink/remove-one-from-quantity/{orderDrinkId}(orderDrinkId=${od.id})}"
+                          method="post">
+                        <input type="image"
+                               src="https://as1.ftcdn.net/v2/jpg/01/13/16/86/1000_F_113168648_v07Gg3cMYXA15H6GK5pAV0vYevGLy8jk.jpg"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                </td>
+                <td>
+                    <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
+                    <form th:action="@{/order-drink/delete-drinks/{orderDrinkId}(orderDrinkId=${od.id})}" method="post">
+                        <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png"
+                               alt="Submit"
+                               width="40" height="40"
+                               th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
+                    </form>
+                    <!--https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png-->
+                    <!--@{/orders/create/{tId}/{waiterId}(tId=${t.id}, waiterId=${waiter.id})}-->
+
+                </td>
+            </tr>
+        </div>
+        </tbody>
+
+    </table>
+    </table>
+    <table class="table table-striped">
+        <thead>
+        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th>Общо:</th>
+            <th>[[${order.totalCost}]]</th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+        </tr>
+        </span>
+        </thead>
+    </table>
+    <br/><br/><br/>
+    <a href="/tables" class="btn btn-outline-secondary">Назад</a>
+    <!-- Button trigger modal -->
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+        Launch demo modal
+    </button>
 
 
-<!-- Modal -->
-<!--<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary">Save changes</button>
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModalLong" tabindex="1" role="dialog" aria-labelledby="exampleModalLongTitle"
+         aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Касова бележка</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDishNull == false}">
+        <tr>
+            <th>Ястие</th>
+            <th>Единична цена</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </span>
+                        </thead>
+                        <tbody>
+                        <div th:each="od : ${orderDish}">
+                            <tr>
+                                <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
+                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td th:text="${od.quantity}"></td>
+                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                            </tr>
+                        </div>
+                        </tbody>
+
+                    </table>
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th>Напитка</th>
+            <th>Единична цена</th>
+            <th>Количество</th>
+            <th>Цена</th>
+            <th></th>
+            <th></th>
+            <th></th>
+        </tr>
+        </span>
+                        </thead>
+                        <tbody>
+                        <div th:each="od : ${orderDrink}">
+                            <tr>
+                                <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]
+                                </td>
+                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td th:text="${od.quantity}"></td>
+                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                            </tr>
+                        </div>
+                        </tbody>
+
+                    </table>
+                    </table>
+                    <table class="table table-striped">
+                        <thead>
+                        <span th:if="${isOrderDrinkNull == false}">
+        <tr>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th>Общо:</th>
+            <th>[[${order.totalCost}]]</th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+            <th th:text="'  '"></th>
+        </tr>
+        </span>
+                        </thead>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                </div>
             </div>
         </div>
     </div>
-</div>-->
 </div>
 </body>
 </html>

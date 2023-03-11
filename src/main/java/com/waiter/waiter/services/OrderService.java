@@ -1,14 +1,10 @@
 package com.waiter.waiter.services;
 
-import com.waiter.waiter.entities.Order;
-import com.waiter.waiter.entities.OrderDish;
-import com.waiter.waiter.entities.RestaurantTable;
-import com.waiter.waiter.entities.User;
+import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
-import com.waiter.waiter.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -28,6 +24,8 @@ public class OrderService {
     RestaurantTablesRepository restaurantTablesRepository;
     @Autowired
     OrderDishService orderDishService;
+    @Autowired
+    OrderDrinkService orderDrinkService;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -79,12 +77,26 @@ public class OrderService {
         boolean orderDishNull = isOrderDishNull(orderDish);
         model.addAttribute("isOrderDishNull", orderDishNull);
 
+        List<OrderDrink> orderDrink= orderDrinkService.getOrderInfo(order);
+        model.addAttribute("orderDrink", orderDrink);
+
+        boolean orderDrinkNull = isOrderDrinkNull(orderDrink);
+        model.addAttribute("isOrderDrinkNull", orderDrinkNull);
+
         User loggedUser = userDetailsService.getLoggedUser();
         model.addAttribute("loggedUser", loggedUser);
 
         boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
     }
+
+    private boolean isOrderDrinkNull(List<OrderDrink> orderDrink) {
+        if (orderDrink.isEmpty()) {
+            return true;
+        }
+        return  false;
+    }
+
     public boolean isOrderDishNull(List<OrderDish> orderDish){
         if (orderDish.isEmpty()) {
             return true;

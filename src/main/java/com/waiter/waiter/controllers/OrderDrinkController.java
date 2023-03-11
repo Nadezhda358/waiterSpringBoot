@@ -1,8 +1,6 @@
 package com.waiter.waiter.controllers;
 
-import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.helpingClasses.OrderDrinkHelp;
-import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderDrinkService;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,13 +24,7 @@ public class OrderDrinkController {
     }
     @PostMapping("/add-to-order/submit/{orderId}")
     private String saveDrinksToOrder(@PathVariable(name = "orderId") Integer orderId, OrderDrinkHelp orderDrinkHelp, Model model) {
-        System.out.println("1. got here");
-        if(orderDrinkHelp.getDrinks()==null){
-            System.out.println("bad");
-        }
-        orderDrinkHelp.toString();
         orderDrinkService.saveAddedDrinks(orderId,orderDrinkHelp,model);
-        System.out.println("2. yay");
         int tId=restaurantTableService.getTableIdByOrderId(orderId);
         return "redirect:/orders/view/"+tId;
     }

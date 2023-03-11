@@ -2,17 +2,12 @@ package com.waiter.waiter.controllers;
 
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
-import com.waiter.waiter.repositories.*;
-import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.thymeleaf.IThrottledTemplateProcessor;
-
-import java.util.Optional;
 
 @Controller
 @RequestMapping("/orders")
@@ -27,13 +22,13 @@ public class OrderController {
        orderService.createOrder(tId);
         return "redirect:/orders/view/"+tId;
     }
-    @PostMapping("/view/{tId}")
-    private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
+    @GetMapping("/view/{tId}")
+    private String viewOrderByTableId1(@PathVariable(name = "tId") Integer tId, Model model) {
         orderService.viewOrderByTableId(tId, model);
         return "/orders/view-order";
     }
-    @GetMapping("/view/{tId}")
-    private String viewOrderByTableId1(@PathVariable(name = "tId") Integer tId, Model model) {
+    @PostMapping("/view/{tId}")
+    private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
         orderService.viewOrderByTableId(tId, model);
         return "/orders/view-order";
     }
