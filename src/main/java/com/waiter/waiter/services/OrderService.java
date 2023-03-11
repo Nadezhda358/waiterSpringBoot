@@ -13,11 +13,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
-import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.StreamSupport;
 
 @Service
 public class OrderService {
@@ -114,12 +113,32 @@ public class OrderService {
         }
         return orders;
     }
-    public Iterable<Order> getOrdersForWaiterByDate(String filter1){
+    public Iterable<Order> getOrdersForWaiterByDate(String filter1, String filter2){
         Iterable<Order> orders = new ArrayList<>();
         if (filter1.equalsIgnoreCase("all")){
             orders = orderRepository.findAll();
         } else if (filter1.equalsIgnoreCase("your")) {
             orders = orderRepository.getAllOrdersForCertainWaiter(userDetailsService.getLoggedUser().getId());
+        }
+        //orders = StreamSupport.stream(orders.spliterator(), false)
+        //        .sorted(Comparator.comparing(Order::getCreatedOn))
+        //        .collect(Collectors.toList());
+        //if (filter2.equalsIgnoreCase("newest")){
+        //    orders = StreamSupport.stream(
+        //                    Spliterators.spliteratorUnknownSize(orders.iterator(), 0), false)
+        //            .sorted(Comparator.comparing(Order::getCreatedOn).reversed())
+        //            .collect(Collectors.toList());
+        //}
+        if (filter2.equalsIgnoreCase("newest")) {
+            // sort the Iterable by createdOn in descending order
+            orders = StreamSupport.stream(orders.spliterator(), false)
+                    .sorted(Comparator.comparing(Order::getCreatedOn, Comparator.reverseOrder()))
+                    .collect(Collectors.toList());
+        } else if(filter2.equalsIgnoreCase("oldest")){
+            // sort the Iterable by createdOn in ascending order
+            orders = StreamSupport.stream(orders.spliterator(), false)
+                    .sorted(Comparator.comparing(Order::getCreatedOn))
+                    .collect(Collectors.toList());
         }
         return orders;
     }

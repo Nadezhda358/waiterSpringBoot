@@ -232,8 +232,8 @@ public class OrderController {
         return "redirect:/orders/view/"+tId;
     }
     @GetMapping("/reference-waiter")
-    public String getOrdersReferenceWaiter(Model model, @RequestParam(required = false, defaultValue = "your") String filter1) {
-        Iterable<Order> orders = orderService.getOrdersForWaiterByDate(filter1);
+    public String getOrdersReferenceWaiter(Model model, @RequestParam(required = false, defaultValue = "your") String filter1, @RequestParam(required = false, defaultValue = "newest") String filter2) {
+        Iterable<Order> orders = orderService.getOrdersForWaiterByDate(filter1, filter2);
         model.addAttribute("orders", orders);
 
         model.addAttribute("loggedUser", userDetailsService.getLoggedUser());

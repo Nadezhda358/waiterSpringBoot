@@ -73,6 +73,12 @@ li a:hover:not(.active) {
             <option value="all" th:selected="${filter1 == 'all'}">Всички</option>
             <option value="your" th:selected="${filter1 == 'your'}">Ваши</option>
         </select>
+
+        <label for="filter2">Дата:</label>
+        <select id="filter2" name="filter2">
+            <option value="newest" th:selected="${filter2 == 'newest'}">Най-скорошни</option>
+            <option value="oldest" th:selected="${filter2 == 'oldest'}">Най-стари</option>
+        </select>
         <button type="submit">Apply Filter</button>
     </form><br>
     <!-- ------------------------------------------------------------------------------- -->
