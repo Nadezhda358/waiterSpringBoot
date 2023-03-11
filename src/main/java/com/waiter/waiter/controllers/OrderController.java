@@ -118,7 +118,7 @@ public class OrderController {
     }
 
     //@GetMapping
-    //public String getAllOrders(Model model) {
+    //public String getAllOrders(Model model) {  /reference-waiter
     //    Iterable<Order> orders = orderRepository.findAll();
     //    model.addAttribute("orders", orders);
     //    return "/orders/orders-list";
@@ -230,6 +230,15 @@ public class OrderController {
             return "redirect:/tables";
         }
         return "redirect:/orders/view/"+tId;
+    }
+    @GetMapping("/reference-waiter")
+    public String getOrdersReferenceWaiter(Model model, @RequestParam(required = false, defaultValue = "your") String filter1) {
+        Iterable<Order> orders = orderService.getOrdersForWaiterByDate(filter1);
+        model.addAttribute("orders", orders);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter1", filter1);
+        return "/orders/orders-reference-waiter";
     }
 
 }

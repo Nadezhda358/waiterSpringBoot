@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,6 +111,15 @@ public class OrderService {
             }else if (filter.equalsIgnoreCase("free")){
                 orders = orderRepository.getActiveOrderWithoutCook();
             }
+        }
+        return orders;
+    }
+    public Iterable<Order> getOrdersForWaiterByDate(String filter1){
+        Iterable<Order> orders = new ArrayList<>();
+        if (filter1.equalsIgnoreCase("all")){
+            orders = orderRepository.findAll();
+        } else if (filter1.equalsIgnoreCase("your")) {
+            orders = orderRepository.getAllOrdersForCertainWaiter(userDetailsService.getLoggedUser().getId());
         }
         return orders;
     }
