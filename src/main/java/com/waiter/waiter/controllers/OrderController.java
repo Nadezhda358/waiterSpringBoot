@@ -19,13 +19,11 @@ public class OrderController {
     OrderService orderService;
     @Autowired
     OrderRepository orderRepository;
-
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name = "tId") Integer tId, Model model) {
        orderService.createOrder(tId);
         return "redirect:/orders/view/"+tId;
     }
-
     @PostMapping("/view/{tId}")
     private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
         orderService.viewOrderByTableId(tId, model);

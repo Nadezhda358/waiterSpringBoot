@@ -18,9 +18,8 @@ public class OrderDrink {
     @JoinColumn(name = "drink_id")
     private Drink drink;
     private int quantity;
-    private double currentPrice;//за записа
-    //@Enumerated(EnumType.STRING)
-    //private OrderDrinkStatus status;
+    private double currentPrice;
+    private double pricePerItem;
     public Drink getDrink() {
         return drink;
     }
@@ -64,11 +63,11 @@ public class OrderDrink {
         this.currentPrice = currentPrice;
     }
 
-    //public OrderDrinkStatus getStatus() {
-    //    return status;
-    //}
-//
-    //public void setStatus(OrderDrinkStatus status) {
-    //    this.status = status;
-    //}
+    public double getPricePerItem() {
+        return pricePerItem;
+    }
+
+    public void setPricePerItem(double pricePerItem) {
+        this.pricePerItem = pricePerItem;
+    }
 }

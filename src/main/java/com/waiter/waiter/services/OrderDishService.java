@@ -63,7 +63,6 @@ public class OrderDishService {
         OrderDish orderDish = getOrderDishById(orderDishId);
         if (orderDish.getOrder().getOrderStatus() == OrderStatus.TAKING) {
             orderDishRepository.deleteById(orderDishId);
-
         }
     }
 
