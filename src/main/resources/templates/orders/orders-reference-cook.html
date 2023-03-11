@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Orders Cook</title>
+    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+                body{
+    margin: 0;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4DC3EB;
+}
+.card {
+    display:inline-block;
+    margin-bottom: 50px;
+    background-color: white;
+}
+img.white-image {
+  filter: brightness(0%) invert(100%);
+  -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
+  -moz-filter: brightness(0%) invert(100%); /* Firefox */
+  -ms-filter: brightness(0%) invert(100%); /* IE */
+  -o-filter: brightness(0%) invert(100%); /* Opera */
+}
+    </style>
+</head>
+<body>
+<div class="navdiv">
+    <ul>
+        <li><a href="/">Начало</a></li>
+        <li><a href="/menu">Меню</a></li>
+        <li><a href="/orders/active">Активни поръчки</a></li>
+        <Li><a href="/tables">Маси</a></Li>
+        <Li><a href="/orders/reference-waiter">Справки</a>
+        <Li><a href="/orders/reference-cook" class="active">Справки2</a></Li>
+        <li style="float:right"><a href="/login">Изход</a></li>
+    </ul>
+</div>
+<div class="container">
+    <form action="/orders/reference-cook" method="get">
+        <label for="filter">Поръчки:</label>
+        <select id="filter" name="filter">
+            <option value="all" th:selected="${filter == 'all'}">Всички</option>
+            <option value="your" th:selected="${filter == 'your'}">Ваши</option>
+        </select>
+        <button type="submit">Приложи</button>
+    </form><br>
+
+    <table  class="table table-striped">
+        <thead>
+        <tr>
+            <th>Дата</th>
+            <th>Брой поръчки</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="row : ${ordersCountByDate}">
+            <td th:text="${row[0]}"></td>
+            <td th:text="${row[1]}"></td>
+            <td>
+                <form th:action="@{/orders/orders-for-date}" method="get">
+                    <input type="hidden" name="date" th:value="${row[0]}">
+                    <input type="hidden" name="filter" th:value="${filter}">
+                    <button class="btn btn-outline-primary" type="submit">Детайли</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</body>
+</html>

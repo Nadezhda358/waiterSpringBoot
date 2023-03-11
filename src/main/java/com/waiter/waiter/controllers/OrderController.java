@@ -3,14 +3,16 @@ package com.waiter.waiter.controllers;
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.repositories.*;
+import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.IThrottledTemplateProcessor;
+
+import java.util.Optional;
 
 @Controller
 @RequestMapping("/orders")
@@ -18,7 +20,8 @@ public class OrderController {
     @Autowired
     OrderService orderService;
     @Autowired
-    OrderRepository orderRepository;
+    UserDetailsServiceImpl userDetailsService;
+
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name = "tId") Integer tId, Model model) {
        orderService.createOrder(tId);
@@ -43,5 +46,40 @@ public class OrderController {
         }
         int tId=order.getTable().getId();
         return "redirect:/orders/view/"+tId;
+    }
+    @GetMapping("/reference-waiter")
+    public String getOrdersReferenceWaiter(Model model, @RequestParam(required = false, defaultValue = "your") String filter1, @RequestParam(required = false, defaultValue = "newest") String filter2) {
+        Iterable<Order> orders = orderService.getOrdersForWaiterByDate(filter1, filter2);
+        model.addAttribute("orders", orders);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter1", filter1);
+        model.addAttribute("filter2", filter2);
+        return "/orders/orders-reference-waiter";
+    }
+    @GetMapping("/reference-cook")
+    public String getOrderReferenceCook(Model model, @RequestParam(required = false, defaultValue = "your") String filter){
+        Iterable<Object[]> ordersCountByDate = orderService.getOrdersForCookByDate(filter);
+        model.addAttribute("ordersCountByDate", ordersCountByDate);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter", filter);
+        return "/orders/orders-reference-cook";
+    }
+    @GetMapping("/orders-for-date")
+    public String showOrdersForDate(@RequestParam(name = "date") String dateString, @RequestParam(required = false, defaultValue = "your") String filter, Model model){
+        Iterable<Order> orders = orderService.getOrdersForCertainDate(dateString, filter);
+        model.addAttribute("orders", orders);
+        return "/orders/orders-for-date";
+    }
+    @GetMapping("/active")
+    public String getActiveOrders(@RequestParam(required = false, defaultValue = "your") String filter, Model model) {
+        Iterable<Order> orders = orderService.getActiveOrders(filter);
+        model.addAttribute("orders", orders);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter", filter);
+
+        return "/orders/orders-list";
     }
 }

@@ -1,8 +1,8 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Active Orders List</title>
+    <title>Orders Waiter</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src=https://code.jquery.com/jquery-3.6.0.js></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
@@ -10,7 +10,7 @@
           rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
           crossorigin="anonymous">
-    <style>
+<style>
         body{
     margin: 0;
 }
@@ -58,21 +58,26 @@ li a:hover:not(.active) {
     <ul>
         <li><a  href="/">Начало</a></li>
         <li><a href="/menu">Меню</a></li>
-        <li><a href="/orders/active" class="active">Активни поръчки</a></li>
+        <li><a href="/orders/active">Активни поръчки</a></li>
         <Li><a href="/tables">Маси</a></Li>
-        <Li><a href="/orders/reference-waiter">Справки</a></Li>
+        <Li><a href="/orders/reference-waiter" class="active">Справки</a></Li>
         <Li><a href="/orders/reference-cook">Справки2</a></Li>
         <li style="float:right"><a href="/login">Изход</a></li>
     </ul>
-
 </div>
+
 <div class="container">
-    <form action="/orders/active" method="get">
-        <label for="filter">Поръчки:</label>
-        <select id="filter" name="filter">
-            <option value="all" th:selected="${filter == 'all'}">Всички</option>
-            <option value="your" th:selected="${filter == 'your'}">Ваши</option>
-            <option th:hidden="${loggedUser.role} != ${T(com.waiter.waiter.enums.Role).COOK}" value="free" th:selected="${filter == 'free'}">Без готвач</option>
+    <form action="/orders/reference-waiter" method="get">
+        <label for="filter1">Поръчки:</label>
+        <select id="filter1" name="filter1">
+            <option value="all" th:selected="${filter1 == 'all'}">Всички</option>
+            <option value="your" th:selected="${filter1 == 'your'}">Ваши</option>
+        </select>
+
+        <label for="filter2">Дата:</label>
+        <select id="filter2" name="filter2">
+            <option value="newest" th:selected="${filter2 == 'newest'}">Най-скорошни</option>
+            <option value="oldest" th:selected="${filter2 == 'oldest'}">Най-стари</option>
         </select>
         <button type="submit">Apply Filter</button>
     </form><br>
@@ -93,21 +98,21 @@ li a:hover:not(.active) {
             </tr>
             </thead>
             <tbody>
-                <tr th:each="order : ${orders}">
-                    <td th:text="${order.table.number}"></td>
-                    <td th:text="${order.createdOn}"></td>
-                    <td>
-                        <span th:text="${order.finishDate}" th:if="${order.finishDate} != null"></span>
-                    </td>
-                    <td th:text="${order.orderStatus.getValue}"></td>
-                    <td th:text="${order.totalCost}"></td>
-                    <td th:text="${order.waiter.firstName}"></td>
-                    <td>
-                        <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
-                    </td>
-                    <td></td>
+            <tr th:each="order : ${orders}">
+                <td th:text="${order.table.number}"></td>
+                <td th:text="${order.createdOn}"></td>
+                <td>
+                    <span th:text="${order.finishDate}" th:if="${order.finishDate} != null"></span>
+                </td>
+                <td th:text="${order.orderStatus.getValue}"></td>
+                <td th:text="${order.totalCost}"></td>
+                <td th:text="${order.waiter.firstName}"></td>
+                <td>
+                    <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
+                </td>
+                <td></td>
 
-                </tr>
+            </tr>
             </tbody>
         </table>
     </div>
