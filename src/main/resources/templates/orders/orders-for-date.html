@@ -3,9 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <title>Orders For Date</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src=https://code.jquery.com/jquery-3.6.0.js></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+    <style>
+                body{
+    margin: 0;
+}
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  background-color: #333;
+}
+
+li {
+  float: left;
+  border-right:1px solid #bbb;
+}
+
+li:last-child {
+  border-right: none;
+}
+
+li a {
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+li a:hover:not(.active) {
+  background-color: #111;
+}
+
+.active {
+  background-color: #4DC3EB;
+}
+.card {
+    display:inline-block;
+    margin-bottom: 50px;
+    background-color: white;
+}
+img.white-image {
+  filter: brightness(0%) invert(100%);
+  -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
+  -moz-filter: brightness(0%) invert(100%); /* Firefox */
+  -ms-filter: brightness(0%) invert(100%); /* IE */
+  -o-filter: brightness(0%) invert(100%); /* Opera */
+}
+    </style>
 </head>
 <body>
-<div>
+<div class="navdiv">
+    <ul>
+        <li><a  href="/">Начало</a></li>
+        <li><a href="/menu">Меню</a></li>
+        <li><a href="/orders/active">Активни поръчки</a></li>
+        <Li><a href="/tables">Маси</a></Li>
+        <Li><a href="/orders/reference-waiter">Справки</a></Li>
+        <Li><a href="/orders/reference-cook" class="active">Справки2</a></Li>
+        <li style="float:right"><a href="/login">Изход</a></li>
+    </ul><br>
+
+</div>
+<div class="container">
     <table class="table table-striped">
         <thead>
         <tr>
@@ -32,7 +100,11 @@
             <td>
                 <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
             </td>
-            <td></td>
+            <td>
+                <form th:action="@{/orders/view/{tId}(tId=${order.table.id})}" method="post">
+                    <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
+                </form>
+            </td>
 
         </tr>
         </tbody>

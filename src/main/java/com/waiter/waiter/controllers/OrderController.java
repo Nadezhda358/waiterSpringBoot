@@ -3,12 +3,14 @@ package com.waiter.waiter.controllers;
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.repositories.*;
+import com.waiter.waiter.services.OrderDishService;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.IThrottledTemplateProcessor;
 
 import java.util.Optional;
 
@@ -17,12 +19,6 @@ import java.util.Optional;
 public class OrderController {
     @Autowired
     OrderService orderService;
-    @Autowired
-    OrderRepository orderRepository;
-    @Autowired
-    OrderDishService orderDishService;
-    @Autowired
-    OrderDishRepository orderDishRepository;
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
@@ -75,5 +71,15 @@ public class OrderController {
         Iterable<Order> orders = orderService.getOrdersForCertainDate(dateString, filter);
         model.addAttribute("orders", orders);
         return "/orders/orders-for-date";
+    }
+    @GetMapping("/active")
+    public String getActiveOrders(@RequestParam(required = false, defaultValue = "your") String filter, Model model) {
+        Iterable<Order> orders = orderService.getActiveOrders(filter);
+        model.addAttribute("orders", orders);
+
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
+        model.addAttribute("filter", filter);
+
+        return "/orders/orders-list";
     }
 }
