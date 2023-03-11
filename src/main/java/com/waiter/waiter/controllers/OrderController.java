@@ -63,7 +63,7 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "redirect:/orders/view/{tId}";
+        return "redirect:/orders/view/"+tId;
     }
 
     @PostMapping("/view/{tId}")
@@ -113,7 +113,8 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "/orders/view-order";
+        int tId=order.getTable().getId();
+        return "redirect:/orders/view/"+tId;
     }
 
     //@GetMapping
@@ -149,7 +150,8 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "/orders/view-order";
+        int tId=order.getTable().getId();
+        return "redirect:/orders/view/"+tId;
     }
 
     @PostMapping("/add-one-to-quantity/{orderDishId}")
@@ -177,7 +179,8 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "/orders/view-order";
+        int tId=order.getTable().getId();
+        return "redirect:/orders/view/"+tId;
     }
 
     @PostMapping("/remove-one-from-quantity/{orderDishId}")
@@ -207,7 +210,8 @@ public class OrderController {
             orderDishNull = true;
         }
         model.addAttribute("orderDishNull", orderDishNull);
-        return "/orders/view-order";
+        int tId=order.getTable().getId();
+        return "redirect:/orders/view/"+tId;
     }
 
     @PostMapping("/change-status/{orderId}")
@@ -221,7 +225,11 @@ public class OrderController {
         }
 
         orderService.ChangeStatus(order1);
-        return "/";
+        int tId=order1.getTable().getId();
+        if(order1.getOrderStatus()==OrderStatus.PAID){
+            return "redirect:/tables";
+        }
+        return "redirect:/orders/view/"+tId;
     }
 
 }
