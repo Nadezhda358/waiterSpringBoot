@@ -43,8 +43,8 @@ public class OrderDishService {
         }
         return  orderInfo;
     }
-    public OrderDish getOrderDishById(Integer orderDrinkId){
-        Optional<OrderDish> oe = orderDishRepository.findById(orderDrinkId);
+    public OrderDish getOrderDishById(Integer orderDishId){
+        Optional<OrderDish> oe = orderDishRepository.findById(orderDishId);
         if(oe.isPresent()) {
             return oe.get();
         } else {
@@ -59,10 +59,11 @@ public class OrderDishService {
         }
         return dishes;
     }
-    public void deleteOrderDishById(Integer orderDishId){
+    public void deleteOrderDishById(Integer orderDishId,int orderId){
         OrderDish orderDish = getOrderDishById(orderDishId);
         if (orderDish.getOrder().getOrderStatus() == OrderStatus.TAKING) {
             orderDishRepository.deleteById(orderDishId);
+
         }
     }
 
@@ -95,14 +96,49 @@ public class OrderDishService {
         }
         model.addAttribute("orderDishNull", orderDishNull);
     }
-    public int getTableIdByOrderId(Integer orderId) {
-        Optional<Order> order1=orderRepository.findById(orderId);
-        Order order;
-        if(order1.isPresent()) {
-            order=order1.get();
+
+    public int findOrderIdByOrderDishId(Integer orderDishId) {
+        Optional<OrderDish> orderDish = orderDishRepository.findById(orderDishId);
+        if(orderDish.isPresent()) {
+            return orderDish.get().getOrder().getId();
         } else {
-            order=new Order();
+            return 0;
         }
-        return order.getTable().getId();
+    }
+
+    public void addOneToQuantity(Integer orderDishId) {
+        Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
+        OrderDish orderDish;
+        if (orderDishes.isPresent()) {
+            orderDish = orderDishes.get();
+        } else {
+            orderDish = new OrderDish();
+        }
+        orderDish.setQuantity(orderDish.getQuantity() + 1);
+        orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
+        orderDishRepository.save(orderDish);
+
+        Order order=orderDish.getOrder();
+        order.setTotalCost(orderDishRepository.getTotalCost(order));
+        orderRepository.save(order);
+    }
+
+    public void removeOneFromQuantity(Integer orderDishId) {
+        Optional<OrderDish> orderDishes = orderDishRepository.findById(orderDishId);
+        OrderDish orderDish;
+        if (orderDishes.isPresent()) {
+            orderDish = orderDishes.get();
+        } else {
+            orderDish = new OrderDish();
+        }
+        if (orderDish.getQuantity() > 1) {
+            orderDish.setQuantity(orderDish.getQuantity() - 1);
+            orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
+            orderDishRepository.save(orderDish);
+
+            Order order=orderDish.getOrder();
+            order.setTotalCost(orderDishRepository.getTotalCost(order));
+            orderRepository.save(order);
+        }
     }
 }

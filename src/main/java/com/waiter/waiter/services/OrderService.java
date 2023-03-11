@@ -24,8 +24,6 @@ public class OrderService {
     @Autowired
     OrderRepository orderRepository;
     @Autowired
-    UserRepository userRepository;
-    @Autowired
     RestaurantTablesRepository restaurantTablesRepository;
     @Autowired
     OrderDishService orderDishService;
@@ -98,7 +96,18 @@ public class OrderService {
         User user=userDetailsService.getLoggedUser();
         Order order = new Order(table,user);
         table.setHasOrder(true);
-        restaurantTableService.saveTable(table);
+        restaurantTablesRepository.save(table);
         orderRepository.save(order);
+    }
+
+    public Order getOrderById(int orderId) {
+        Optional<Order> order1 = orderRepository.findById(orderId);
+        Order order;
+        if(order1.isPresent()) {
+            order=order1.get();
+        } else {
+            order=new Order();
+        }
+        return  order;
     }
 }

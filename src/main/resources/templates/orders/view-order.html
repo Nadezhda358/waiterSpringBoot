@@ -81,14 +81,14 @@ img.white-image {
         <h4 th:text="'Статус: '+${order.orderStatus.getValue}"></h4>
         <!--<a href="/orders/change-status" class="btn btn-outline-primary">Промяна на статуса(Още не работи)</a>-->
         <form th:action="@{/orders/change-status/{orderId}(orderId=${order.id})}" method="post">
-            <button class="btn btn-outline-success" type="submit" th:hidden="${orderDishNull} == true" th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса</button>
-            <div th:if="${orderDishNull} == true">Няма добавени ястия или напитки</div>
+            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true" th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса</button>
+            <div th:if="${isOrderDishNull} == true">Няма добавени ястия или напитки</div>
             <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
         </form>
     </div>
 <!--<a href="/orders/addProducts">+</a>-->
 
-<form th:action="@{/orders/add-dishes/{orderId}(orderId=${order.id})}" method="post">
+<form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post">
     <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left" width="40" height="40">
     <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
 </form>
@@ -120,20 +120,20 @@ img.white-image {
                     <td th:text="${od.currentPrice} + ' лв.'"></td>
 
                     <td>
-                        <form th:action="@{/orders/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
+                        <form th:action="@{/order-dish/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
                             <input type="image" src="https://www.pngall.com/wp-content/uploads/10/Plus-Symbol-Vector-PNG.png" alt="Submit"
                                    width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
                         </form>
                     </td>
                     <td>
-                        <form th:action="@{/orders/remove-one-from-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
+                        <form th:action="@{/order-dish/remove-one-from-quantity/{orderDishId}(orderDishId=${od.id})}" method="post">
                             <input type="image" src="https://as1.ftcdn.net/v2/jpg/01/13/16/86/1000_F_113168648_v07Gg3cMYXA15H6GK5pAV0vYevGLy8jk.jpg" alt="Submit"
                                    width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
                         </form>
                     </td>
                     <td>
                         <!-- Premahwane  https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png -->
-                        <form th:action="@{/orders/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
+                        <form th:action="@{/order-dish/delete-dishes/{orderDishId}(orderDishId=${od.id})}" method="post">
                             <input type="image" src="https://www.freeiconspng.com/uploads/red-x-close-button-png-0.png" alt="Submit"
                                    width="40" height="40" th:disabled="${od.order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
                         </form>
