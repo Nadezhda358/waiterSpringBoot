@@ -33,5 +33,6 @@ public class OrderDishController {
         orderDishService.saveAddedDishes(orderId,orderDishHelp,model);
         int tId=restaurantTableService.getTableIdByOrderId(orderId);
         return "redirect:/orders/view/"+tId;
+        //return "redirect:/orders/active";
     }
 }

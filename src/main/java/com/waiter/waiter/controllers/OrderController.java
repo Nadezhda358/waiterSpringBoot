@@ -30,6 +30,8 @@ public class OrderController {
     OrderDishService orderDishService;
     @Autowired
     OrderDishRepository orderDishRepository;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
 
     @PostMapping("/create/{tId}")
     private String createOrder(@PathVariable(name = "tId") Integer tId, Model model) {
@@ -48,55 +50,6 @@ public class OrderController {
         return "/orders/view-order";
     }
 
-    @GetMapping
-    public String getAllOrders(Model model) {
-        Iterable<Order> orders = orderRepository.findAll();
-    @PostMapping("/add-dishes/{orderId}")
-    private String addDishesInOrder(@PathVariable(name = "orderId") Integer orderId, Model model) {
-        Optional<Order> orders = orderRepository.findById(orderId);
-        Order order = orders.get();
-        //Iterable<Dish> dishes1=dishRepository.findAll();
-
-        Iterable<Dish> dishes1 = orderDishService.findAllNotAddedDishesToOrder(order);
-        /*if(dishes==null){
-            return "";//ако няма ястия в менюто, да не се добавят ястия в поръчка
-        }*/
-        OrderDishHelp orderDishHelp = new OrderDishHelp();
-        orderDishHelp.setOrder(order);
-        model.addAttribute("orderdish", orderDishHelp);
-        model.addAttribute("selectabledishes", dishes1);
-        model.addAttribute("order", order);
-
-        return "/orders/add-dish-to-order";
-    }
-
-    @PostMapping("/order-dish/add-to-order/submit/{orderId}")
-    private String saveDishesToOrder(@PathVariable(name = "orderId") Integer orderId, OrderDishHelp orderDishHelp, Model model) {
-        Optional<Order> orders = orderRepository.findById(orderId);
-        Order order = orders.get();
-        orderDishHelp.setOrder(order);
-        orderDishService.saveDishesToOrder(orderDishHelp);
-        order.setTotalCost(orderDishRepository.getTotalCost(order));
-        orderRepository.save(order);
-
-
-        model.addAttribute("order", order);
-        model.addAttribute("orderDish", orderDishService.getOrderInfo(order));
-        boolean orderDishNull = false;
-        if (orderDishService.getOrderInfo(order) == null) {
-            orderDishNull = true;
-        }
-        model.addAttribute("orderDishNull", orderDishNull);
-        int tId=order.getTable().getId();
-        return "redirect:/orders/view/"+tId;
-    }
-
-    //@GetMapping
-    //public String getAllOrders(Model model) {  /reference-waiter
-    //    Iterable<Order> orders = orderRepository.findAll();
-    //    model.addAttribute("orders", orders);
-    //    return "/orders/orders-list";
-    //}
     @GetMapping("/active")
     public String getActiveOrders(@RequestParam(required = false, defaultValue = "your") String filter, Model model) {
         Iterable<Order> orders = orderService.getActiveOrders(filter);
