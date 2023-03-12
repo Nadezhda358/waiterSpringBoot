@@ -1,9 +1,9 @@
 package com.waiter.waiter.enums;
 
 public enum DrinkType {
-    HOT("Топли"),
-    NONALCOHOLIC("Безалкохолни"),
-    ALCOHOLIC("Алкохолни"),
+    HOT("Топли напитки"),
+    NONALCOHOLIC("Безалкохолни напитки"),
+    ALCOHOLIC("Алкохолни напитки"),
     COCKTAIL("Коктейли");
 
     private final String value;

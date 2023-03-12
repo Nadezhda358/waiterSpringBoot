@@ -328,7 +328,7 @@ img.white-image {
     </table>
     <table class="table table-striped">
         <thead>
-        <span th:if="${isOrderDrinkNull == false}">
+        <span th:if="${isOrderDrinkNull == false} or ${isOrderDishNull == false}">
         <tr>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
