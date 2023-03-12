@@ -98,7 +98,7 @@ public class OrderService {
     }
 
     public boolean isOrderDishNull(List<OrderDish> orderDish){
-        if (orderDish.isEmpty()) {
+        if (orderDish.isEmpty() ) {
             return true;
         }
         return  false;

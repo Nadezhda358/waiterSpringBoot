@@ -93,7 +93,7 @@ img.white-image {
             <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true"
                     th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса
             </button>
-            <div th:if="${isOrderDishNull} == true">Няма добавени ястия или напитки</div>
+            <div th:if="${isOrderDishNull} == true and ${isOrderDrinkNull} == true">Няма добавени ястия или напитки</div>
             <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
         </form>
         </span>

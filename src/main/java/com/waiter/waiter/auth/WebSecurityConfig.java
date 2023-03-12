@@ -43,8 +43,8 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
         http
                 .authorizeRequests()
                 .mvcMatchers("/orders/reference-cook").hasAnyAuthority("COOK")
-                .mvcMatchers("/orders/reference-waiter").hasAnyAuthority("WAITER")
-                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/tables/**","/orders/***","/orders/**","/orders/****","/", "/tablesTest").permitAll()
+                .mvcMatchers("/orders/reference-waiter", "/tables/**").hasAnyAuthority("WAITER")
+                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/orders/***","/orders/**","/orders/****","/", "/tablesTest").permitAll()
                 .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/tables/**","/orders/***","/orders/**","/order/****","/", "/tablesTest","/order-dish","/order-dish/*","/order-dish/**","/order-dish/***","/order-drink","/order-drink/*","/order-drink/**","/order-drink/***","/order-drink/****","/order/add-drink-to-order").permitAll()
                 .mvcMatchers("/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**", "/hello").hasAnyAuthority("WAITER", "COOK")
                 .anyRequest().hasAnyAuthority("ROLE_ADMIN")

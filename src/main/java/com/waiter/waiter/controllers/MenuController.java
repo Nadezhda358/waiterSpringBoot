@@ -36,7 +36,7 @@ public class MenuController {
             username = principal.toString();
         }
         User user=userRepository.getUserByUsername(username);
-
+        model.addAttribute("loggedUser", user);
 
         return "/menu/menu";
     }
