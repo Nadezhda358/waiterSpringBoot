@@ -7,21 +7,23 @@ import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.waiter.waiter.controllers.RestaurantTableController;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.entities.User;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
 import com.waiter.waiter.services.RestaurantTableService;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.*;
 
 
 @ExtendWith(MockitoExtension.class)
@@ -31,6 +33,8 @@ public class RestaurantTableServiceTest {
     private RestaurantTablesRepository restaurantTablesRepository;
     @Mock
     private OrderRepository orderRepository;
+    @Mock
+    UserDetailsServiceImpl userDetailsService;
 
     @InjectMocks
     private RestaurantTableService restaurantTableService;
@@ -149,5 +153,127 @@ public class RestaurantTableServiceTest {
         Mockito.when(orderRepository.findById(1)).thenReturn(Optional.empty());
         int result = restaurantTableService.getTableIdByOrderId(1);
         assertEquals(-1, result);
+    }
+
+    @Test
+    public void testSetCardColorsForTables_NoTables() {
+        // Setup
+        List<RestaurantTable> tables = new ArrayList<>();
+        when(restaurantTablesRepository.findAll()).thenReturn(tables);
+
+        // Execute
+        restaurantTableService.setCardColorsForTables();
+
+        // Verify
+        verify(restaurantTablesRepository, times(1)).saveAll(tables);
+        assertEquals(0, tables.size());
+    }
+    //@Test
+    //public void testSetCardColorsForTables_OrderUpdatedWithin30Minutes() {
+    //    // Setup
+    //    LocalDateTime updatedOn = LocalDateTime.now().minusMinutes(15);
+    //    RestaurantTable table = new RestaurantTable();
+    //    List<RestaurantTable> tables = new ArrayList<>();
+    //    tables.add(table);
+    //    when(restaurantTablesRepository.findAll()).thenReturn(tables);
+    //    when(orderRepository.getUpdatedOnByTable(Optional.of(table))).thenReturn(updatedOn);
+    //    restaurantTableService.setCardColorsForTables();
+    //    verify(restaurantTablesRepository, times(1)).saveAll(tables);
+    //    assertEquals("card-green", table.getTableCardBackground());
+    //}
+    //@Test
+    //public void testSetCardColorsForTables_OrderUpdatedWithin30Minutes() {
+    //    // Setup
+    //    LocalDateTime updatedOn = LocalDateTime.now().minusMinutes(15);
+    //    RestaurantTable table = new RestaurantTable();
+    //    List<RestaurantTable> tables = new ArrayList<>();
+    //    tables.add(table);
+    //    when(restaurantTablesRepository.findAll()).thenReturn(tables);
+    //    when(orderRepository.getUpdatedOnByTable(Optional.of(table))).thenReturn(updatedOn);
+//
+    //    // Execute
+    //    restaurantTableService.setCardColorsForTables();
+//
+    //    // Verify
+    //    verify(restaurantTablesRepository, times(1)).saveAll(tables);
+    //    assertEquals("card-green", table.getTableCardBackground());
+    //}
+
+
+    //@Test
+    //public void testGetTables_filterAll() {
+    //    // Arrange
+    //    String filter = "all";
+    //    RestaurantTable restaurantTable1 = new RestaurantTable();
+    //    restaurantTable1.setId(1);
+    //    restaurantTable1.setNumber(1);
+    //    RestaurantTable restaurantTable2 = new RestaurantTable();
+    //    restaurantTable2.setId(2);
+    //    restaurantTable2.setNumber(2);
+    //    RestaurantTable restaurantTable3 = new RestaurantTable();
+    //    restaurantTable3.setId(3);
+    //    restaurantTable3.setNumber(3);
+    //    List<RestaurantTable> expectedTables = Arrays.asList(restaurantTable1, restaurantTable2, restaurantTable3);
+    //    when(restaurantTablesRepository.findAll()).thenReturn(expectedTables);
+//
+    //    // Act
+    //    Iterable<RestaurantTable> actualTables = classUnderTest.getTables(filter);
+//
+    //    // Assert
+    //    assertEquals(expectedTables, actualTables);
+    //    verify(restaurantTablesRepository).findAll();
+    //}
+
+    @Test
+    void testGetTablesAll() {
+        String filter = "all";
+        Iterable<RestaurantTable> expectedTables = Arrays.asList(
+                new RestaurantTable(),
+                new RestaurantTable(),
+                new RestaurantTable(),
+                new RestaurantTable()
+        );
+        when(restaurantTablesRepository.findAll()).thenReturn(expectedTables);
+
+        Iterable<RestaurantTable> actualTables = restaurantTableService.getTables(filter);
+
+        assertEquals(expectedTables, actualTables);
+    }
+
+    @Test
+    void testGetTablesYour() {
+        String filter = "your";
+        User loggedUser = new User();
+        Iterable<RestaurantTable> expectedTables = Arrays.asList(
+                new RestaurantTable(),
+                new RestaurantTable()
+        );
+        when(userDetailsService.getLoggedUser()).thenReturn(loggedUser);
+        when(orderRepository.getWaiterTables(loggedUser.getId())).thenReturn(expectedTables);
+
+        Iterable<RestaurantTable> actualTables = restaurantTableService.getTables(filter);
+
+        assertEquals(expectedTables, actualTables);
+    }
+    @Test
+    void testGetTablesNotTaken() {
+        String filter = "notTaken";
+        Iterable<RestaurantTable> expectedTables = Arrays.asList(
+                new RestaurantTable(),
+                new RestaurantTable()
+        );
+        when(restaurantTablesRepository.getFreeTables()).thenReturn(expectedTables);
+
+        Iterable<RestaurantTable> actualTables = restaurantTableService.getTables(filter);
+
+        assertEquals(expectedTables, actualTables);
+    }
+
+    @Test
+    void testGetTablesDefault() {
+        String filter = "invalidFilter";
+        Iterable<RestaurantTable> expectedTables = new ArrayList<>();
+        Iterable<RestaurantTable> actualTables = restaurantTableService.getTables(filter);
+        assertEquals(expectedTables, actualTables);
     }
 }
