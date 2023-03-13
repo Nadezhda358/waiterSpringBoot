@@ -25,7 +25,7 @@ import java.util.Optional;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 public class OrderServiceTest {
@@ -62,7 +62,7 @@ public class OrderServiceTest {
     public void testIsOrderDrinkNullWithEmptyList() {
         List<OrderDrink> orderDrink = new ArrayList<>();
         boolean result = orderService.isOrderDrinkNull(orderDrink);
-        Assertions.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
@@ -70,14 +70,14 @@ public class OrderServiceTest {
         List<OrderDrink> orderDrink = new ArrayList<>();
         orderDrink.add(new OrderDrink());
         boolean result = orderService.isOrderDrinkNull(orderDrink);
-        Assertions.assertFalse(result);
+        assertFalse(result);
     }
 
     @Test
     public void testIsOrderDishNullWithEmptyList() {
         List<OrderDish> orderDish = new ArrayList<>();
         boolean result = orderService.isOrderDishNull(orderDish);
-        Assertions.assertTrue(result);
+        assertTrue(result);
     }
 
     @Test
@@ -85,7 +85,7 @@ public class OrderServiceTest {
         List<OrderDish> orderDish = new ArrayList<>();
         orderDish.add(new OrderDish());
         boolean result = orderService.isOrderDishNull(orderDish);
-        Assertions.assertFalse(result);
+        assertFalse(result);
     }
 
     @Test
@@ -323,4 +323,91 @@ public class OrderServiceTest {
         Mockito.when(orderRepository.getActiveOrdersForCertainWaiter(Mockito.anyInt())).thenReturn(orderData);
 
     }
+
+    @Test
+        void testIsAbleToChangeStatus_WaiterTaking() {
+            User waiter = new User();
+            waiter.setRole(Role.WAITER);
+            assertTrue(orderService.isAbleToChangeStatus(OrderStatus.TAKING, waiter, null, waiter));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_WaiterCooked() {
+            User waiter = new User();
+            waiter.setRole(Role.WAITER);
+            assertTrue(orderService.isAbleToChangeStatus(OrderStatus.COOKED, waiter, null, waiter));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_WaiterServed() {
+            User waiter = new User();
+            waiter.setRole(Role.WAITER);
+            assertTrue(orderService.isAbleToChangeStatus(OrderStatus.SERVED, waiter, null, waiter));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_CookTaken() {
+            User cook = new User();
+            cook.setRole(Role.COOK);
+            assertTrue(orderService.isAbleToChangeStatus(OrderStatus.TAKEN, null, cook, cook));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_CookCookingWithSameCook() {
+            User cook = new User();
+            cook.setRole(Role.COOK);
+            assertTrue(orderService.isAbleToChangeStatus(OrderStatus.COOKING, null, cook, cook));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_CookCookingWithDifferentCook() {
+            User cook = new User();
+            cook.setRole(Role.COOK);
+            User otherCook = new User();
+            cook.setRole(Role.COOK);
+            assertFalse(orderService.isAbleToChangeStatus(OrderStatus.COOKING, null, otherCook, cook));
+        }
+
+        @Test
+        void testIsAbleToChangeStatus_InvalidStatus() {
+            User waiter = new User();
+            waiter.setRole(Role.WAITER);
+            User cook = new User();
+            cook.setRole(Role.COOK);
+            assertFalse(orderService.isAbleToChangeStatus(OrderStatus.COOKING, waiter, cook, waiter));
+        }
+
+        //@Test
+        //void testIsAbleToChangeStatus_InvalidRole() {
+        //    User manager = new User(Role.MANAGER);
+        //    assertFalse(orderService.isAbleToChangeStatus(OrderStatus.TAKING, null, null, manager));
+        //}
+
+        //@Test
+        //void testIsAbleToChangeStatus_DifferentUser() {
+        //    User waiter = new User(Role.WAITER);
+        //    User cook = new User(Role.COOK);
+        //    User manager = new User(Role.MANAGER);
+        //    assertFalse(orderService.isAbleToChangeStatus(OrderStatus.TAKING, waiter, cook, manager));
+        //}
+
+
+
+    @Test
+    void testIsAbleToChangeStatus_InvalidWaiter_ReturnsFalse() {
+        OrderStatus validStatus = OrderStatus.TAKING;
+        User invalidWaiter = new User();
+        User validCook = new User();
+        User validLoggedUser = new User();
+        validLoggedUser.setRole(Role.WAITER);
+        validLoggedUser.setId(1);
+        invalidWaiter.setId(2);
+
+        OrderService orderService = new OrderService();
+
+        boolean result = orderService.isAbleToChangeStatus(validStatus, invalidWaiter, validCook, validLoggedUser);
+
+        assertFalse(result);
+    }
+
 }
