@@ -15,6 +15,8 @@ public class Order {
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
     private LocalDateTime createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
+    private LocalDateTime updatedOn;
     @ManyToOne
     @JoinColumn(name = "table_id")
     private RestaurantTable table;
@@ -36,6 +38,7 @@ public class Order {
         this.table = table;
         this.waiter=user;
         this.createdOn=LocalDateTime.now();
+        this.updatedOn=getCreatedOn();
         this.orderStatus=OrderStatus.TAKING;
     }
     public Order(){}
@@ -50,6 +53,14 @@ public class Order {
         this.orderStatus = orderStatus;
         this.finishDate = finishDate;
         this.totalCost = totalCost;
+    }
+
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     public User getCook() {

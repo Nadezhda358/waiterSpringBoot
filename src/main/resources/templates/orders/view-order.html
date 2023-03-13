@@ -90,7 +90,7 @@ img.white-image {
         <!--<a href="/orders/change-status" class="btn btn-outline-primary">Промяна на статуса(Още не работи)</a>-->
         <span th:if="${order.orderStatus}!=${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
         <form th:action="@{/orders/change-status/{orderId}(orderId=${order.id})}" method="post">
-            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDishNull} == true"
+            <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDrinkNull == true} and ${isOrderDishNull == true}"
                     th:disabled="${isAbleToChangeStatus} == false">Промяна на статуса
             </button>
             <div th:if="${isOrderDishNull} == true and ${isOrderDrinkNull} == true">Няма добавени ястия или напитки</div>
@@ -131,9 +131,11 @@ img.white-image {
                         <div th:each="od : ${orderDish}">
                             <tr>
                                 <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
-                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td><span th:text="${#numbers.formatDecimal(od.pricePerItem, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
+                                <!--<td th:text="${od.pricePerItem} + ' лв.'"></td>-->
                                 <td th:text="${od.quantity}"></td>
-                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
+                                <!--<td th:text="${od.currentPrice} + ' лв.'"></td>-->
                             </tr>
                         </div>
                         </tbody>
@@ -227,8 +229,8 @@ img.white-image {
                 <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
                 <td th:text="${od.pricePerItem} + ' лв.'"></td>
                 <td th:text="${od.quantity}"></td>
-                <td th:text="${od.currentPrice} + ' лв.'"></td>
-
+                <!--<td type="number" step=".01" th:text="${od.currentPrice} + ' лв.'"></td>-->
+                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')}"></span></td>
                 <td>
                     <form th:action="@{/order-dish/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}"
                           method="post">

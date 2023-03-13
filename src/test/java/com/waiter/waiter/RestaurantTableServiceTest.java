@@ -144,10 +144,10 @@ public class RestaurantTableServiceTest {
         assertEquals(2, result);
     }
 
-    //@Test
-    //public void testGetTableIdByOrderId_orderDoesNotExist() {
-    //    Mockito.when(orderRepository.findById(1)).thenReturn(Optional.empty());
-    //    int result = restaurantTableService.getTableIdByOrderId(1);
-    //    assertEquals(-1, result);
-    //}
+    @Test
+    public void testGetTableIdByOrderId_orderDoesNotExist() {
+        Mockito.when(orderRepository.findById(1)).thenReturn(Optional.empty());
+        int result = restaurantTableService.getTableIdByOrderId(1);
+        assertEquals(-1, result);
+    }
 }

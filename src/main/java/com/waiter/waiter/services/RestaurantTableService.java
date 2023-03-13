@@ -7,6 +7,9 @@ import com.waiter.waiter.repositories.RestaurantTablesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -46,24 +49,38 @@ public class RestaurantTableService {
             return new RestaurantTable();
         }
     }
-    public int getTableIdByOrderId(Integer orderId) {
-        Optional<Order> order1=orderRepository.findById(orderId);
-        Order order;
-        if(order1.isPresent()) {
-            order=order1.get();
-        } else {
-            order=new Order();
-        }
-        return order.getTable().getId();
-    }
-    //public int getTableIdByOrderId(int orderId) {
-    //    Optional<Order> optionalOrder = orderRepository.findById(orderId);
-    //    if (optionalOrder.isPresent()) {
-    //        Order order = optionalOrder.get();
-    //        if (order.getTable() != null) {
-    //            return order.getTable().getId();
-    //        }
+    //public int getTableIdByOrderId(Integer orderId) {
+    //    Optional<Order> order1=orderRepository.findById(orderId);
+    //    Order order;
+    //    if(order1.isPresent()) {
+    //        order=order1.get();
+    //    } else {
+    //        order=new Order();
     //    }
-    //    return -1;
+    //    return order.getTable().getId();
     //}
+    public int getTableIdByOrderId(int orderId) {
+        Optional<Order> optionalOrder = orderRepository.findById(orderId);
+        if (optionalOrder.isPresent()) {
+            Order order = optionalOrder.get();
+            if (order.getTable() != null) {
+                return order.getTable().getId();
+            }
+        }
+        return -1;
+    }
+    public void setCardColorsForTables(){
+        Iterable<RestaurantTable> tables = restaurantTablesRepository.findAll();
+        for (RestaurantTable table: tables) {
+            if (table.isHasOrder()){
+                LocalDateTime updatedOn = orderRepository.getUpdatedOnByTable(Optional.of(table));
+                Duration timeDiff = Duration.between(updatedOn, LocalDateTime.now());
+                boolean isTimeDiffGreaterThan30Minutes = timeDiff.compareTo(Duration.ofMinutes(30)) >= 0;
+                table.setTableCardBackground(isTimeDiffGreaterThan30Minutes ? "card-red" : "card-green");
+            }else{
+                table.setTableCardBackground("card-white");
+            }
+        }
+        restaurantTablesRepository.saveAll(tables);
+    }
 }

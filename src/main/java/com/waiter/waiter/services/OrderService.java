@@ -62,6 +62,7 @@ public class OrderService {
                     order.setFinishDate(LocalDateTime.now());
                 }
             }
+            order.setUpdatedOn(LocalDateTime.now());
         }
         orderRepository.save(order);
     }

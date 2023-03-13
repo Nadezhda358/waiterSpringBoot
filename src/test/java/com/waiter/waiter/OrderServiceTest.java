@@ -1,9 +1,6 @@
 package com.waiter.waiter;
 
-import com.waiter.waiter.entities.Order;
-import com.waiter.waiter.entities.OrderDish;
-import com.waiter.waiter.entities.OrderDrink;
-import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
@@ -17,7 +14,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.time.LocalDateTime;
@@ -114,6 +110,7 @@ public class OrderServiceTest {
         assertEquals(null, actualOrder.getId());
         Assertions.assertNull(actualOrder.getCook());
     }
+
     @Test
     public void testGetOrdersForCertainDateWithAllFilter() {
         String date = "2022-03-15";
@@ -155,11 +152,12 @@ public class OrderServiceTest {
 
         assertEquals(expectedOrders, actualOrders);
     }
+
     @Test
     void getOrdersForCookByDate_shouldReturnAllOrdersCountByDateForFilterAll() {
         // Arrange
         String filter1 = "all";
-        Iterable<Object[]> expectedOrders = Arrays.asList(new Object[][] {
+        Iterable<Object[]> expectedOrders = Arrays.asList(new Object[][]{
                 {"2023-03-12", 2},
                 {"2023-03-11", 1},
                 {"2023-03-10", 1}
@@ -172,6 +170,7 @@ public class OrderServiceTest {
         // Assert
         assertEquals(expectedOrders, actualOrders);
     }
+
     @Test
     public void testGetOrdersForCookByDate_all() {
         // Mock data
@@ -211,6 +210,7 @@ public class OrderServiceTest {
         // Verify empty result
         assertEquals(new ArrayList<>(), orders);
     }
+
     @Test
     public void testGetOrdersForWaiterByDate_all_newest() {
         Order order1 = new Order();
@@ -302,32 +302,25 @@ public class OrderServiceTest {
     //    assertEquals(orderData, orders);
     //}
 //
-    //@Test
-    //public void testGetActiveOrdersForWaiter_your() {
-    //    // Mock user details service
-    //    UserDetailsServiceImpl userDetailsService = Mockito.mock(UserDetailsServiceImpl.class);
-    //    Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User(1, "waiter", Role.WAITER));
+    @Test
+    public void testGetActiveOrdersForWaiter_your() {
+        // Mock user details service
+        UserDetailsServiceImpl userDetailsService = Mockito.mock(UserDetailsServiceImpl.class);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User());
 //
-    //    // Mock order repository
-    //    Order order1 = new Order();
-    //    order1.setId(1);
-    //    order1.setOrderStatus(OrderStatus.TAKEN);
-    //    Order order2 = new Order();
-    //    order2.setId(2);
-    //    order2.setOrderStatus(OrderStatus.COOKING);
-    //    Order order3 = new Order();
-    //    order3.setId(3);
-    //    order3.setOrderStatus(OrderStatus.PAID);
-    //    List<Order> orderData = Arrays.asList(order1, order2, order3);
-    //    OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
-    //    Mockito.when(orderRepository.getActiveOrdersForCertainWaiter(Mockito.anyInt())).thenReturn(orderData);
-//
-    //    // Test method
-    //    OrderService orderService = new OrderService();
-    //    Iterable<Order> orders = orderService.getActiveOrders("your");
-//
-    //    // Verify results
-    //    assertEquals(orderData, orders);
-    //}
+        // Mock order repository
+        Order order1 = new Order();
+        order1.setId(1);
+        order1.setOrderStatus(OrderStatus.TAKEN);
+        Order order2 = new Order();
+        order2.setId(2);
+        order2.setOrderStatus(OrderStatus.COOKING);
+        Order order3 = new Order();
+        order3.setId(3);
+        order3.setOrderStatus(OrderStatus.PAID);
+        List<Order> orderData = Arrays.asList(order1, order2, order3);
+        OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
+        Mockito.when(orderRepository.getActiveOrdersForCertainWaiter(Mockito.anyInt())).thenReturn(orderData);
 
+    }
 }

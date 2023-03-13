@@ -30,6 +30,7 @@ public class RestaurantTableController {
         //} else if (filter.equals("your")) {
         //    tables = orderRepository.getWaiterTables(userDetailsService.getLoggedUser().getId());
         //}
+        restaurantTableService.setCardColorsForTables();
         model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
         model.addAttribute("restaurantTables", restaurantTableService.getTables(filter));
         model.addAttribute("filter", filter);

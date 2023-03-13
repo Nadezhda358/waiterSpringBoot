@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 public interface OrderRepository extends CrudRepository<Order, Integer> {
@@ -41,5 +42,6 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Iterable<Order> getAllOrdersForCertainDate(@Param("date") String date);
     @Query("SELECT o FROM Order o WHERE o.createdOn BETWEEN CONCAT(:date, ' 00:00:00') AND CONCAT(:date, ' 23:59:59') AND o.cook.id = :cookId")
     Iterable<Order> getCookOrdersForCertainDate(@Param("date") String date, @Param("cookId") Integer cookId);
-
+    @Query("SELECT o.updatedOn FROM Order o where o.table=:t AND o.orderStatus <> 'PAID'")
+    LocalDateTime getUpdatedOnByTable(@Param("t") Optional<RestaurantTable> t);
 }

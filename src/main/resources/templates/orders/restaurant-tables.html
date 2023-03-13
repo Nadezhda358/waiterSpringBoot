@@ -57,6 +57,24 @@ img.white-image {
   -moz-filter: brightness(0%) invert(100%); /* Firefox */
   -ms-filter: brightness(0%) invert(100%); /* IE */
   -o-filter: brightness(0%) invert(100%); /* Opera */
+  margin-top: 5px;
+
+}
+.card-red {
+    background-color: #F47C62;
+}
+.card-green {
+    background-color: #72D56D ;
+}
+.card-white {
+    background-color: #E4E4E4;
+}
+.firstName{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
     </style>
@@ -69,11 +87,24 @@ img.white-image {
         <li><a href="/orders/active">Активни поръчки</a></li>
         <Li><a href="/tables" class="active">Маси</a></Li>
         <Li><a href="/orders/reference-waiter">Справки</a></Li>
-        <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
-        <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        <!--<img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">-->
+
         <li style="float:right"><a href="/login">Изход</a></li>
+        <li class="firstName"style="float:right" th:text="${loggedUser.firstName}"></li>
+        <li style="float:right">
+            <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+            <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        </li>
+
+
+
+
+        <!--<img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        <li style="float:right"><a href="/login">Изход</a></li>-->
     </ul>
 </div>
 <br/>
@@ -117,7 +148,7 @@ img.white-image {
     <h1>Маси</h1>
     <div class="row">
         <div class="col-md-4"  th:each="t : ${restaurantTables}" ><!-- th:if="${restaurantTables} is not null">-->
-            <div class="card" style="width: 18rem;" >
+            <div th:class="${t.tableCardBackground}" class="card" style="width: 18rem;" >
 
                 <div class="card-body" >
                     <h5 class="card-title" th:text="${t.number}"></h5>
