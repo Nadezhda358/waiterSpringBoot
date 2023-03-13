@@ -90,7 +90,7 @@ public class OrderService {
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
     }
 
-    private boolean isOrderDrinkNull(List<OrderDrink> orderDrink) {
+    public boolean isOrderDrinkNull(List<OrderDrink> orderDrink) {
         if (orderDrink.isEmpty()) {
             return true;
         }

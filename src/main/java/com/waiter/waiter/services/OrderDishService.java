@@ -139,6 +139,17 @@ public class OrderDishService {
             updateTotalCostOrder(order);
         }
     }
+    //if (orderDish.getQuantity() > 1) {
+    //    orderDish.setQuantity(orderDish.getQuantity() - 1);
+    //    orderDish.setCurrentPrice(orderDish.getQuantity() * orderDish.getPricePerItem());
+    //} else {
+    //    orderDish.setQuantity(1); // Ensure quantity is never less than 1
+    //    orderDish.setCurrentPrice(orderDish.getPricePerItem()); // Set currentPrice to pricePerItem
+    //}
+    //orderDishRepository.save(orderDish);
+    //
+    //Order order = orderDish.getOrder();
+    //updateTotalCostOrder(order);
 
     public void updateTotalCostOrder(Order order) {
         double totalCost = 0;
