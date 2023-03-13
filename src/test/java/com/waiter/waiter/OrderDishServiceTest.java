@@ -1,6 +1,7 @@
 package com.waiter.waiter;
 
 
+import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
 import com.waiter.waiter.repositories.OrderDishRepository;
@@ -9,20 +10,12 @@ import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.services.OrderDishService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 
+import java.util.*;
 
-import java.util.Optional;
-
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
-
 public class OrderDishServiceTest {
     @BeforeEach
     public void setUp(){
@@ -216,6 +209,69 @@ public class OrderDishServiceTest {
     //    Order savedOrder = orderCaptor.getValue();
     //    assertEquals(0.0, savedOrder.getTotalCost(), 0.01);
     //}
+
+    @Test
+    public void testGetOrderDishById_WhenOrderDishExists_ThenReturnOrderDish() {
+        // Arrange
+        Integer orderDishId = 1;
+        OrderDish expectedOrderDish = new OrderDish();
+        expectedOrderDish.setId(orderDishId);
+        when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(expectedOrderDish));
+
+        // Act
+        OrderDish actualOrderDish = orderDishService.getOrderDishById(orderDishId);
+
+        // Assert
+        assertEquals(expectedOrderDish, actualOrderDish);
+    }
+
+    @Test
+    public void testGetOrderDishById_WhenOrderDishDoesNotExist_ThenReturnEmptyOrderDish() {
+        Integer orderDishId = 1;
+        when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.empty());
+
+        OrderDish actualOrderDish = orderDishService.getOrderDishById(orderDishId);
+
+        assertNotNull(actualOrderDish);
+        assertNull(actualOrderDish.getId());
+        assertNull(actualOrderDish.getOrder());
+        assertEquals(0, actualOrderDish.getPricePerItem());
+        assertEquals(0, actualOrderDish.getPricePerItem());
+    }
+
+    @Test
+    void testFindAllNotAddedDishesToOrder_NoDishes() {
+        Order order = new Order();
+        when(orderDishRepository.getAllNotAddedDishesToOrder(order)).thenReturn(Collections.emptyList());
+        Iterable<Dish> actualDishes = orderDishService.findAllNotAddedDishesToOrder(order);
+        assertNotNull(actualDishes);
+        assertFalse(actualDishes.iterator().hasNext());
+    }
+    @Test
+    void testFindAllNotAddedDishesToOrder_CallsRepositoryWithCorrectOrder() {
+        Order order = new Order();
+        orderDishService.findAllNotAddedDishesToOrder(order);
+        verify(orderDishRepository).getAllNotAddedDishesToOrder(order);
+    }
+    @Test
+    void testFindAllNotAddedDishesToOrder_ReturnsCorrectDishes() {
+        // Arrange
+        Order order = new Order();
+        Dish dish1 = new Dish();
+        Dish dish2 = new Dish();
+        List<Dish> dishes = Arrays.asList(dish1, dish2);
+        when(orderDishRepository.getAllNotAddedDishesToOrder(order)).thenReturn(dishes);
+
+        Iterable<Dish> actualDishes = orderDishService.findAllNotAddedDishesToOrder(order);
+
+        assertNotNull(actualDishes);
+        Iterator<Dish> actualIterator = actualDishes.iterator();
+        assertTrue(actualIterator.hasNext());
+        assertEquals(dish1, actualIterator.next());
+        assertTrue(actualIterator.hasNext());
+        assertEquals(dish2, actualIterator.next());
+        assertFalse(actualIterator.hasNext());
+    }
 
 }
 
