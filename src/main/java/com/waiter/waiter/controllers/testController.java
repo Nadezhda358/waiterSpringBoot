@@ -49,5 +49,10 @@ public class testController<DefaultOidcUser> {
         model.addAttribute("filter", filter);
         return "aa";
     }
+    @GetMapping("/testCardColor")
+    public String testCardColor(Model model) {
+        model.addAttribute("cardClass", "card-red");
+        return "aa";
+    }
 
 }
