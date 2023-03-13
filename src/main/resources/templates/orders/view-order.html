@@ -132,10 +132,8 @@ img.white-image {
                             <tr>
                                 <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
                                 <td><span th:text="${#numbers.formatDecimal(od.pricePerItem, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
-                                <!--<td th:text="${od.pricePerItem} + ' лв.'"></td>-->
                                 <td th:text="${od.quantity}"></td>
                                 <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
-                                <!--<td th:text="${od.currentPrice} + ' лв.'"></td>-->
                             </tr>
                         </div>
                         </tbody>
@@ -160,9 +158,9 @@ img.white-image {
                             <tr>
                                 <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]
                                 </td>
-                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                                <td><span th:text="${#numbers.formatDecimal(od.pricePerItem, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                                 <td th:text="${od.quantity}"></td>
-                                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                             </tr>
                         </div>
                         </tbody>
@@ -171,17 +169,15 @@ img.white-image {
                     </table>
                     <table class="table table-striped">
                         <thead>
-                        <span th:if="${isOrderDrinkNull == false}">
         <tr>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
             <th>Общо:</th>
-            <th>[[${order.totalCost}]]</th>
+            <th><span th:text="${#numbers.formatDecimal(order.totalCost, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></th>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
         </tr>
-        </span>
                         </thead>
                     </table>
                 </div>
@@ -205,10 +201,7 @@ img.white-image {
         <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
     </form>
     <br/><br/><br/>
-    <!--<td>
-    <span th:if="${teacher.gender == 'F'}">Female</span>
-    <span th:unless="${teacher.gender == 'F'}">Male</span>
-</td>-->
+
     <table class="table table-striped">
         <thead>
         <span th:if="${isOrderDishNull == false}">
@@ -227,10 +220,9 @@ img.white-image {
         <div th:each="od : ${orderDish}">
             <tr>
                 <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
-                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                <td><span th:text="${#numbers.formatDecimal(od.pricePerItem, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${od.quantity}"></td>
-                <!--<td type="number" step=".01" th:text="${od.currentPrice} + ' лв.'"></td>-->
-                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')}"></span></td>
+                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td>
                     <form th:action="@{/order-dish/add-one-to-quantity/{orderDishId}(orderDishId=${od.id})}"
                           method="post">
@@ -286,9 +278,9 @@ img.white-image {
         <div th:each="od : ${orderDrink}">
             <tr>
                 <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]</td>
-                <td th:text="${od.pricePerItem} + ' лв.'"></td>
+                <td><span th:text="${#numbers.formatDecimal(od.pricePerItem, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${od.quantity}"></td>
-                <td th:text="${od.currentPrice} + ' лв.'"></td>
+                <td><span th:text="${#numbers.formatDecimal(od.currentPrice, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
 
                 <td>
                     <form th:action="@{/order-drink/add-one-to-quantity/{orderDrinkId}(orderDrinkId=${od.id})}"
@@ -335,7 +327,7 @@ img.white-image {
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
             <th>Общо:</th>
-            <th>[[${order.totalCost}]]</th>
+            <th><span th:text="${#numbers.formatDecimal(order.totalCost, 0, 'COMMA', 2, 'POINT')}"></span></th>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
             <th th:text="'  '"></th>
@@ -345,101 +337,6 @@ img.white-image {
     </table>
     <br/><br/><br/>
     <a href="/tables" class="btn btn-outline-secondary">Назад</a>
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
-        Launch demo modal
-    </button>
-
-
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModalLong" tabindex="1" role="dialog" aria-labelledby="exampleModalLongTitle"
-         aria-hidden="true">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Касова бележка</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <table class="table table-striped">
-                        <thead>
-                        <span th:if="${isOrderDishNull == false}">
-        <tr>
-            <th>Ястие</th>
-            <th>Единична цена</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </span>
-                        </thead>
-                        <tbody>
-                        <div th:each="od : ${orderDish}">
-                            <tr>
-                                <td>[[${od.dish.name}]] <br> [[${od.dish.quantity} + ${od.dish.dishQuantityType}]]</td>
-                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
-                                <td th:text="${od.quantity}"></td>
-                                <td th:text="${od.currentPrice} + ' лв.'"></td>
-                            </tr>
-                        </div>
-                        </tbody>
-
-                    </table>
-                    <table class="table table-striped">
-                        <thead>
-                        <span th:if="${isOrderDrinkNull == false}">
-        <tr>
-            <th>Напитка</th>
-            <th>Единична цена</th>
-            <th>Количество</th>
-            <th>Цена</th>
-            <th></th>
-            <th></th>
-            <th></th>
-        </tr>
-        </span>
-                        </thead>
-                        <tbody>
-                        <div th:each="od : ${orderDrink}">
-                            <tr>
-                                <td>[[${od.drink.name}]] <br> [[${od.drink.quantity} + ${od.drink.drinkQuantityType}]]
-                                </td>
-                                <td th:text="${od.pricePerItem} + ' лв.'"></td>
-                                <td th:text="${od.quantity}"></td>
-                                <td th:text="${od.currentPrice} + ' лв.'"></td>
-                            </tr>
-                        </div>
-                        </tbody>
-
-                    </table>
-                    </table>
-                    <table class="table table-striped">
-                        <thead>
-                        <span th:if="${isOrderDrinkNull == false}">
-        <tr>
-            <th th:text="'  '"></th>
-            <th th:text="'  '"></th>
-            <th>Общо:</th>
-            <th>[[${order.totalCost}]]</th>
-            <th th:text="'  '"></th>
-            <th th:text="'  '"></th>
-            <th th:text="'  '"></th>
-        </tr>
-        </span>
-                        </thead>
-                    </table>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 </body>
 </html>

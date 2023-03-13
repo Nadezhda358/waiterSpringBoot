@@ -58,7 +58,9 @@ public class OrderDrink {
     }
 
     public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
+        double number = Math.round(currentPrice * 100);
+        number = number/100;
+        this.currentPrice = number;
     }
 
     public double getPricePerItem() {
