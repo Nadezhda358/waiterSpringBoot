@@ -132,7 +132,9 @@ public class Order {
     }
 
     public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+            double number = Math.round(totalCost * 100);
+            number = number/100;
+        this.totalCost = number;
     }
 
     public User getWaiter() {
