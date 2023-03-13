@@ -10,6 +10,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -17,6 +19,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class UserDetailsServiceImplTest {
     @Mock
@@ -24,6 +28,12 @@ public class UserDetailsServiceImplTest {
 
     @Mock
     private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+    @Mock
+    private Authentication authentication;
+
+    @Mock
+    private UserDetails userDetails;
 
     @InjectMocks
     private UserDetailsServiceImpl userDetailsService;
@@ -38,8 +48,8 @@ public class UserDetailsServiceImplTest {
         user.setUsername("testuser");
         user.setPassword("testpassword");
 
-        Mockito.when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
-        Mockito.when(userRepo.save(user)).thenReturn(user);
+        when(bCryptPasswordEncoder.encode(user.getPassword())).thenReturn("encodedPassword");
+        when(userRepo.save(user)).thenReturn(user);
 
         userDetailsService.saveUser(user);
 
@@ -52,7 +62,7 @@ public class UserDetailsServiceImplTest {
         User user = new User();
         user.setUsername("testuser");
 
-        Mockito.when(userRepo.getUserByUsername(user.getUsername())).thenReturn(user);
+        when(userRepo.getUserByUsername(user.getUsername())).thenReturn(user);
 
         List<Object> result = userDetailsService.isUserPresent(user);
 
@@ -65,7 +75,7 @@ public class UserDetailsServiceImplTest {
         User user = new User();
         user.setUsername("testuser");
 
-        Mockito.when(userRepo.getUserByUsername(user.getUsername())).thenReturn(null);
+        when(userRepo.getUserByUsername(user.getUsername())).thenReturn(null);
 
         List<Object> result = userDetailsService.isUserPresent(user);
 
@@ -81,7 +91,7 @@ public class UserDetailsServiceImplTest {
         user.setEnabled(true);
         user.setRole(Role.WAITER);
 
-        Mockito.when(userRepo.getUserByUsername(user.getUsername())).thenReturn(user);
+        when(userRepo.getUserByUsername(user.getUsername())).thenReturn(user);
 
         UserDetails result = userDetailsService.loadUserByUsername(user.getUsername());
 
@@ -94,11 +104,39 @@ public class UserDetailsServiceImplTest {
     @Test
     public void testLoadUserByUsernameWithNonexistentUser() {
         String username = "nonexistentuser";
-        Mockito.when(userRepo.getUserByUsername(username)).thenReturn(null);
+        when(userRepo.getUserByUsername(username)).thenReturn(null);
 
         Throwable exception = assertThrows(UsernameNotFoundException.class,
                 () -> userDetailsService.loadUserByUsername(username));
         assertEquals("User not found!", exception.getMessage());
     }
+    @Test
+    public void testGetLoggedUserWithUserDetailsPrincipal() {
+        Authentication authentication = mock(Authentication.class);
+        SecurityContextHolder.getContext().setAuthentication(authentication);
+        when(authentication.getPrincipal()).thenReturn(userDetails);
+        when(userDetails.getUsername()).thenReturn("john");
+
+        User expectedUser = new User();
+        expectedUser.setUsername("john");
+        when(userRepo.getUserByUsername("john")).thenReturn(expectedUser);
+
+        User actualUser = userDetailsService.getLoggedUser();
+
+        assertEquals(expectedUser, actualUser);
+    }
+
+    //@Test
+    //public void testGetLoggedUserWithNonUserDetailsPrincipal() {
+    //    when(authentication.getPrincipal()).thenReturn("jane");
+//
+    //    User expectedUser = new User();
+    //    expectedUser.setUsername("jane");
+    //    when(userRepo.getUserByUsername("jane")).thenReturn(expectedUser);
+//
+    //    User actualUser = userDetailsService.getLoggedUser();
+//
+    //    assertEquals(expectedUser, actualUser);
+    //}
 
 }

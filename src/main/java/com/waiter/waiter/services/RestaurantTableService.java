@@ -24,7 +24,7 @@ public class RestaurantTableService {
         restaurantTable.setNumber(newTableNumber);
         restaurantTablesRepository.save(restaurantTable);
     }
-
+    //Не се ползва
     public Iterable<RestaurantTable> getAllTables(){
         Iterable<RestaurantTable> restaurantTables=restaurantTablesRepository.findAll();
         return  restaurantTables;
@@ -56,4 +56,14 @@ public class RestaurantTableService {
         }
         return order.getTable().getId();
     }
+    //public int getTableIdByOrderId(int orderId) {
+    //    Optional<Order> optionalOrder = orderRepository.findById(orderId);
+    //    if (optionalOrder.isPresent()) {
+    //        Order order = optionalOrder.get();
+    //        if (order.getTable() != null) {
+    //            return order.getTable().getId();
+    //        }
+    //    }
+    //    return -1;
+    //}
 }

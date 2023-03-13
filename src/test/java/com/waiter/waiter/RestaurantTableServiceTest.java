@@ -7,16 +7,15 @@ import static org.hamcrest.Matchers.emptyIterable;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.RestaurantTable;
+import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
 import com.waiter.waiter.services.RestaurantTableService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
@@ -30,6 +29,8 @@ public class RestaurantTableServiceTest {
 
     @Mock
     private RestaurantTablesRepository restaurantTablesRepository;
+    @Mock
+    private OrderRepository orderRepository;
 
     @InjectMocks
     private RestaurantTableService restaurantTableService;
@@ -104,5 +105,49 @@ public class RestaurantTableServiceTest {
     //    assertEquals(new RestaurantTable(), actualTable); // assert that the actual result is an empty RestaurantTable object
     //    assertEquals(0, actualTable.getId()); // assert that the ID of the actual result is 0
     //    assertNull(actualTable.getNumber()); // assert that the number of the actual result is null
+    //}
+    @Test
+    public void testGetTableById_tableExists() {
+        RestaurantTable table = new RestaurantTable();
+        table.setId(1);
+
+        Mockito.when(restaurantTablesRepository.findById(1)).thenReturn(Optional.of(table));
+
+        RestaurantTable result = restaurantTableService.getTableById(1);
+
+        assertEquals(table, result);
+    }
+
+    @Test
+    public void testGetTableById_tableDoesNotExist() {
+        Mockito.when(restaurantTablesRepository.findById(1)).thenReturn(Optional.empty());
+
+        RestaurantTable result = restaurantTableService.getTableById(1);
+
+        assertNotNull(result);
+        assertNotEquals(new RestaurantTable(), result);
+    }
+    @Test
+    public void testGetTableIdByOrderId_orderExists() {
+        Order order = new Order();
+        order.setId(1);
+
+        RestaurantTable table = new RestaurantTable();
+        table.setId(2);
+
+        order.setTable(table);
+
+        Mockito.when(orderRepository.findById(1)).thenReturn(Optional.of(order));
+
+        int result = restaurantTableService.getTableIdByOrderId(1);
+
+        assertEquals(2, result);
+    }
+
+    //@Test
+    //public void testGetTableIdByOrderId_orderDoesNotExist() {
+    //    Mockito.when(orderRepository.findById(1)).thenReturn(Optional.empty());
+    //    int result = restaurantTableService.getTableIdByOrderId(1);
+    //    assertEquals(-1, result);
     //}
 }
