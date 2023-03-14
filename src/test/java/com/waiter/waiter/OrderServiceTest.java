@@ -6,7 +6,6 @@ import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
-import org.aspectj.weaver.ast.Or;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -14,19 +13,16 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 public class OrderServiceTest {
     @Mock
@@ -35,7 +31,7 @@ public class OrderServiceTest {
     @InjectMocks
     private OrderService orderService;
     @Mock
-    private UserDetailsService userDetailsService;
+    private UserDetailsServiceImpl userDetailsService;
 
     @BeforeEach
     public void setUp() {
@@ -410,4 +406,221 @@ public class OrderServiceTest {
         assertFalse(result);
     }
 
+    @Test
+    public void testGetActiveOrdersForWaiterWithAllFilter() {
+        // Arrange
+        User waiter = new User();
+        waiter.setRole(Role.WAITER);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(waiter);
+
+        Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order(), new Order());
+        Mockito.when(orderRepository.getAllActiveOrdersForWaiter()).thenReturn(expectedOrders);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("all");
+
+        // Assert
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+
+    @Test
+    public void testGetActiveOrdersForWaiterWithYourFilter() {
+        // Arrange
+        User waiter = new User();
+        waiter.setId(1);
+        waiter.setRole(Role.WAITER);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(waiter);
+
+        Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
+        Mockito.when(orderRepository.getActiveOrdersForCertainWaiter(1)).thenReturn(expectedOrders);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("your");
+
+        // Assert
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+    @Test
+    public void testGetActiveOrdersForCookWithAllFilter() {
+        // Arrange
+        User cook = new User();
+        cook.setRole(Role.COOK);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(cook);
+
+        Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
+        Mockito.when(orderRepository.getAllActiveOrdersForCook()).thenReturn(expectedOrders);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("all");
+
+        // Assert
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+    @Test
+    public void testGetActiveOrdersForCookWithYourFilter() {
+        // Arrange
+        User cook = new User();
+        cook.setId(1);
+        cook.setRole(Role.COOK);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(cook);
+
+        Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
+        Mockito.when(orderRepository.getActiveOrdersForCertainCook(1)).thenReturn(expectedOrders);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("your");
+
+        // Assert
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+    @Test
+    public void testGetActiveOrdersForCookWithFreeFilter() {
+        // Arrange
+        User cook = new User();
+        cook.setRole(Role.COOK);
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(cook);
+
+        Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
+        Mockito.when(orderRepository.getActiveOrderWithoutCook()).thenReturn(expectedOrders);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("free");
+
+        // Assert
+        assertEquals(expectedOrders, actualOrders);
+    }
+
+
+    @Test
+    public void testGetActiveOrdersWithInvalidFilter() {
+        // Arrange
+        User user = new User();
+        Mockito.when(userDetailsService.getLoggedUser()).thenReturn(user);
+
+        // Act
+        Iterable<Order> actualOrders = orderService.getActiveOrders("invalid_filter");
+
+        // Assert
+        assertEquals(new ArrayList<Order>(), actualOrders);
+    }
+
+
+    //@Test
+    //public void testChangeStatusValidStatusWaiter() {
+    //    // Arrange
+    //    Order order = new Order();
+    //    order.setOrderStatus(OrderStatus.TAKING);
+    //    User waiter = new User();
+    //    waiter.setId(1);
+    //    order.setWaiter(waiter);
+    //    when(userDetailsService.getLoggedUser()).thenReturn(waiter);
+//
+    //    // Act
+    //    orderService.ChangeStatus(order);
+//
+    //    // Assert
+    //    verify(orderRepository, times(1)).save(order);
+    //    assertEquals(OrderStatus.TAKEN, order.getOrderStatus());
+    //}
+//
+    //@Test
+    //public void testChangeStatusValidStatusCook() {
+    //    // Arrange
+    //    Order order = new Order();
+    //    order.setOrderStatus(OrderStatus.TAKEN);
+    //    User cook = new User();
+    //    cook.setId(1);
+    //    order.setCook(cook);
+    //    when(userDetailsService.getLoggedUser()).thenReturn(cook);
+//
+    //    // Act
+    //    orderService.ChangeStatus(order);
+//
+    //    // Assert
+    //    verify(orderRepository, times(1)).save(order);
+    //    assertEquals(OrderStatus.COOKING, order.getOrderStatus());
+    //    assertEquals(cook, order.getCook());
+    //}
+    @Test
+    public void testChangeStatusInvalidStatus() {
+        Order order = new Order();
+        order.setOrderStatus(OrderStatus.SERVED);
+        User waiter = new User();
+        waiter.setId(1);
+        order.setWaiter(waiter);
+        when(userDetailsService.getLoggedUser()).thenReturn(waiter);
+
+        orderService.ChangeStatus(order);
+
+        verify(orderRepository, times(1)).save(order);
+        assertEquals(OrderStatus.SERVED, order.getOrderStatus());
+    }
+
+    //////////////////////////////////////////////////////////////////////////////////////////
+    //@Test
+    //void testChangeStatusWaiterNotAllowed() {
+    //    // Arrange
+    //    Order order = new Order();
+    //    order.setOrderStatus(OrderStatus.TAKEN);
+    //    User loggedUser = new User();
+    //    loggedUser.setRole(Role.WAITER);
+    //    order.setWaiter(new User());
+    //    order.getWaiter().setId(1);
+    //    loggedUser.setId(2);
+//
+    //    // Act
+    //    Assertions.assertThrows(UnauthorizedException.class, () -> {
+    //        orderService.ChangeStatus(order);
+    //    });
+//
+    //    // Assert
+    //    Order expectedOrder = new Order();
+    //    expectedOrder.setOrderStatus(OrderStatus.TAKEN);
+    //    Assertions.assertEquals(expectedOrder.getOrderStatus(), order.getOrderStatus());
+    //}
+//
+    //@Test
+    //void testChangeStatusCookNotAllowed() {
+    //    // Arrange
+    //    Order order = new Order();
+    //    order.setOrderStatus(OrderStatus.COOKING);
+    //    User loggedUser = new User();
+    //    loggedUser.setRole(Role.COOK);
+    //    order.setCook(new User());
+    //    order.getCook().setId(1);
+    //    loggedUser.setId(2);
+//
+    //    // Act
+    //    Assertions.assertThrows(UnauthorizedException.class, () -> {
+    //        orderService.ChangeStatus(order);
+    //    });
+//
+    //    // Assert
+    //    Order expectedOrder = new Order();
+    //    expectedOrder.setOrderStatus(OrderStatus.COOKING);
+    //    Assertions.assertEquals(expectedOrder.getOrderStatus(), order.getOrderStatus());
+    //}
+/////////////////////////////////////////////////////////////////////////////////////////
+    //@Test
+    //public void testCreateOrderWhenOrderIsSuccessfullyCreated(){
+    //    Integer tId = 1;
+    //    orderService.createOrder(tId);
+//
+    //    Order order = orderRepository.findById(1).get();
+    //    assertEquals(1, order.getTable().getId());
+    //    assertEquals("Test User", order.getUser().getFirstName());
+    //}
+
+    //@Test
+    //public void testCreateOrderExceptionIsThrownWhenTableIdIsInvalid(){
+    //    Integer tId = 999;
+//
+    //    assertThrows(NoSuchElementException.class, () -> {
+    //        orderService.createOrder(tId);
+    //    });
+    //}
 }
