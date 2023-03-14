@@ -29,8 +29,8 @@ public class OrderService {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
-    public Order getOrderByTableId(Optional<RestaurantTable> tId){
-        Order order = orderRepository.getOrderByTableId(tId);
+    public Order getOrderByTableId(Optional<RestaurantTable> t){
+        Order order = orderRepository.getOrderByTableId(t);
             return order;
     }
     public boolean isAbleToChangeStatus(OrderStatus status,  User orderWaiter,User orderCook,User loggedUser){
@@ -89,6 +89,15 @@ public class OrderService {
 
         boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
+
+        String classAbleToChangeOrder;
+        if(isAbleToChangeStatus&&order.getOrderStatus()==OrderStatus.TAKING){
+            classAbleToChangeOrder="ableToChange";
+        }
+        else{
+            classAbleToChangeOrder="disableToChange";
+        }
+        model.addAttribute("AbleToChangeOrder",classAbleToChangeOrder);
     }
 
     public boolean isOrderDrinkNull(List<OrderDrink> orderDrink) {
@@ -180,5 +189,37 @@ public class OrderService {
             order=new Order();
         }
         return  order;
+    }
+
+    public void viewMoreAboutOrderByTableId(Integer oId, Model model) {
+        Order order=getOrderById(oId);
+        model.addAttribute("order", order);
+
+        List<OrderDish> orderDish= orderDishService.getOrderInfo(order);
+        model.addAttribute("orderDish", orderDish);
+
+        boolean orderDishNull = isOrderDishNull(orderDish);
+        model.addAttribute("isOrderDishNull", orderDishNull);
+
+        List<OrderDrink> orderDrink= orderDrinkService.getOrderInfo(order);
+        model.addAttribute("orderDrink", orderDrink);
+
+        boolean orderDrinkNull = isOrderDrinkNull(orderDrink);
+        model.addAttribute("isOrderDrinkNull", orderDrinkNull);
+
+        User loggedUser = userDetailsService.getLoggedUser();
+        model.addAttribute("loggedUser", loggedUser);
+
+        boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
+        model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
+
+        String classAbleToChangeOrder;
+        if(isAbleToChangeStatus&&order.getOrderStatus()==OrderStatus.TAKING){
+            classAbleToChangeOrder="ableToChange";
+        }
+        else{
+            classAbleToChangeOrder="disableToChange";
+        }
+        model.addAttribute("AbleToChangeOrder",classAbleToChangeOrder);
     }
 }

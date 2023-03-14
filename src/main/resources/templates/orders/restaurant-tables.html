@@ -107,17 +107,19 @@ img.white-image {
         <li style="float:right"><a href="/login">Изход</a></li>-->
     </ul>
 </div>
-<br/>
-<form action="/tables" method="get">
-    <label for="filter">Маси:</label>
-    <select id="filter" name="filter">
-        <option value="all" th:selected="${filter == 'all'}">Всички</option>
-        <option value="your" th:selected="${filter == 'your'}">Ваши</option>
-        <option value="notTaken" th:selected="${filter == 'notTaken'}">Свободни</option>
-    </select>
-    <button type="submit">Apply Filter</button>
-</form><br>
+
 <div class="container text-center">
+    <br/>
+    <form action="/tables" method="get" style="float:left">
+        <label for="filter">Маси:</label>
+        <select id="filter" name="filter">
+            <option value="all" th:selected="${filter == 'all'}">Всички</option>
+            <option value="your" th:selected="${filter == 'your'}">Ваши</option>
+            <option value="notTaken" th:selected="${filter == 'notTaken'}">Свободни</option>
+        </select>
+        <button type="submit">Apply Filter</button>
+    </form><br>
+
 <!-- button modal-->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
         Добавяне на маса

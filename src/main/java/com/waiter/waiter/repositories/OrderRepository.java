@@ -44,4 +44,6 @@ public interface OrderRepository extends CrudRepository<Order, Integer> {
     Iterable<Order> getCookOrdersForCertainDate(@Param("date") String date, @Param("cookId") Integer cookId);
     @Query("SELECT o.updatedOn FROM Order o where o.table=:t AND o.orderStatus <> 'PAID'")
     LocalDateTime getUpdatedOnByTable(@Param("t") Optional<RestaurantTable> t);
+    @Query("SELECT o FROM Order o where o.table=:t")
+    Order getOrderByTableIdWithoutAnyRequirements(Optional<RestaurantTable> t);
 }
