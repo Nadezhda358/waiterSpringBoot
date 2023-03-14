@@ -28,8 +28,13 @@ public class OrderController {
         return "/orders/view-order";
     }
     @PostMapping("/view/{tId}")
-    private String viewOrderByTableId(@PathVariable(name = "tId") Integer tId, Model model) {
+    private String viewOrderByTableId2(@PathVariable(name = "tId") Integer tId, Model model) {
         orderService.viewOrderByTableId(tId, model);
+        return "/orders/view-order";
+    }
+    @PostMapping("/view-more/{tId}")
+    private String viewOrderByTableId3(@PathVariable(name = "tId") Integer tId, Model model) {
+        orderService.viewMoreAboutOrderByTableId(tId, model);
         return "/orders/view-order";
     }
     @PostMapping("/change-status/{orderId}")

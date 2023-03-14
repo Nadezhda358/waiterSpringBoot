@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Orders Waiter</title>
@@ -110,7 +110,11 @@ li a:hover:not(.active) {
                 <td>
                     <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
                 </td>
-                <td></td>
+                <td>
+                    <form th:action="@{/orders/view-more/{tId}(tId=${order.table.id})}" method="post">
+                        <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
+                    </form>
+                </td>
 
             </tr>
             </tbody>
