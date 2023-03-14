@@ -2,11 +2,13 @@ package com.waiter.waiter.controllers;
 
 
 import com.waiter.waiter.entities.User;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import com.waiter.waiter.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
@@ -18,6 +20,14 @@ public class AuthController {
 
     @Autowired
     public UserService userService;
+    @Autowired
+    UserDetailsServiceImpl userDetailsService;
+
+    @GetMapping("/")
+    public String goToIndexPage(Model model){
+        model.addAttribute("loggedUser",userDetailsService.getLoggedUser());
+        return "index";
+    }
 
 
     @RequestMapping(value = {"/login"}, method = RequestMethod.GET)

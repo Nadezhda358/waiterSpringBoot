@@ -42,7 +42,10 @@ public class WebSecurityConfig  extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/tables/**","/orders/***","/orders/**","/order/****","/", "/tablesTest").permitAll()
+                .mvcMatchers("/orders/reference-cook").hasAnyAuthority("COOK")
+                .mvcMatchers("/orders/reference-waiter", "/tables/**").hasAnyAuthority("WAITER")
+                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/orders/***","/orders/**","/orders/****","/", "/tablesTest", "/testCardColor").permitAll()
+                .mvcMatchers("/login", "/register", "/test","/","/drinks/**","/dishes/**","/tables/**","/orders/***","/orders/**","/order/****","/", "/tablesTest","/order-dish","/order-dish/*","/order-dish/**","/order-dish/***","/order-drink","/order-drink/*","/order-drink/**","/order-drink/***","/order-drink/****","/order/add-drink-to-order").permitAll()
                 .mvcMatchers("/","/drinks/**","/dishes/**", "/menu/*", "/menu","/tables/**", "/hello").hasAnyAuthority("WAITER", "COOK")
                 .anyRequest().hasAnyAuthority("ROLE_ADMIN")
                 .and()

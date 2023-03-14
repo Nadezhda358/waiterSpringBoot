@@ -12,8 +12,16 @@ public class RestaurantTable {
     @Min(1)
     @Column(unique = true,name="number")//todo validation in html for unique name
     private int number;//register input done
-
     private boolean hasOrder = false;
+    private String tableCardBackground;
+
+    public String getTableCardBackground() {
+        return tableCardBackground;
+    }
+
+    public void setTableCardBackground(String tableCardBackground) {
+        this.tableCardBackground = tableCardBackground;
+    }
 
     public RestaurantTable() {
 

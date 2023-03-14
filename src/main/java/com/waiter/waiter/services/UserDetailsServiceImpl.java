@@ -67,6 +67,15 @@ public class UserDetailsServiceImpl implements UserDetailsService, UserService {
         User user = userRepo.getUserByUsername(username);
         return user;
     }
+    //public User getLoggedUser() {
+    //    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+    //
+    //    if (authentication != null && authentication.getPrincipal() instanceof User) {
+    //        return (User) authentication.getPrincipal();
+    //    }
+    //
+    //    return null;
+    //}
 
 
 }

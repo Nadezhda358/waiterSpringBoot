@@ -1,7 +1,5 @@
 package com.waiter.waiter.entities;
 
-import com.waiter.waiter.enums.OrderDrinkStatus;
-
 import javax.persistence.*;
 
 @Entity
@@ -18,9 +16,8 @@ public class OrderDrink {
     @JoinColumn(name = "drink_id")
     private Drink drink;
     private int quantity;
-    private double currentPrice;//за записа
-    //@Enumerated(EnumType.STRING)
-    //private OrderDrinkStatus status;
+    private double currentPrice;
+    private double pricePerItem;
     public Drink getDrink() {
         return drink;
     }
@@ -61,14 +58,16 @@ public class OrderDrink {
     }
 
     public void setCurrentPrice(double currentPrice) {
-        this.currentPrice = currentPrice;
+        double number = Math.round(currentPrice * 100);
+        number = number/100;
+        this.currentPrice = number;
     }
 
-    //public OrderDrinkStatus getStatus() {
-    //    return status;
-    //}
-//
-    //public void setStatus(OrderDrinkStatus status) {
-    //    this.status = status;
-    //}
+    public double getPricePerItem() {
+        return pricePerItem;
+    }
+
+    public void setPricePerItem(double pricePerItem) {
+        this.pricePerItem = pricePerItem;
+    }
 }

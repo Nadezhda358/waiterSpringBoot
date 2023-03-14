@@ -3,22 +3,22 @@ package com.waiter.waiter.helpingClasses;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.type.TypeFactory;
 import com.fasterxml.jackson.databind.util.Converter;
-import com.waiter.waiter.entities.Dish;
-import com.waiter.waiter.repositories.DishRepository;
+import com.waiter.waiter.entities.Drink;
+import com.waiter.waiter.repositories.DrinkRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
-
 @Component
-public class DishConverter implements Converter<String, Optional<Dish>> {
+public class DrinkConverter implements Converter <String, Optional<Drink>>{
     @Autowired
-    DishRepository dishRepository;
+    DrinkRepository drinkRepository;
     @Override
-    public Optional<Dish> convert(String id){
-         //System.out.println("Trying to convert id="+id+" into a dish.");
-        int parsedId=Integer.parseInt(id);
-         return dishRepository.findById(parsedId);
+    public Optional<Drink> convert(String id){
+
+    System.out.println("Converting dish with id="+id);
+    int parseId=Integer.parseInt(id);
+    return drinkRepository.findById(parseId);
     }
 
     @Override
@@ -30,6 +30,4 @@ public class DishConverter implements Converter<String, Optional<Dish>> {
     public JavaType getOutputType(TypeFactory typeFactory) {
         return null;
     }
-
-
 }

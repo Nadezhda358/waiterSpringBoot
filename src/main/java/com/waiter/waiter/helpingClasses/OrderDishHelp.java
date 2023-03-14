@@ -9,6 +9,8 @@ public class OrderDishHelp {
     private Order order;
     private List<Dish> dishes;
 
+    public OrderDishHelp(Order order) {this.order = order;}
+
     public Order getOrder() {
         return order;
     }
@@ -25,10 +27,4 @@ public class OrderDishHelp {
         this.dishes = dishes;
     }
 
-    @Override
-    public String toString() {
-        return "OrderDishHelp{"+
-                ", dishes=" + dishes +
-                '}';
-    }
 }

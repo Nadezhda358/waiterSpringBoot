@@ -14,23 +14,23 @@
 </head>
 <body>
 <div class="container">
-    <h5 th:text="'Поръчка за '+${orderdish.getOrder.getId}+'-а маса'" class="text-center"></h5>
+    <h5 th:text="'Поръчка за '+${order.getId}+'-а маса'" class="text-center"></h5>
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card border-2">
                 <div class="btn-group" role="group" aria-label="Basic outlined example">
-                    <a class="list-group-item list-group-item-action active">Храни</a>
-                    <form th:action="@{/order-drink/add-drinks/{orderId}(orderId=${order.id})}" method="post">
-                        <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left" width="40" height="40">
+                    <form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post">
+                        <a href="/order-dish/add" class="list-group-item list-group-item-action active" alt="Submit">Храни</a>
                     </form>
+                    <a  class="list-group-item list-group-item-action">Напитки</a>
 
                 </div>
                 <div class="card-body">
-                    <form class="ui form p-3" th:action="@{/order-dish/add-to-order/submit/{orderId}(orderId=${orderdish.getOrder.id})}" method="post" th:object="${orderdish}">
+                    <form class="ui form p-3" th:action="@{/order-drink/add-to-order/submit/{orderId}(orderId=${order.id})}" method="post" th:object="${orderdrink}">
                         <ul class="list-unstyled">
-                            <li th:each="dish : ${selectableDishes}">
-                                <input type="checkbox" th:field="${orderdish.dishes}"th:value="${dish.id}" class="form-check-input">
-                                <label th:text="${dish.name}"></label>
+                            <li th:each="drink : ${selectableDrinks}">
+                                <input type="checkbox" th:field="${orderdrink.drinks}" th:value="${drink.id}" class="form-check-input">
+                                <label th:text="${drink.name}"></label>
                             </li>
                         </ul>
                         <div class="field">

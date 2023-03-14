@@ -4,7 +4,6 @@ import com.waiter.waiter.enums.OrderStatus;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Entity
@@ -16,6 +15,8 @@ public class Order {
     private Integer id;
     @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
     private LocalDateTime createdOn;
+    @DateTimeFormat(pattern = "yyyy-MM-dd-HH-mm")
+    private LocalDateTime updatedOn;
     @ManyToOne
     @JoinColumn(name = "table_id")
     private RestaurantTable table;
@@ -33,8 +34,33 @@ public class Order {
     private LocalDateTime finishDate;
     private double totalCost;
 
-    public Order() {
+    public Order(RestaurantTable table, User user) {
+        this.table = table;
+        this.waiter=user;
+        this.createdOn=LocalDateTime.now();
+        this.updatedOn=getCreatedOn();
+        this.orderStatus=OrderStatus.TAKING;
+    }
+    public Order(){}
 
+    public Order(Integer id, LocalDateTime createdOn, RestaurantTable table, User waiter, User cook, boolean isPaid, OrderStatus orderStatus, LocalDateTime finishDate, double totalCost) {
+        this.id = id;
+        this.createdOn = createdOn;
+        this.table = table;
+        this.waiter = waiter;
+        this.cook = cook;
+        this.isPaid = isPaid;
+        this.orderStatus = orderStatus;
+        this.finishDate = finishDate;
+        this.totalCost = totalCost;
+    }
+
+    public LocalDateTime getUpdatedOn() {
+        return updatedOn;
+    }
+
+    public void setUpdatedOn(LocalDateTime updatedOn) {
+        this.updatedOn = updatedOn;
     }
 
     public User getCook() {
@@ -106,7 +132,9 @@ public class Order {
     }
 
     public void setTotalCost(double totalCost) {
-        this.totalCost = totalCost;
+            double number = Math.round(totalCost * 100);
+            number = number/100;
+        this.totalCost = number;
     }
 
     public User getWaiter() {

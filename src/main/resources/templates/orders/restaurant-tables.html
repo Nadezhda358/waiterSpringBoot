@@ -51,12 +51,29 @@ li a:hover:not(.active) {
     margin-bottom: 50px;
     background-color: white;
 }
+.card-red {
+    background-color: #F47C62;
+}
+.card-green {
+    background-color: #72D56D ;
+}
+.card-white {
+    background-color: #E4E4E4;
+}
 img.white-image {
   filter: brightness(0%) invert(100%);
   -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
   -moz-filter: brightness(0%) invert(100%); /* Firefox */
   -ms-filter: brightness(0%) invert(100%); /* IE */
   -o-filter: brightness(0%) invert(100%); /* Opera */
+  margin-top: 5px;
+}
+.firstName{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
 }
 
     </style>
@@ -66,25 +83,33 @@ img.white-image {
     <ul>
         <li><a  href="/">Начало</a></li>
         <li><a href="/menu">Меню</a></li>
-        <li><a href="/orders">Поръчки</a></li>
-        <Li><a href="/tables" class="active">Маси</a></Li>
-        <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
-        <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
-             width="50" height="50" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        <li><a href="/orders/active">Активни поръчки</a></li>
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/tables" class="active">Маси</a>
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/orders/reference-waiter">Справки</a></Li>
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).COOK}"><a href="/orders/reference-cook">Справки2</a></Li>
         <li style="float:right"><a href="/login">Изход</a></li>
+        <li class="firstName"style="float:right" th:text="${loggedUser.firstName}"></li>
+        <li style="float:right">
+            <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+            <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        </li>
     </ul>
 </div>
-<br/>
-<form action="/tables" method="get">
-    <label for="filter">Show:</label>
-    <select id="filter" name="filter">
-        <option value="all" th:selected="${filter == 'all'}">All Tables</option>
-        <option value="your" th:selected="${filter == 'your'}">Your Tables</option>
-    </select>
-    <button type="submit">Apply Filter</button>
-</form><br>
+
 <div class="container text-center">
+    <br/>
+    <form action="/tables" method="get" style="float:left">
+        <label for="filter">Маси:</label>
+        <select id="filter" name="filter">
+            <option value="all" th:selected="${filter == 'all'}">Всички</option>
+            <option value="your" th:selected="${filter == 'your'}">Ваши</option>
+            <option value="notTaken" th:selected="${filter == 'notTaken'}">Свободни</option>
+        </select>
+        <button type="submit">Apply Filter</button>
+    </form><br><br>
+
 <!-- button modal-->
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
         Добавяне на маса
@@ -114,10 +139,10 @@ img.white-image {
 
     <h1>Маси</h1>
     <div class="row">
-        <div class="col-md-4"  th:each="t : ${restaurantTables}"><!-- th:if="${restaurantTables} is not null">-->
-            <div class="card" style="width: 18rem;">
+        <div class="col-md-4"  th:each="t : ${restaurantTables}" ><!-- th:if="${restaurantTables} is not null">-->
+            <div th:class="${t.tableCardBackground}" class="card" style="width: 18rem;" >
 
-                <div class="card-body">
+                <div class="card-body" >
                     <h5 class="card-title" th:text="${t.number}"></h5>
                     <img src="https://cdn.pixabay.com/photo/2016/04/01/12/08/table-1300555_960_720.png" alt="table photo" width="150"/>
                     <p class="card-text">Some quick example ...</p>
