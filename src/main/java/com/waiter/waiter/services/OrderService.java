@@ -89,6 +89,15 @@ public class OrderService {
 
         boolean isAbleToChangeStatus = isAbleToChangeStatus(order.getOrderStatus(), order.getWaiter(),order.getCook(),loggedUser);
         model.addAttribute("isAbleToChangeStatus", isAbleToChangeStatus);
+
+        String classAbleToChangeOrder;
+        if(isAbleToChangeStatus&&order.getOrderStatus()==OrderStatus.TAKING){
+            classAbleToChangeOrder="ableToChange";
+        }
+        else{
+            classAbleToChangeOrder="disableToChange";
+        }
+        model.addAttribute("AbleToChangeOrder",classAbleToChangeOrder);
     }
 
     public boolean isOrderDrinkNull(List<OrderDrink> orderDrink) {
