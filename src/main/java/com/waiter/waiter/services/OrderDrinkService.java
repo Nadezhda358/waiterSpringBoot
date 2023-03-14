@@ -101,8 +101,7 @@ public class OrderDrinkService {
         Order order = orders.get();
         orderDrinkHelp.setOrder(order);
         saveDrinksToOrder(orderDrinkHelp);
-updateTotalCostOrder(order);
-
+        updateTotalCostOrder(order);
     }
 
     public int findOrderIdByOrderDrinkId(Integer orderDrinkId) {
@@ -140,7 +139,7 @@ updateTotalCostOrder(order);
             Order order = orderDrink.getOrder();
             updateTotalCostOrder(order);
         }
-        }
+    }
     public void updateTotalCostOrder(Order order) {
         double totalCost = 0;
         if (orderDishRepository.getTotalCost(order).isPresent()) {

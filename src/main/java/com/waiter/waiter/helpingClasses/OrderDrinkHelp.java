@@ -13,6 +13,10 @@ public class OrderDrinkHelp {
         this.order = order;
     }
 
+    public OrderDrinkHelp() {
+
+    }
+
     public Order getOrder() {
         return order;
     }

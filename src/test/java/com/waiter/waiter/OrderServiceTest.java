@@ -4,6 +4,7 @@ import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
+import com.waiter.waiter.repositories.RestaurantTablesRepository;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -13,6 +14,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
+import org.springframework.ui.ExtendedModelMap;
+import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 
 import java.time.LocalDateTime;
@@ -32,6 +35,8 @@ public class OrderServiceTest {
     private OrderService orderService;
     @Mock
     private UserDetailsServiceImpl userDetailsService;
+    @Mock
+    private RestaurantTablesRepository restaurantTablesRepository;
 
     @BeforeEach
     public void setUp() {

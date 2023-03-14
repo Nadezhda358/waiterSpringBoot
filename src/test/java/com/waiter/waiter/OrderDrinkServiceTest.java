@@ -2,16 +2,15 @@ package com.waiter.waiter;
 
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
+import com.waiter.waiter.helpingClasses.OrderDrinkHelp;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderDrinkRepository;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.services.OrderDrinkService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.Mockito;
-import org.mockito.MockitoAnnotations;
+import org.mockito.*;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -37,6 +36,8 @@ public class OrderDrinkServiceTest {
 
     @InjectMocks
     private OrderDrinkService orderDrinkService;
+    @Mock
+    private Model model;
 
     @Test
     public void updateTotalCostOrder_shouldNotUpdateTotalCostIfNoTotalCost() {
@@ -325,6 +326,41 @@ public class OrderDrinkServiceTest {
     //    assertTrue(order.isPresent());
     //    assertNotEquals(0, order.get().getTotalCost());
     //}
+
+
+    @Test
+    public void prepareToAddDrinks_ShouldPopulateModelAttributes() {
+        Integer orderId = 123;
+        Order order = new Order();
+        order.setId(orderId);
+
+        Iterable<Drink> drinks = Arrays.asList(new Drink(), new Drink());
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderDrinkRepository.getAllNotAddedDrinksToOrder(order)).thenReturn((List<Drink>) drinks);
+
+        orderDrinkService.prepareToAddDrinks(orderId, model);
+
+        ArgumentCaptor<OrderDrinkHelp> orderDrinkHelpCaptor = ArgumentCaptor.forClass(OrderDrinkHelp.class);
+        verify(model).addAttribute(eq("orderdrink"), orderDrinkHelpCaptor.capture());
+        assertEquals(order, orderDrinkHelpCaptor.getValue().getOrder());
+
+        verify(model).addAttribute(eq("selectableDrinks"), eq(drinks));
+        verify(model).addAttribute(eq("order"), eq(order));
+    }
+
+    @Test
+    public void prepareToAddDrinks_WithInvalidOrderId_ShouldThrowException() {
+        Integer orderId = 123;
+        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+        try {
+            orderDrinkService.prepareToAddDrinks(orderId, model);
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException e) {
+            assertEquals("No value present", e.getMessage());
+        }
+    }
+
 
 
 
