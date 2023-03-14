@@ -70,6 +70,7 @@ public class OrderController {
     public String showOrdersForDate(@RequestParam(name = "date") String dateString, @RequestParam(required = false, defaultValue = "your") String filter, Model model){
         Iterable<Order> orders = orderService.getOrdersForCertainDate(dateString, filter);
         model.addAttribute("orders", orders);
+        model.addAttribute("loggedUser",userDetailsService.getLoggedUser());
         return "/orders/orders-for-date";
     }
     @GetMapping("/active")

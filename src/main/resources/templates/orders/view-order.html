@@ -107,14 +107,12 @@ img.white-image {
     <div class="text-center">
         <h3 th:text="'Поръчка за '+${order.table.getNumber}+' маса'"></h3>
         <h4 th:text="'Статус: '+${order.orderStatus.getValue}"></h4>
-        <!--<a href="/orders/change-status" class="btn btn-outline-primary">Промяна на статуса(Още не работи)</a>-->
         <span th:if="${order.orderStatus}!=${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
         <form th:action="@{/orders/change-status/{orderId}(orderId=${order.id})}" method="post">
             <button class="btn btn-outline-success" type="submit" th:hidden="${isOrderDrinkNull == true} and ${isOrderDishNull == true}"
                     th:disabled="${isAbleToChangeStatus} == false"th:class="${AbleToChangeOrder}">Промяна на статуса
             </button>
             <div th:if="${isOrderDishNull} == true and ${isOrderDrinkNull} == true">Няма добавени ястия или напитки</div>
-            <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
         </form>
         </span>
             <span th:if="${order.orderStatus}==${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
