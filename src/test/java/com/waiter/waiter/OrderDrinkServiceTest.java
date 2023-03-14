@@ -2,6 +2,7 @@ package com.waiter.waiter;
 
 import com.waiter.waiter.entities.*;
 import com.waiter.waiter.enums.OrderStatus;
+import com.waiter.waiter.helpingClasses.OrderDishHelp;
 import com.waiter.waiter.helpingClasses.OrderDrinkHelp;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderDrinkRepository;
@@ -361,6 +362,50 @@ public class OrderDrinkServiceTest {
         }
     }
 
+    @Test
+    public void testSaveDrinksToOrderWithNullDrinks() {
+        Order order = new Order();
+        OrderDrinkHelp orderDrinkHelp = new OrderDrinkHelp(order);
+        orderDrinkHelp.setDrinks(null);
+        when(orderDrinkRepository.save(any(OrderDrink.class))).thenReturn(new OrderDrink());
+        orderDrinkService.saveDrinksToOrder(orderDrinkHelp);
+        verify(orderDrinkRepository, times(0)).save(any(OrderDrink.class));
+    }
+    @Test
+    public void testSaveDrinksToOrder() {
+        Order order = new Order();
+        Drink drink1 = new Drink();
+        Drink drink2 = new Drink();
+
+        OrderDrinkHelp orderDrinkHelp = new OrderDrinkHelp(order);
+        orderDrinkHelp.setDrinks(Arrays.asList(drink1, drink2));
+
+        when(orderDrinkRepository.save(any(OrderDrink.class))).thenReturn(new OrderDrink());
+        orderDrinkService.saveDrinksToOrder(orderDrinkHelp);
+
+        verify(orderDrinkRepository, times(2)).save(any(OrderDrink.class));
+    }
+
+    @Test
+    public void testAddOneToQuantityExistingOrderDrink() {
+        Integer orderDrinkId = 1;
+        OrderDrink orderDrink = new OrderDrink();
+        orderDrink.setQuantity(2);
+        orderDrink.setPricePerItem(10.0);
+        Order order = new Order();
+        order.setId(1);
+        orderDrink.setOrder(order);
+        when(orderDrinkRepository.findById(orderDrinkId)).thenReturn(Optional.of(orderDrink));
+
+        orderDrinkService.addOneToQuantity(orderDrinkId);
+
+        verify(orderDrinkRepository).findById(orderDrinkId);
+        verify(orderDrinkRepository).save(orderDrink);
+        assertEquals(Integer.valueOf(3), orderDrink.getQuantity());
+        assertEquals(Double.valueOf(30.0), orderDrink.getCurrentPrice());
+    }
+
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

@@ -8,6 +8,7 @@ import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderDrinkRepository;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.services.OrderDishService;
+import com.waiter.waiter.services.OrderService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
@@ -30,6 +31,8 @@ public class OrderDishServiceTest {
 
     @Mock
     private OrderRepository orderRepository;
+    @Mock
+    private OrderService orderService;
 
     @InjectMocks
     private OrderDishService orderDishService;
@@ -368,6 +371,53 @@ public class OrderDishServiceTest {
             assertEquals("No value present", e.getMessage());
         }
     }
+
+//////////////////////////////////////////////////////////////////////////////////////
+    @Test
+    public void testSaveDishesToOrderWithNullDishes() {
+        Order order = new Order();
+        OrderDishHelp orderDishHelp = new OrderDishHelp(order);
+        orderDishHelp.setDishes(null);
+        when(orderDishRepository.save(any(OrderDish.class))).thenReturn(new OrderDish());
+        orderDishService.saveDishesToOrder(orderDishHelp);
+        verify(orderDishRepository, times(0)).save(any(OrderDish.class));
+    }
+    @Test
+    public void testSaveDishesToOrder() {
+        Order order = new Order();
+        Dish dish1 = new Dish();
+        Dish dish2 = new Dish();
+
+        OrderDishHelp orderDishHelp = new OrderDishHelp(order);
+        orderDishHelp.setDishes(Arrays.asList(dish1, dish2));
+
+        when(orderDishRepository.save(any(OrderDish.class))).thenReturn(new OrderDish());
+        orderDishService.saveDishesToOrder(orderDishHelp);
+
+        verify(orderDishRepository, times(2)).save(any(OrderDish.class));
+    }
+
+    @Test
+    public void testAddOneToQuantityExistingOrderDish() {
+        Integer orderDishId = 1;
+        OrderDish orderDish = new OrderDish();
+        orderDish.setQuantity(2);
+        orderDish.setPricePerItem(10.0);
+        Order order = new Order();
+        order.setId(1);
+        orderDish.setOrder(order);
+        when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(orderDish));
+
+        orderDishService.addOneToQuantity(orderDishId);
+
+        verify(orderDishRepository).findById(orderDishId);
+        verify(orderDishRepository).save(orderDish);
+        assertEquals(Integer.valueOf(3), orderDish.getQuantity());
+        assertEquals(Double.valueOf(30.0), orderDish.getCurrentPrice());
+    }
+
+
+
 
 }
 

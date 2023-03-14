@@ -29,14 +29,16 @@ public class OrderDishService {
     public void saveDishesToOrder(OrderDishHelp orderDishHelp) {
         Order order = orderDishHelp.getOrder();
         List<Dish> dishes = orderDishHelp.getDishes();
-        for (Dish d : dishes) {
-            OrderDish orderDish = new OrderDish();
-            orderDish.setOrder(order);
-            orderDish.setQuantity(1);
-            orderDish.setCurrentPrice(d.getPrice());
-            orderDish.setPricePerItem(d.getPrice());
-            orderDish.setDish(d);
-            orderDishRepository.save(orderDish);
+        if (dishes != null){
+            for (Dish d : dishes) {
+                OrderDish orderDish = new OrderDish();
+                orderDish.setOrder(order);
+                orderDish.setQuantity(1);
+                orderDish.setCurrentPrice(d.getPrice());
+                orderDish.setPricePerItem(d.getPrice());
+                orderDish.setDish(d);
+                orderDishRepository.save(orderDish);
+            }
         }
     }
 
