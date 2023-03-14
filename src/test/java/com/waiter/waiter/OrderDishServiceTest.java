@@ -4,6 +4,7 @@ package com.waiter.waiter;
 import com.waiter.waiter.entities.Dish;
 import com.waiter.waiter.entities.Order;
 import com.waiter.waiter.entities.OrderDish;
+import com.waiter.waiter.entities.OrderDrink;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderDrinkRepository;
 import com.waiter.waiter.repositories.OrderRepository;
@@ -271,6 +272,66 @@ public class OrderDishServiceTest {
         assertTrue(actualIterator.hasNext());
         assertEquals(dish2, actualIterator.next());
         assertFalse(actualIterator.hasNext());
+    }
+
+
+    @Test
+    public void testFindOrderIdByOrderDishId() {
+        Integer orderDishId = 1;
+        OrderDish orderDish = new OrderDish();
+        orderDish.setId(orderDishId);
+        Order order = new Order();
+        order.setId(2);
+        orderDish.setOrder(order);
+        Optional<OrderDish> optionalOrderDish = Optional.of(orderDish);
+
+        Mockito.when(orderDishRepository.findById(orderDishId)).thenReturn(optionalOrderDish);
+        int orderId = orderDishService.findOrderIdByOrderDishId(orderDishId);
+
+        assertEquals(2, orderId);
+    }
+
+    @Test
+    public void testFindOrderIdByOrderDishIdWhenOrderDishNotFound() {
+        Integer orderDishId = 1;
+        Optional<OrderDish> optionalOrderDish = Optional.empty();
+
+        Mockito.when(orderDishRepository.findById(orderDishId)).thenReturn(optionalOrderDish);
+        int orderId = orderDishService.findOrderIdByOrderDishId(orderDishId);
+
+        assertEquals(0, orderId);
+    }
+
+    @Test
+    public void testGetOrderInfo() {
+        Order order = new Order();
+        order.setId(1);
+
+        List<OrderDish> orderDishes = new ArrayList<>();
+        OrderDish orderDish1 = new OrderDish();
+        orderDish1.setId(1);
+        orderDish1.setOrder(order);
+        orderDishes.add(orderDish1);
+
+        Mockito.when(orderDishRepository.getOrderInfo(order)).thenReturn(orderDishes);
+        List<OrderDish> orderInfo = orderDishService.getOrderInfo(order);
+
+        assertNotNull(orderInfo);
+        assertEquals(1, orderInfo.size());
+        assertEquals(1, orderInfo.get(0).getId());
+        assertEquals(order, orderInfo.get(0).getOrder());
+    }
+
+    @Test
+    public void testGetOrderInfoWhenNoOrderDishesFound() {
+        Order order = new Order();
+        order.setId(1);
+
+        Mockito.when(orderDishRepository.getOrderInfo(order)).thenReturn(null);
+        List<OrderDish> orderInfo = orderDishService.getOrderInfo(order);
+
+        assertNotNull(orderInfo);
+        assertEquals(0, orderInfo.size());
     }
 
 }
