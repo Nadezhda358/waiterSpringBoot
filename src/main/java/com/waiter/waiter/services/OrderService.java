@@ -191,9 +191,8 @@ public class OrderService {
         return  order;
     }
 
-    public void viewMoreAboutOrderByTableId(Integer tId, Model model) {
-        Optional<RestaurantTable> t = restaurantTablesRepository.findById(tId);
-        Order order = getOrderByTableIdWithoutAnyRequirements(t);
+    public void viewMoreAboutOrderByTableId(Integer oId, Model model) {
+        Order order=getOrderById(oId);
         model.addAttribute("order", order);
 
         List<OrderDish> orderDish= orderDishService.getOrderInfo(order);
@@ -222,10 +221,5 @@ public class OrderService {
             classAbleToChangeOrder="disableToChange";
         }
         model.addAttribute("AbleToChangeOrder",classAbleToChangeOrder);
-    }
-
-    private Order getOrderByTableIdWithoutAnyRequirements(Optional<RestaurantTable> t) {
-        Order order = orderRepository.getOrderByTableIdWithoutAnyRequirements(t);
-        return order;
     }
 }

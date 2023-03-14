@@ -111,7 +111,7 @@ li a:hover:not(.active) {
                     <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>
                 </td>
                 <td>
-                    <form th:action="@{/orders/view-more/{tId}(tId=${order.table.id})}" method="post">
+                    <form th:action="@{/orders/view-more/{oId}(oId=${order.id})}" method="post">
                         <input type="submit" name="more" value="Още" class="btn btn-outline-primary">
                     </form>
                 </td>

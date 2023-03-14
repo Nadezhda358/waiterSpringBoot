@@ -106,7 +106,8 @@ img.white-image {
         </span>
             <span th:if="${order.orderStatus}==${T(com.waiter.waiter.enums.OrderStatus).SERVED}">
     <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1"th:class="${AbleToChangeOrder}">Промяна на статуса
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong1"th:class="${AbleToChangeOrder}"
+            >Промяна на статуса
     </button>
             <!-- Modal -->
     <div class="modal fade" id="exampleModalLong1" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle"
