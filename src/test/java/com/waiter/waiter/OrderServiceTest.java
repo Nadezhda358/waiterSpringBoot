@@ -5,6 +5,7 @@ import com.waiter.waiter.enums.OrderStatus;
 import com.waiter.waiter.enums.Role;
 import com.waiter.waiter.repositories.OrderRepository;
 import com.waiter.waiter.repositories.RestaurantTablesRepository;
+import com.waiter.waiter.repositories.UserRepository;
 import com.waiter.waiter.services.OrderService;
 import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -37,6 +38,8 @@ public class OrderServiceTest {
     private UserDetailsServiceImpl userDetailsService;
     @Mock
     private RestaurantTablesRepository restaurantTablesRepository;
+    @Mock
+    UserRepository userRepository;
 
     @BeforeEach
     public void setUp() {
@@ -628,4 +631,36 @@ public class OrderServiceTest {
     //        orderService.createOrder(tId);
     //    });
     //}
+    //////////////////////////////////////////////////////////////////////////////////////////
+
+
+    @Test
+    public void testChangeStatus() {
+        User user = new User();
+        user.setId(1);
+        user.setUsername("testuser");
+        user.setRole(Role.WAITER);
+        userRepository.save(user);
+        when(userDetailsService.getLoggedUser()).thenReturn(user);
+
+        RestaurantTable table = new RestaurantTable();
+        table.setNumber(1);
+        restaurantTablesRepository.save(table);
+
+        Order order = new Order();
+        order.setOrderStatus(OrderStatus.TAKING);
+        order.setId(1);
+        order.setTable(table);
+        order.setWaiter(user);
+        orderRepository.save(order);
+
+        orderService.ChangeStatus(order);
+
+        when(orderRepository.findById(order.getId())).thenReturn(Optional.of(order));
+        Order updatedOrder = orderRepository.findById(order.getId()).orElse(null);
+        assertEquals(OrderStatus.TAKEN, updatedOrder.getOrderStatus());
+    }
+
+
+
 }
