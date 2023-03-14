@@ -1,10 +1,9 @@
 package com.waiter.waiter;
 
 
-import com.waiter.waiter.entities.Dish;
-import com.waiter.waiter.entities.Order;
-import com.waiter.waiter.entities.OrderDish;
-import com.waiter.waiter.entities.OrderDrink;
+import com.waiter.waiter.entities.*;
+import com.waiter.waiter.helpingClasses.OrderDishHelp;
+import com.waiter.waiter.helpingClasses.OrderDrinkHelp;
 import com.waiter.waiter.repositories.OrderDishRepository;
 import com.waiter.waiter.repositories.OrderDrinkRepository;
 import com.waiter.waiter.repositories.OrderRepository;
@@ -12,6 +11,7 @@ import com.waiter.waiter.services.OrderDishService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.*;
+import org.springframework.ui.Model;
 
 import java.util.*;
 
@@ -33,6 +33,8 @@ public class OrderDishServiceTest {
 
     @InjectMocks
     private OrderDishService orderDishService;
+    @Mock
+    private Model model;
 
     @Test
     public void updateTotalCostOrder_shouldNotUpdateTotalCostIfNoTotalCost() {
@@ -332,6 +334,39 @@ public class OrderDishServiceTest {
 
         assertNotNull(orderInfo);
         assertEquals(0, orderInfo.size());
+    }
+
+    @Test
+    public void prepareToAddDishes_ShouldPopulateModelAttributes() {
+        Integer orderId = 123;
+        Order order = new Order();
+        order.setId(orderId);
+
+        Iterable<Dish> dishes = Arrays.asList(new Dish(), new Dish());
+
+        when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        when(orderDishRepository.getAllNotAddedDishesToOrder(order)).thenReturn((List<Dish>) dishes);
+
+        orderDishService.prepareToAddDishes(orderId, model);
+
+        ArgumentCaptor<OrderDishHelp> orderDishHelpCaptor = ArgumentCaptor.forClass(OrderDishHelp.class);
+        verify(model).addAttribute(eq("orderdish"), orderDishHelpCaptor.capture());
+        assertEquals(order, orderDishHelpCaptor.getValue().getOrder());
+
+        verify(model).addAttribute(eq("selectableDishes"), eq(dishes));
+        verify(model).addAttribute(eq("order"), eq(order));
+    }
+
+    @Test
+    public void prepareToAddDishes_WithInvalidOrderId_ShouldThrowException() {
+        Integer orderId = 123;
+        when(orderRepository.findById(orderId)).thenReturn(Optional.empty());
+        try {
+            orderDishService.prepareToAddDishes(orderId, model);
+            fail("Expected NoSuchElementException was not thrown");
+        } catch (NoSuchElementException e) {
+            assertEquals("No value present", e.getMessage());
+        }
     }
 
 }

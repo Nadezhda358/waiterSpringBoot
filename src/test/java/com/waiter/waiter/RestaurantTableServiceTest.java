@@ -276,4 +276,94 @@ public class RestaurantTableServiceTest {
         Iterable<RestaurantTable> actualTables = restaurantTableService.getTables(filter);
         assertEquals(expectedTables, actualTables);
     }
+
+    //////////////////////////////////////////////////////////////////////////////////////////////
+    @Test
+    public void testSetCardColorsForTables_NoOrders() {
+        // Setup
+        List<RestaurantTable> tables = new ArrayList<>();
+        RestaurantTable table1 = new RestaurantTable();
+        table1.setId(1);
+        table1.setHasOrder(false);
+        tables.add(table1);
+        RestaurantTable table2 = new RestaurantTable();
+        table2.setId(2);
+        table2.setHasOrder(false);
+        tables.add(table2);
+        when(restaurantTablesRepository.findAll()).thenReturn(tables);
+
+        // Execute
+        restaurantTableService.setCardColorsForTables();
+
+        // Verify
+        verify(restaurantTablesRepository, times(1)).saveAll(tables);
+        assertEquals(2, tables.size());
+        assertEquals("card-white", table1.getTableCardBackground());
+        assertEquals("card-white", table2.getTableCardBackground());
+    }
+
+    @Test
+    public void testSetCardColorsForTables_OneOrderLessThan30Minutes() {
+        // Setup
+        List<RestaurantTable> tables = new ArrayList<>();
+        RestaurantTable table1 = new RestaurantTable();
+        table1.setId(1);
+        table1.setHasOrder(true);
+        tables.add(table1);
+        LocalDateTime updatedOn = LocalDateTime.now().minus(Duration.ofMinutes(20));
+        when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
+        when(restaurantTablesRepository.findAll()).thenReturn(tables);
+
+        // Execute
+        restaurantTableService.setCardColorsForTables();
+
+        // Verify
+        verify(restaurantTablesRepository, times(1)).saveAll(tables);
+        assertEquals(1, tables.size());
+        assertEquals("card-green", table1.getTableCardBackground());
+    }
+
+    @Test
+    public void testSetCardColorsForTables_OneOrderMoreThan30Minutes() {
+        // Setup
+        List<RestaurantTable> tables = new ArrayList<>();
+        RestaurantTable table1 = new RestaurantTable();
+        table1.setId(1);
+        table1.setHasOrder(true);
+        tables.add(table1);
+        LocalDateTime updatedOn = LocalDateTime.now().minus(Duration.ofMinutes(40));
+        when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
+        when(restaurantTablesRepository.findAll()).thenReturn(tables);
+
+        // Execute
+        restaurantTableService.setCardColorsForTables();
+
+        // Verify
+        verify(restaurantTablesRepository, times(1)).saveAll(tables);
+        assertEquals(1, tables.size());
+        assertEquals("card-red", table1.getTableCardBackground());
+    }
+
+    @Test
+    public void testSetCardColorsForTables_OneOrderExactly30Minutes() {
+        // Setup
+        List<RestaurantTable> tables = new ArrayList<>();
+        RestaurantTable table1 = new RestaurantTable();
+        table1.setId(1);
+        table1.setHasOrder(true);
+        tables.add(table1);
+        LocalDateTime updatedOn = LocalDateTime.now().minus(Duration.ofMinutes(30));
+        when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
+        when(restaurantTablesRepository.findAll()).thenReturn(tables);
+
+        // Execute
+        restaurantTableService.setCardColorsForTables();
+
+        // Verify
+        verify(restaurantTablesRepository, times(1)).saveAll(tables);
+        assertEquals(1, tables.size());
+        assertEquals("card-red", table1.getTableCardBackground());
+    }
+
+
 }
