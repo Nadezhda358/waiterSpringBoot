@@ -65,28 +65,41 @@ img.white-image {
 .ableToChange
 {
 }
-
+img.white-image {
+  filter: brightness(0%) invert(100%);
+  -webkit-filter: brightness(0%) invert(100%); /* Safari and Chrome */
+  -moz-filter: brightness(0%) invert(100%); /* Firefox */
+  -ms-filter: brightness(0%) invert(100%); /* IE */
+  -o-filter: brightness(0%) invert(100%); /* Opera */
+  margin-top: 5px;
+}
+.firstName{
+  display: block;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
 
     </style>
 </head>
 <body>
-<!-- https://ed100.org/uploads/images/shares/academy/pencil-orange.png снимка на моливче-->
 <div class="navdiv">
     <ul>
-        <li><a href="/">Начало</a></li>
+        <li><a  href="/">Начало</a></li>
         <li><a href="/menu">Меню</a></li>
         <li><a href="/orders/active">Активни поръчки</a></li>
-        <Li><a href="/tables" class="active">Маси</a>
-        <Li><a href="/orders/reference-waiter">Справки</a></Li>
-        <Li><a href="/orders/reference-cook">Справки2</a></Li>
-        <img class="white-image"
-             src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
-             width="50" height="50" style="float:right"
-             th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
-        <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
-             width="50" height="50" style="float:right"
-             th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/tables">Маси</a>
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/orders/reference-waiter">Справки</a></Li>
+        <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).COOK}"><a href="/orders/reference-cook">Справки2</a></Li>
         <li style="float:right"><a href="/login">Изход</a></li>
+        <li class="firstName"style="float:right" th:text="${loggedUser.firstName}"></li>
+        <li style="float:right">
+            <img class="white-image" src="https://uxwing.com/wp-content/themes/uxwing/download/food-and-drinks/restaurant-waiter-icon.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+            <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
+                 width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
+        </li>
     </ul>
 </div>
 <br/>
