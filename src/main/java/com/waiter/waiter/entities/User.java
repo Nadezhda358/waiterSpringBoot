@@ -27,8 +27,6 @@ public class User {
     @Size(min=2, max=30)
     private String firstName;//register input done
     @Size(min=2, max=30)
-    private String secondName;//register input done
-    @Size(min=2, max=30)
     private String lastName;//register input done
     @DateTimeFormat(pattern = "yyyy-mm-dd")
     private Date dateOfBirth;//register input done
@@ -40,10 +38,6 @@ public class User {
     private String email;//register input done
     @Enumerated(EnumType.STRING)
     private Gender gender;//register input done
-    @DateTimeFormat(pattern = "yyyy-mm-dd")
-    private Date hireDate;
-    @Size(max=500)
-    private String description;
     @Enumerated(EnumType.STRING)
     private Role role;//register input done
     private boolean enabled;
@@ -96,13 +90,6 @@ public class User {
         this.firstName = firstName;
     }
 
-    public String getSecondName() {
-        return secondName;
-    }
-
-    public void setSecondName(String secondName) {
-        this.secondName = secondName;
-    }
 
     public String getLastName() {
         return lastName;
@@ -142,22 +129,6 @@ public class User {
 
     public void setGender(Gender gender) {
         this.gender = gender;
-    }
-
-    public Date getHireDate() {
-        return hireDate;
-    }
-
-    public void setHireDate(Date hireDate) {
-        this.hireDate = hireDate;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getAddress() {
