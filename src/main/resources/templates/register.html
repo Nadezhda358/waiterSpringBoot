@@ -98,7 +98,7 @@
                                     <div class="form-outline">
                                         <!--<input type="text" id="firstName" class="form-control form-control-lg" />
                                         <label class="form-label" for="firstName">First Name</label>-->
-                                        <label class="form-label" for="firstName">Име: </label>
+                                        <label class="form-label" for="firstName">Име*: </label>
                                         <input type="text" id="firstName" th:field="*{firstName}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}" class="text-danger">name error</p>
@@ -108,7 +108,7 @@
                                     <div class="form-outline">
                                         <!--<input type="text" id="lastName" class="form-control form-control-lg" />
                                         <label class="form-label" for="lastName">Last Name</label>-->
-                                        <label class="form-label" for="lastName">Фамилия: </label>
+                                        <label class="form-label" for="lastName">Фамилия*: </label>
                                         <input type="text" id="lastName" th:field="*{lastName}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}" class="text-danger">last name error</p>
@@ -123,7 +123,7 @@
                                     <div class="form-outline">
                                         <!--<input type="text" id="firstName" class="form-control form-control-lg" />
                                         <label class="form-label" for="firstName">First Name</label>-->
-                                        <label class="form-label" for="username">Потребителско име: </label>
+                                        <label class="form-label" for="username">Потребителско име*: </label>
                                         <input type="text" id="username" th:field="*{username}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('username')}" th:errors="*{username}" class="text-danger">username error</p>
@@ -133,7 +133,7 @@
                                     <div class="form-outline">
                                         <!--<input type="text" id="firstName" class="form-control form-control-lg" />
                                         <label class="form-label" for="firstName">First Name</label>-->
-                                        <label class="form-label" for="password">Парола: </label>
+                                        <label class="form-label" for="password">Парола*: </label>
                                         <input type="password" id="password" th:field="*{password}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('password')}" th:errors="*{password}" class="text-danger">password error</p>
@@ -145,7 +145,7 @@
                             <div class="row">
                                 <div class="col-md-6 mb-4 pb-2"> <!-- Имейл 1/2 -->
                                     <div class="form-outline">
-                                        <label class="form-label" for="emailAddress">Email:</label>
+                                        <label class="form-label" for="emailAddress">Email*:</label>
                                         <input type="email" id="emailAddress" th:field="*{email}" minlength="2" maxlength="30"
                                                class="form-control form-control-lg" required>
                                         <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}" class="text-danger">email error</p>
@@ -155,7 +155,7 @@
                                     <div class="form-outline">
                                         <label class="form-label" for="phoneNumber">Телефонен номер: </label>
                                         <input type="text" id="phoneNumber" th:field="*{phoneNumber}" minlength="3" maxlength="13"
-                                               class="form-control form-control-lg" required>
+                                               class="form-control form-control-lg">
                                         <p th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}" class="text-danger">phone number error</p>
                                     </div>
                                 </div>
@@ -168,12 +168,12 @@
                                 <div class="col-md-6 mb-4 d-flex align-items-center">
                                     <div class="form-outline datepicker w-100">
                                         <label for="birthdayDate" class="form-label">Дата на раждане: </label>
-                                        <input type="date" id="birthdayDate" th:field="*{dateOfBirth}" class="form-control form-control-lg" required>
+                                        <input type="date" id="birthdayDate" th:field="*{dateOfBirth}" class="form-control form-control-lg">
                                         <p th:if="${#fields.hasErrors('dateOfBirth')}" th:errors="*{dateOfBirth}" class="text-danger">date error</p>
                                     </div>
                                 </div>
                                 <div class="col-md-6 mb-4">
-                                    <label class="form-label" for="address">Адрес: </label>
+                                    <label class="form-label" for="address">Адрес*: </label>
                                     <input type="text" id="address" th:field="*{address}" minlength="3" maxlength="50"
                                            class="form-control form-control-lg" required>
                                     <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="text-danger">address error</p>
@@ -182,7 +182,7 @@
                             </div>
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="form-label select-label">Роля: </div>
+                                    <div class="form-label select-label">Роля*: </div>
                                     <select th:field="${user.role}" class="select form-control-lg col-12" >
                                         <option th:each="userRole : ${T(com.waiter.waiter.enums.Role).values()}"
                                                 th:value="${userRole}"
@@ -204,6 +204,7 @@
                             <div class="mt-4 pt-2">
                                 <button type="submit" class="btn btn-primary btn-lg">Регистрация</button>
                             </div>
+                            <span th:utext="${successMessage}"></span>
                         </form>
                     </div>
                 </div>
