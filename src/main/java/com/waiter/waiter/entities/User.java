@@ -37,7 +37,6 @@ public class User {
     @Size(min=3, max=13)
     private String phoneNumber;//register input done
     @Email
-    @Column(unique = true)//todo validation in html for unique email
     private String email;//register input done
     @Enumerated(EnumType.STRING)
     private Gender gender;//register input done

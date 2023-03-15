@@ -90,6 +90,10 @@ li a:hover:not(.active) {
                  width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         </li>
         </span>
+
+        <span th:if="${loggedUser}==null">
+            <li style="float:right"><a href="/login">Вход</a></li>
+        </span>
     </ul>
 </div>
 <div class="container">
@@ -105,9 +109,10 @@ li a:hover:not(.active) {
                 <th>Име</th>
                 <th>Цена</th>
                 <th>Количество</th>
-                <<span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
+                <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <th></th>
                 <th></th>
+                    <th></th>
         </span>
             </tr>
             </thead>
@@ -265,6 +270,7 @@ li a:hover:not(.active) {
                 <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <th></th>
                 <th></th>
+                    <th></th>
         </span>
             </tr>
             </thead>
