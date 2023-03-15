@@ -92,7 +92,10 @@ li a:hover:not(.active) {
     </ul>
 </div>
 <div class="container">
+    <br/>
+    <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
     <a href="/dishes/create" class="btn btn-outline-secondary">Добави</a>
+        </span>
     <div th:each="type : ${T(com.waiter.waiter.enums.DishType).values()}">
         <h2 th:text="${type.getValue}"></h2>
         <table class="table table-striped">
@@ -101,21 +104,20 @@ li a:hover:not(.active) {
                 <th>Име</th>
                 <th>Цена</th>
                 <th>Количество</th>
+                <<span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <th></th>
                 <th></th>
-                <th></th>
+        </span>
             </tr>
             </thead>
             <tbody>
             <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                 <td th:text="${dish.name}"></td>
-                <!--<td th:text="${dish.price} + ' лв.'"></td>-->
                 <td><span th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
 
+                <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <td>
-
-
                     <!-- Button trigger modal -->
 
 
@@ -244,6 +246,7 @@ li a:hover:not(.active) {
                         </div>
                     </div>
                 </td>
+        </span>
             </tr>
             </tbody>
         </table>
@@ -258,9 +261,10 @@ li a:hover:not(.active) {
                 <th>Име</th>
                 <th>Цена</th>
                 <th>Количество</th>
+                <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <th></th>
                 <th></th>
-                <th></th>
+        </span>
             </tr>
             </thead>
             <tbody>
@@ -269,9 +273,8 @@ li a:hover:not(.active) {
                 <!--<td th:text="${drink.price} + ' лв.'"></td>-->
                 <td><span th:text="${#numbers.formatDecimal(drink.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
-
+                <span th:if="${loggedUser}!=null and ${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}">
                 <td>
-
 
                     <!-- Button trigger modal -->
 
@@ -399,7 +402,7 @@ li a:hover:not(.active) {
                         </div>
                     </div>
                 </td>
-
+        </span>
 
             </tr>
             </tbody>
