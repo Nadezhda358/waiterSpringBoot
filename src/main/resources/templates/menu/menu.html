@@ -75,9 +75,9 @@ li a:hover:not(.active) {
 <body>
 <div class="navdiv">
     <ul>
-        <li><a  href="/">Начало</a></li>
+        <li><a  href="/" >Начало</a></li>
         <li><a href="/menu" class="active">Меню</a></li>
-        <li><a href="/orders/active">Активни поръчки</a></li>
+        <span th:if="${loggedUser}!=null"><li><a href="/orders/active">Активни поръчки</a></li>
         <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/tables">Маси</a>
         <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/orders/reference-waiter">Справки</a></Li>
         <Li th:hidden="${loggedUser.role}!=${T(com.waiter.waiter.enums.Role).COOK}"><a href="/orders/reference-cook">Справки2</a></Li>
@@ -89,6 +89,7 @@ li a:hover:not(.active) {
             <img class="white-image" src="https://freeiconshop.com/wp-content/uploads/edd/chef-solid.png"
                  width="40" height="40" style="float:right" th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).COOK}">
         </li>
+        </span>
     </ul>
 </div>
 <div class="container">
