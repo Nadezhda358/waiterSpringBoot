@@ -88,6 +88,7 @@ img.white-image {
     </ul>
 </div>
 <div class="container">
+    </br>
     <form action="/orders/reference-cook" method="get">
         <label for="filter">Поръчки:</label>
         <select id="filter" name="filter">
@@ -95,7 +96,7 @@ img.white-image {
             <option value="your" th:selected="${filter == 'your'}">Ваши</option>
         </select>
         <button type="submit">Приложи</button>
-    </form><br>
+    </form></br>
 
     <table  class="table table-striped">
         <thead>

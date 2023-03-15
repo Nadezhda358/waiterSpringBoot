@@ -143,19 +143,18 @@ img.white-image {
             <div th:class="${t.tableCardBackground}" class="card" >
 
                 <div class="card-body" >
-                    <h5 class="card-title" th:text="${t.number}"></h5>
-                    <img src="https://cdn.pixabay.com/photo/2016/04/01/12/08/table-1300555_960_720.png" alt="table photo" width="150"/>
-                    <p class="card-text">Some quick example ...</p>
+                    <h5 class="card-title" th:text="'Маса: ' + ${t.number}"></h5>
+                    <img th:src="@{/images/img.png}" alt="table photo" width="150" class="col-12"/></br></br>
 
 
                     <span th:if="${t.hasOrder == false}">
                         <form th:action="@{/orders/create/{tId}(tId=${t.id})}" method="post">
-                            <input type="submit" name="more" value="Добави поръчка" class="btn btn-outline-primary">
+                            <input type="submit" name="more" value="Добави поръчка" class="btn btn-dark">
                         </form>
                     </span>
                     <span th:if="${t.hasOrder == true}">
                         <form th:action="@{/orders/view/{tId}(tId=${t.id})}" method="post">
-                            <input type="submit" name="more" value="Виж поръчката" class="btn btn-outline-primary">
+                            <input type="submit" name="more" value="Виж поръчката" class="btn btn-dark">
                         </form>
                     </span>
                 </div>
