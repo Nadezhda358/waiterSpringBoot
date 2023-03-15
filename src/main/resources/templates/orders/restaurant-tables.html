@@ -139,8 +139,8 @@ img.white-image {
 
     <h1>Маси</h1>
     <div class="row">
-        <div class="col-md-4"  th:each="t : ${restaurantTables}" ><!-- th:if="${restaurantTables} is not null">-->
-            <div th:class="${t.tableCardBackground}" class="card" style="width: 18rem;" >
+        <div class="col-lg-4 col-md-6 col-sm-8 col-xs-8 p-3"  th:each="t : ${restaurantTables}" ><!-- th:if="${restaurantTables} is not null">-->
+            <div th:class="${t.tableCardBackground}" class="card" >
 
                 <div class="card-body" >
                     <h5 class="card-title" th:text="${t.number}"></h5>

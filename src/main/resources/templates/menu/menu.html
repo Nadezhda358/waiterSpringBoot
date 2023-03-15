@@ -109,7 +109,8 @@ li a:hover:not(.active) {
             <tbody>
             <tr th:each="dish : ${dishes}" th:if="${dish.dishType == type.getValue}">
                 <td th:text="${dish.name}"></td>
-                <td th:text="${dish.price} + ' лв.'"></td>
+                <!--<td th:text="${dish.price} + ' лв.'"></td>-->
+                <td><span th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></td>
 
                 <td>
@@ -136,7 +137,8 @@ li a:hover:not(.active) {
                                     </div>
                                     <div class="card-text">
                                         <p>Тип: <span th:text="${dish.dishType}"></span></p>
-                                        <p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>
+                                        <!--<p>Цена: <span th:text="${dish.price} + ' лв.'"></span></p>-->
+                                        <p>Цена: <span th:text="${#numbers.formatDecimal(dish.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></p>
                                         <p>Количество: <span th:text="${dish.quantity} + ' ' + ${dish.dishQuantityType}"></span></p>
                                         <p>Описание: <span th:text="${dish.description}"></span></p>
                                 </div>
@@ -264,7 +266,8 @@ li a:hover:not(.active) {
             <tbody>
             <tr th:each="drink : ${drinks}" th:if="${drink.drinkType == type.getValue}">
                 <td th:text="${drink.name}"></td>
-                <td th:text="${drink.price} + ' лв.'"></td>
+                <!--<td th:text="${drink.price} + ' лв.'"></td>-->
+                <td><span th:text="${#numbers.formatDecimal(drink.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
                 <td th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></td>
 
                 <td>
@@ -291,7 +294,8 @@ li a:hover:not(.active) {
                                 </div>
                                 <div class="card-text">
                                     <p>Тип: <span th:text="${drink.drinkType}"></span></p>
-                                    <p>Цена: <span th:text="${drink.price} + ' лв.'"></span></p>
+                                    <!--<p>Цена: <span th:text="${drink.price} + ' лв.'"></span></p>-->
+                                    <p>Цена: <span th:text="${#numbers.formatDecimal(drink.price, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></p>
                                     <p>Количество: <span th:text="${drink.quantity} + ' ' + ${drink.drinkQuantityType}"></span></p>
                                     <p>Описание: <span th:text="${drink.description}"></span></p>
                                 </div>

@@ -111,7 +111,8 @@ img.white-image {
                 <span th:text="${order.finishDate}" th:if="${order.finishDate} != null"></span>
             </td>
             <td th:text="${order.orderStatus.getValue}"></td>
-            <td th:text="${order.totalCost}"></td>
+            <td><span th:text="${#numbers.formatDecimal(order.totalCost, 0, 'COMMA', 2, 'POINT')} + ' лв.'"></span></td>
+            <!--<td th:text="${order.totalCost}"></td>-->
             <td th:text="${order.waiter.firstName}"></td>
             <td>
                 <span th:text="${order.cook.firstName}" th:if="${order.cook} != null"></span>

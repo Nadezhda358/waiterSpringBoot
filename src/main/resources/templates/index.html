@@ -95,8 +95,7 @@ img.white-image {
         </ul>
     </div>
     <div class="container">
-        <h3 th:inline="text">Добре дошли
-        <span th:if="${loggedUser}!=null">[[${loggedUser.firstName}+' '+${loggedUser.lastName}]]</span>
+        <h3 th:inline="text">Добре дошли<span th:if="${loggedUser}!=null">[[', ' + ${loggedUser.firstName}+' '+${loggedUser.lastName}]]</span>
         </h3>
         <!--<form th:action="@{/logout}" method="post">
 
