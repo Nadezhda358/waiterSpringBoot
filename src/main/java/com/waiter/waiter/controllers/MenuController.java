@@ -5,6 +5,7 @@ import com.waiter.waiter.repositories.DishRepository;
 import com.waiter.waiter.repositories.UserRepository;
 import com.waiter.waiter.services.DishService;
 import com.waiter.waiter.services.DrinkService;
+import com.waiter.waiter.services.UserDetailsServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,21 +23,12 @@ public class MenuController {
     @Autowired
     DrinkService drinkService;
     @Autowired
-    UserRepository userRepository;
+    UserDetailsServiceImpl userDetailsService;
     @GetMapping
     private String getMenu(Model model) {
         model.addAttribute("dishes", dishService.getAllDishes());
         model.addAttribute("drinks", drinkService.getAllDrinks());
-
-        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
-        if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
-        } else {
-            username = principal.toString();
-        }
-        User user=userRepository.getUserByUsername(username);
-        model.addAttribute("loggedUser", user);
+        model.addAttribute("loggedUser", userDetailsService.getLoggedUser());
 
         return "/menu/menu";
     }
