@@ -91,16 +91,6 @@ public class DrinkServiceTest {
         assertEquals(drink, result);
     }
 
-    //@Test
-    //public void testGetDrinkByIdWithInvalidId() {
-    //    Integer drinkId = 1;
-    //    Optional<Drink> optionalDrink = Optional.empty();
-    //    Mockito.when(drinkRepository.findById(drinkId)).thenReturn(optionalDrink);
-    //    Drink result = drinkService.getDrinkById(drinkId);
-    //    assertNotNull(result);
-    //    assertEquals(new Drink(), result);
-    //}
-
     @Test
     public void testDeleteDrinkByIdWithValidId() {
         Integer drinkId = 1;
@@ -110,7 +100,7 @@ public class DrinkServiceTest {
 
     @Test
     public void testDeleteDrinkByIdWithInvalidId() {
-        Integer drinkId = 99; // invalid ID
+        Integer drinkId = 99;
         doThrow(EmptyResultDataAccessException.class).when(drinkRepository).deleteById(drinkId);
         assertThrows(EmptyResultDataAccessException.class, () -> drinkService.deleteDrinkById(drinkId));
     }

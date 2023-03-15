@@ -130,21 +130,6 @@ public class OrderServiceTest {
 
         assertEquals(expectedOrders, actualOrders);
     }
-
-    //@Test
-    //public void testGetOrdersForCertainDateWithYourFilter() {
-    //    String date = "2022-03-15";
-    //    String filter = "your";
-    //    int cookId = 3;
-    //    List<Order> expectedOrders = Arrays.asList(new Order(3, "Bob", "Smith"), new Order(4, "Alice", "Smith"));
-    //    Mockito.when(userDetailsService.geLoggedUser()).thenReturn(new User(cookId, "Cook", "cook@example.com"));
-    //    Mockito.when(orderRepository.getCookOrdersForCertainDate(date, cookId)).thenReturn(expectedOrders);
-//
-    //    Iterable<Order> actualOrders = orderService.getOrdersForCertainDate(date, filter);
-//
-    //    Assertions.assertEquals(expectedOrders, actualOrders);
-    //}
-
     @Test
     public void testGetOrdersForCertainDateWithInvalidFilter() {
         String date = "2022-03-15";
@@ -168,50 +153,27 @@ public class OrderServiceTest {
         });
         when(orderRepository.getOrdersCountByDate()).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Object[]> actualOrders = orderService.getOrdersForCookByDate(filter1);
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
     @Test
     public void testGetOrdersForCookByDate_all() {
-        // Mock data
         List<Object[]> orderData = new ArrayList<>();
         orderData.add(new Object[]{"2023-03-12", 2L});
         orderData.add(new Object[]{"2023-03-11", 1L});
         Mockito.when(orderRepository.getOrdersCountByDate()).thenReturn(orderData);
 
-        // Test method
         Iterable<Object[]> orders = orderService.getOrdersForCookByDate("all");
 
-        // Verify results
         assertEquals(orderData, orders);
     }
 
-    //@Test
-    //public void testGetOrdersForCookByDate_your() {
-    //    // Mock data
-    //    Integer userId = 1;
-    //    Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User(userId));
-    //    List<Object[]> orderData = new ArrayList<>();
-    //    orderData.add(new Object[]{"2023-03-12", 1L});
-    //    Mockito.when(orderRepository.getOrdersCountByDateForCertainCook(userId)).thenReturn(orderData);
-//
-    //    // Test method
-    //    Iterable<Object[]> orders = orderService.getOrdersForCookByDate("your");
-//
-    //    // Verify results
-    //    assertEquals(orderData, orders);
-    //}
-
     @Test
     public void testGetOrdersForCookByDate_invalidFilter() {
-        // Test method with invalid filter
         Iterable<Object[]> orders = orderService.getOrdersForCookByDate("invalid");
 
-        // Verify empty result
         assertEquals(new ArrayList<>(), orders);
     }
 
@@ -226,14 +188,11 @@ public class OrderServiceTest {
         Order order3 = new Order();
         order3.setId(3);
         order3.setCreatedOn(LocalDateTime.parse("2023-03-11T10:00:00"));
-        // Mock data
         List<Order> orderData = Arrays.asList(order1, order2, order3);
         Mockito.when(orderRepository.findAll()).thenReturn(orderData);
 
-        // Test method
         Iterable<Order> orders = orderService.getOrdersForWaiterByDate("all", "newest");
 
-        // Verify results
         assertEquals(orderData, orders);
     }
 
@@ -249,70 +208,19 @@ public class OrderServiceTest {
         order3.setId(3);
         order3.setCreatedOn(LocalDateTime.parse("2023-03-11T10:00:00"));
 
-        // Mock data
         List<Order> orderData = Arrays.asList(order3, order2, order1);
         Mockito.when(orderRepository.findAll()).thenReturn(orderData);
 
-        // Test method
         Iterable<Order> orders = orderService.getOrdersForWaiterByDate("all", "oldest");
 
-        // Verify results
         assertEquals(orderData, orders);
     }
 
-    //@Test
-    //public void testGetOrdersForWaiterByDate_your_newest() {
-    //    // Mock data
-    //    Integer userId = 1;
-    //    Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User(userId));
-    //    List<Order> orderData = Arrays.asList(
-    //            new Order(1, LocalDateTime.parse("2023-03-13T10:00:00"), null, null, new Waiter(userId)),
-    //            new Order(2, LocalDateTime.parse("2023-03-12T10:00:00"), null, null, new Waiter(2)),
-    //            new Order(3, LocalDateTime.parse("2023-03-11T10:00:00"), null, null, new Waiter(userId))
-    //    );
-    //    Mockito.when(orderRepository.getAllOrdersForCertainWaiter(userId)).thenReturn(orderData);
-//
-    //    // Test method
-    //    Iterable<Order> orders = orderService.getOrdersForWaiterByDate("your", "newest");
-//
-    //    // Verify results
-    //    assertEquals(Arrays.asList(orderData.get(0), orderData.get(2)), orders);
-    //}
-    //@Test
-    //public void testGetActiveOrdersForWaiter_all() {
-    //    // Mock user details service
-    //    UserDetailsServiceImpl userDetailsService = Mockito.mock(UserDetailsServiceImpl.class);
-    //    Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User(1, "waiter", Role.WAITER));
-//
-    //    // Mock order repository
-    //    Order order1 = new Order();
-    //    order1.setId(1);
-    //    order1.setOrderStatus(OrderStatus.TAKEN);
-    //    Order order2 = new Order();
-    //    order2.setId(2);
-    //    order2.setOrderStatus(OrderStatus.COOKING);
-    //    Order order3 = new Order();
-    //    order3.setId(3);
-    //    order3.setOrderStatus(OrderStatus.PAID);
-    //    List<Order> orderData = Arrays.asList(order1, order2, order3);
-    //    OrderRepository orderRepository = Mockito.mock(OrderRepository.class);
-    //    Mockito.when(orderRepository.getAllActiveOrdersForWaiter()).thenReturn(orderData);
-//
-    //    // Test method
-    //    OrderService orderService = new OrderService();
-    //    Iterable<Order> orders = orderService.getActiveOrders("all");
-//
-    //    // Verify results
-    //    assertEquals(orderData, orders);
-    //}
-//
     @Test
     public void testGetActiveOrdersForWaiter_your() {
-        // Mock user details service
         UserDetailsServiceImpl userDetailsService = Mockito.mock(UserDetailsServiceImpl.class);
         Mockito.when(userDetailsService.getLoggedUser()).thenReturn(new User());
-//
-        // Mock order repository
+
         Order order1 = new Order();
         order1.setId(1);
         order1.setOrderStatus(OrderStatus.TAKEN);
@@ -381,21 +289,6 @@ public class OrderServiceTest {
             assertFalse(orderService.isAbleToChangeStatus(OrderStatus.COOKING, waiter, cook, waiter));
         }
 
-        //@Test
-        //void testIsAbleToChangeStatus_InvalidRole() {
-        //    User manager = new User(Role.MANAGER);
-        //    assertFalse(orderService.isAbleToChangeStatus(OrderStatus.TAKING, null, null, manager));
-        //}
-
-        //@Test
-        //void testIsAbleToChangeStatus_DifferentUser() {
-        //    User waiter = new User(Role.WAITER);
-        //    User cook = new User(Role.COOK);
-        //    User manager = new User(Role.MANAGER);
-        //    assertFalse(orderService.isAbleToChangeStatus(OrderStatus.TAKING, waiter, cook, manager));
-        //}
-
-
 
     @Test
     void testIsAbleToChangeStatus_InvalidWaiter_ReturnsFalse() {
@@ -416,7 +309,6 @@ public class OrderServiceTest {
 
     @Test
     public void testGetActiveOrdersForWaiterWithAllFilter() {
-        // Arrange
         User waiter = new User();
         waiter.setRole(Role.WAITER);
         Mockito.when(userDetailsService.getLoggedUser()).thenReturn(waiter);
@@ -424,17 +316,14 @@ public class OrderServiceTest {
         Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order(), new Order());
         Mockito.when(orderRepository.getAllActiveOrdersForWaiter()).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("all");
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
 
     @Test
     public void testGetActiveOrdersForWaiterWithYourFilter() {
-        // Arrange
         User waiter = new User();
         waiter.setId(1);
         waiter.setRole(Role.WAITER);
@@ -443,16 +332,13 @@ public class OrderServiceTest {
         Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
         Mockito.when(orderRepository.getActiveOrdersForCertainWaiter(1)).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("your");
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
     @Test
     public void testGetActiveOrdersForCookWithAllFilter() {
-        // Arrange
         User cook = new User();
         cook.setRole(Role.COOK);
         Mockito.when(userDetailsService.getLoggedUser()).thenReturn(cook);
@@ -460,16 +346,13 @@ public class OrderServiceTest {
         Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
         Mockito.when(orderRepository.getAllActiveOrdersForCook()).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("all");
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
     @Test
     public void testGetActiveOrdersForCookWithYourFilter() {
-        // Arrange
         User cook = new User();
         cook.setId(1);
         cook.setRole(Role.COOK);
@@ -478,16 +361,13 @@ public class OrderServiceTest {
         Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
         Mockito.when(orderRepository.getActiveOrdersForCertainCook(1)).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("your");
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
     @Test
     public void testGetActiveOrdersForCookWithFreeFilter() {
-        // Arrange
         User cook = new User();
         cook.setRole(Role.COOK);
         Mockito.when(userDetailsService.getLoggedUser()).thenReturn(cook);
@@ -495,64 +375,21 @@ public class OrderServiceTest {
         Iterable<Order> expectedOrders = Arrays.asList(new Order(), new Order());
         Mockito.when(orderRepository.getActiveOrderWithoutCook()).thenReturn(expectedOrders);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("free");
 
-        // Assert
         assertEquals(expectedOrders, actualOrders);
     }
 
 
     @Test
     public void testGetActiveOrdersWithInvalidFilter() {
-        // Arrange
         User user = new User();
         Mockito.when(userDetailsService.getLoggedUser()).thenReturn(user);
 
-        // Act
         Iterable<Order> actualOrders = orderService.getActiveOrders("invalid_filter");
 
-        // Assert
         assertEquals(new ArrayList<Order>(), actualOrders);
     }
-
-
-    //@Test
-    //public void testChangeStatusValidStatusWaiter() {
-    //    // Arrange
-    //    Order order = new Order();
-    //    order.setOrderStatus(OrderStatus.TAKING);
-    //    User waiter = new User();
-    //    waiter.setId(1);
-    //    order.setWaiter(waiter);
-    //    when(userDetailsService.getLoggedUser()).thenReturn(waiter);
-//
-    //    // Act
-    //    orderService.ChangeStatus(order);
-//
-    //    // Assert
-    //    verify(orderRepository, times(1)).save(order);
-    //    assertEquals(OrderStatus.TAKEN, order.getOrderStatus());
-    //}
-//
-    //@Test
-    //public void testChangeStatusValidStatusCook() {
-    //    // Arrange
-    //    Order order = new Order();
-    //    order.setOrderStatus(OrderStatus.TAKEN);
-    //    User cook = new User();
-    //    cook.setId(1);
-    //    order.setCook(cook);
-    //    when(userDetailsService.getLoggedUser()).thenReturn(cook);
-//
-    //    // Act
-    //    orderService.ChangeStatus(order);
-//
-    //    // Assert
-    //    verify(orderRepository, times(1)).save(order);
-    //    assertEquals(OrderStatus.COOKING, order.getOrderStatus());
-    //    assertEquals(cook, order.getCook());
-    //}
     @Test
     public void testChangeStatusInvalidStatus() {
         Order order = new Order();
@@ -567,73 +404,6 @@ public class OrderServiceTest {
         verify(orderRepository, times(1)).save(order);
         assertEquals(OrderStatus.SERVED, order.getOrderStatus());
     }
-
-    //////////////////////////////////////////////////////////////////////////////////////////
-    //@Test
-    //void testChangeStatusWaiterNotAllowed() {
-    //    // Arrange
-    //    Order order = new Order();
-    //    order.setOrderStatus(OrderStatus.TAKEN);
-    //    User loggedUser = new User();
-    //    loggedUser.setRole(Role.WAITER);
-    //    order.setWaiter(new User());
-    //    order.getWaiter().setId(1);
-    //    loggedUser.setId(2);
-//
-    //    // Act
-    //    Assertions.assertThrows(UnauthorizedException.class, () -> {
-    //        orderService.ChangeStatus(order);
-    //    });
-//
-    //    // Assert
-    //    Order expectedOrder = new Order();
-    //    expectedOrder.setOrderStatus(OrderStatus.TAKEN);
-    //    Assertions.assertEquals(expectedOrder.getOrderStatus(), order.getOrderStatus());
-    //}
-//
-    //@Test
-    //void testChangeStatusCookNotAllowed() {
-    //    // Arrange
-    //    Order order = new Order();
-    //    order.setOrderStatus(OrderStatus.COOKING);
-    //    User loggedUser = new User();
-    //    loggedUser.setRole(Role.COOK);
-    //    order.setCook(new User());
-    //    order.getCook().setId(1);
-    //    loggedUser.setId(2);
-//
-    //    // Act
-    //    Assertions.assertThrows(UnauthorizedException.class, () -> {
-    //        orderService.ChangeStatus(order);
-    //    });
-//
-    //    // Assert
-    //    Order expectedOrder = new Order();
-    //    expectedOrder.setOrderStatus(OrderStatus.COOKING);
-    //    Assertions.assertEquals(expectedOrder.getOrderStatus(), order.getOrderStatus());
-    //}
-/////////////////////////////////////////////////////////////////////////////////////////
-    //@Test
-    //public void testCreateOrderWhenOrderIsSuccessfullyCreated(){
-    //    Integer tId = 1;
-    //    orderService.createOrder(tId);
-//
-    //    Order order = orderRepository.findById(1).get();
-    //    assertEquals(1, order.getTable().getId());
-    //    assertEquals("Test User", order.getUser().getFirstName());
-    //}
-
-    //@Test
-    //public void testCreateOrderExceptionIsThrownWhenTableIdIsInvalid(){
-    //    Integer tId = 999;
-//
-    //    assertThrows(NoSuchElementException.class, () -> {
-    //        orderService.createOrder(tId);
-    //    });
-    //}
-    //////////////////////////////////////////////////////////////////////////////////////////
-
-
     @Test
     public void testChangeStatus() {
         User user = new User();

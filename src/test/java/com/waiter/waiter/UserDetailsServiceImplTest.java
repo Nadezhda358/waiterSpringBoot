@@ -126,17 +126,5 @@ public class UserDetailsServiceImplTest {
         assertEquals(expectedUser, actualUser);
     }
 
-    //@Test
-    //public void testGetLoggedUserWithNonUserDetailsPrincipal() {
-    //    when(authentication.getPrincipal()).thenReturn("jane");
-//
-    //    User expectedUser = new User();
-    //    expectedUser.setUsername("jane");
-    //    when(userRepo.getUserByUsername("jane")).thenReturn(expectedUser);
-//
-    //    User actualUser = userDetailsService.getLoggedUser();
-//
-    //    assertEquals(expectedUser, actualUser);
-    //}
 
 }

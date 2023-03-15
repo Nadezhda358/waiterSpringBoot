@@ -41,17 +41,14 @@ public class OrderDishServiceTest {
 
     @Test
     public void updateTotalCostOrder_shouldNotUpdateTotalCostIfNoTotalCost() {
-        // given
         Order order = new Order();
         order.setId(1);
 
         when(orderDishRepository.getTotalCost(order)).thenReturn(Optional.empty());
         when(orderDrinkRepository.getTotalCost(order)).thenReturn(Optional.empty());
 
-        // when
         orderDishService.updateTotalCostOrder(order);
 
-        // then
         verify(orderDishRepository).getTotalCost(order);
         verify(orderDrinkRepository).getTotalCost(order);
         verify(orderRepository).save(order);
@@ -98,37 +95,9 @@ public class OrderDishServiceTest {
     }
 
 
-    //@Test
-    //public void testRemoveOneFromQuantity() {
-    //    // given
-    //    Integer orderDishId = 1;
-    //    OrderDish orderDish = new OrderDish();
-    //    orderDish.setId(orderDishId);
-    //    orderDish.setQuantity(2);
-    //    orderDish.setPricePerItem(10.0);
-    //    orderDish.setCurrentPrice(20.0);
-    //    Order order = new Order();
-    //    order.setId(1);
-    //    order.setTotalCost(20.0);
-    //    orderDish.setOrder(order);
-    //    when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(orderDish));
-////
-    //    // when
-    //    orderDishService.removeOneFromQuantity(orderDishId);
-////
-    //    // then
-    //    verify(orderDishRepository).findById(orderDishId);
-    //    verify(orderDishRepository).save(orderDish);
-    //    verify(orderRepository).save(order);
-    //    assertEquals(1, orderDish.getQuantity());
-    //    assertEquals(10.0, orderDish.getCurrentPrice(), 0.01);
-    //    assertEquals(10.0, order.getTotalCost(), 0.01);
-    //}
-
 
     @Test
     public void removeOneFromQuantity_shouldNotUpdateOrderDishAndOrderIfQuantityIsOne() {
-        // given
         Integer orderDishId = 1;
         OrderDish orderDish = new OrderDish();
         orderDish.setId(orderDishId);
@@ -138,10 +107,8 @@ public class OrderDishServiceTest {
         orderDish.setOrder(order);
         when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(orderDish));
 
-        // when
         orderDishService.removeOneFromQuantity(orderDishId);
 
-        // then
         verify(orderDishRepository).findById(orderDishId);
         verifyNoMoreInteractions(orderDishRepository);
         verifyNoMoreInteractions(orderRepository);
@@ -152,82 +119,25 @@ public class OrderDishServiceTest {
 
     @Test
     public void removeOneFromQuantity_shouldNotUpdateOrderDishAndOrderIfOrderDishNotFound() {
-        // given
         Integer orderDishId = 1;
         when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.empty());
 
-        // when
         orderDishService.removeOneFromQuantity(orderDishId);
 
-        // then
         verify(orderDishRepository).findById(orderDishId);
         verifyNoMoreInteractions(orderDishRepository);
         verifyNoMoreInteractions(orderRepository);
     }
 
-    //@Test
-    //public void testAddOneToQuantity() {
-    //    // given
-    //    Integer orderDishId = 1;
-    //    OrderDish orderDish = new OrderDish();
-    //    orderDish.setId(orderDishId);
-    //    orderDish.setQuantity(2);
-    //    orderDish.setPricePerItem(10.0);
-    //    orderDish.setCurrentPrice(20.0);
-    //    Order order = new Order();
-    //    order.setId(1);
-    //    order.setTotalCost(20.0);
-    //    orderDish.setOrder(order);
-    //    when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(orderDish));
-//
-    //    // when
-    //    orderDishService.addOneToQuantity(orderDishId);
-//
-    //    // then
-    //    verify(orderDishRepository).findById(orderDishId);
-    //    verify(orderDishRepository).save(orderDish);
-    //    verify(orderRepository).save(order);
-    //    assertEquals(3, orderDish.getQuantity());
-    //    assertEquals(30.0, orderDish.getCurrentPrice(), 0.01);
-    //    assertEquals(30.0, order.getTotalCost(), 0.01);
-    //}
-//
-    //@Test
-    //public void testAddOneToQuantityWithNewOrderDish() {
-    //    // given
-    //    Integer orderDishId = 1;
-    //    when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.empty());
-//
-    //    // when
-    //    orderDishService.addOneToQuantity(orderDishId);
-//
-    //    // then
-    //    verify(orderDishRepository).findById(orderDishId);
-    //    ArgumentCaptor<OrderDish> orderDishCaptor = ArgumentCaptor.forClass(OrderDish.class);
-    //    verify(orderDishRepository).save(orderDishCaptor.capture());
-    //    OrderDish savedOrderDish = orderDishCaptor.getValue();
-    //    assertEquals(orderDishId, savedOrderDish.getId());
-    //    assertEquals(1, savedOrderDish.getQuantity());
-    //    assertEquals(0.0, savedOrderDish.getCurrentPrice(), 0.01);
-//
-    //    ArgumentCaptor<Order> orderCaptor = ArgumentCaptor.forClass(Order.class);
-    //    verify(orderRepository).save(orderCaptor.capture());
-    //    Order savedOrder = orderCaptor.getValue();
-    //    assertEquals(0.0, savedOrder.getTotalCost(), 0.01);
-    //}
-
     @Test
     public void testGetOrderDishById_WhenOrderDishExists_ThenReturnOrderDish() {
-        // Arrange
         Integer orderDishId = 1;
         OrderDish expectedOrderDish = new OrderDish();
         expectedOrderDish.setId(orderDishId);
         when(orderDishRepository.findById(orderDishId)).thenReturn(Optional.of(expectedOrderDish));
 
-        // Act
         OrderDish actualOrderDish = orderDishService.getOrderDishById(orderDishId);
 
-        // Assert
         assertEquals(expectedOrderDish, actualOrderDish);
     }
 
@@ -261,7 +171,6 @@ public class OrderDishServiceTest {
     }
     @Test
     void testFindAllNotAddedDishesToOrder_ReturnsCorrectDishes() {
-        // Arrange
         Order order = new Order();
         Dish dish1 = new Dish();
         Dish dish2 = new Dish();
@@ -372,7 +281,6 @@ public class OrderDishServiceTest {
         }
     }
 
-//////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void testSaveDishesToOrderWithNullDishes() {
         Order order = new Order();

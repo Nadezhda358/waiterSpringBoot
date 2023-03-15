@@ -99,17 +99,7 @@ public class RestaurantTableServiceTest {
         assertThat(actualTable, is(mockTable));
     }
 
-    //@Test
-    //void testGetTableByIdWithNonExistingTable() {
-    //    when(restaurantTablesRepository.findById(2)).thenReturn(Optional.empty()); // mock the behavior of the RestaurantTablesRepository
-//
-    //    RestaurantTable actualTable = restaurantTableService.getTableById(2); // call the method to be tested
-//
-    //    assertNotNull(actualTable); // assert that the actual result is not null
-    //    assertEquals(new RestaurantTable(), actualTable); // assert that the actual result is an empty RestaurantTable object
-    //    assertEquals(0, actualTable.getId()); // assert that the ID of the actual result is 0
-    //    assertNull(actualTable.getNumber()); // assert that the number of the actual result is null
-    //}
+
     @Test
     public void testGetTableById_tableExists() {
         RestaurantTable table = new RestaurantTable();
@@ -157,72 +147,14 @@ public class RestaurantTableServiceTest {
 
     @Test
     public void testSetCardColorsForTables_NoTables() {
-        // Setup
         List<RestaurantTable> tables = new ArrayList<>();
         when(restaurantTablesRepository.findAll()).thenReturn(tables);
 
-        // Execute
         restaurantTableService.setCardColorsForTables();
 
-        // Verify
         verify(restaurantTablesRepository, times(1)).saveAll(tables);
         assertEquals(0, tables.size());
     }
-    //@Test
-    //public void testSetCardColorsForTables_OrderUpdatedWithin30Minutes() {
-    //    // Setup
-    //    LocalDateTime updatedOn = LocalDateTime.now().minusMinutes(15);
-    //    RestaurantTable table = new RestaurantTable();
-    //    List<RestaurantTable> tables = new ArrayList<>();
-    //    tables.add(table);
-    //    when(restaurantTablesRepository.findAll()).thenReturn(tables);
-    //    when(orderRepository.getUpdatedOnByTable(Optional.of(table))).thenReturn(updatedOn);
-    //    restaurantTableService.setCardColorsForTables();
-    //    verify(restaurantTablesRepository, times(1)).saveAll(tables);
-    //    assertEquals("card-green", table.getTableCardBackground());
-    //}
-    //@Test
-    //public void testSetCardColorsForTables_OrderUpdatedWithin30Minutes() {
-    //    // Setup
-    //    LocalDateTime updatedOn = LocalDateTime.now().minusMinutes(15);
-    //    RestaurantTable table = new RestaurantTable();
-    //    List<RestaurantTable> tables = new ArrayList<>();
-    //    tables.add(table);
-    //    when(restaurantTablesRepository.findAll()).thenReturn(tables);
-    //    when(orderRepository.getUpdatedOnByTable(Optional.of(table))).thenReturn(updatedOn);
-//
-    //    // Execute
-    //    restaurantTableService.setCardColorsForTables();
-//
-    //    // Verify
-    //    verify(restaurantTablesRepository, times(1)).saveAll(tables);
-    //    assertEquals("card-green", table.getTableCardBackground());
-    //}
-
-
-    //@Test
-    //public void testGetTables_filterAll() {
-    //    // Arrange
-    //    String filter = "all";
-    //    RestaurantTable restaurantTable1 = new RestaurantTable();
-    //    restaurantTable1.setId(1);
-    //    restaurantTable1.setNumber(1);
-    //    RestaurantTable restaurantTable2 = new RestaurantTable();
-    //    restaurantTable2.setId(2);
-    //    restaurantTable2.setNumber(2);
-    //    RestaurantTable restaurantTable3 = new RestaurantTable();
-    //    restaurantTable3.setId(3);
-    //    restaurantTable3.setNumber(3);
-    //    List<RestaurantTable> expectedTables = Arrays.asList(restaurantTable1, restaurantTable2, restaurantTable3);
-    //    when(restaurantTablesRepository.findAll()).thenReturn(expectedTables);
-//
-    //    // Act
-    //    Iterable<RestaurantTable> actualTables = classUnderTest.getTables(filter);
-//
-    //    // Assert
-    //    assertEquals(expectedTables, actualTables);
-    //    verify(restaurantTablesRepository).findAll();
-    //}
 
     @Test
     void testGetTablesAll() {
@@ -277,10 +209,8 @@ public class RestaurantTableServiceTest {
         assertEquals(expectedTables, actualTables);
     }
 
-    //////////////////////////////////////////////////////////////////////////////////////////////
     @Test
     public void testSetCardColorsForTables_NoOrders() {
-        // Setup
         List<RestaurantTable> tables = new ArrayList<>();
         RestaurantTable table1 = new RestaurantTable();
         table1.setId(1);
@@ -292,10 +222,8 @@ public class RestaurantTableServiceTest {
         tables.add(table2);
         when(restaurantTablesRepository.findAll()).thenReturn(tables);
 
-        // Execute
         restaurantTableService.setCardColorsForTables();
 
-        // Verify
         verify(restaurantTablesRepository, times(1)).saveAll(tables);
         assertEquals(2, tables.size());
         assertEquals("card-white", table1.getTableCardBackground());
@@ -304,7 +232,6 @@ public class RestaurantTableServiceTest {
 
     @Test
     public void testSetCardColorsForTables_OneOrderLessThan30Minutes() {
-        // Setup
         List<RestaurantTable> tables = new ArrayList<>();
         RestaurantTable table1 = new RestaurantTable();
         table1.setId(1);
@@ -314,10 +241,8 @@ public class RestaurantTableServiceTest {
         when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
         when(restaurantTablesRepository.findAll()).thenReturn(tables);
 
-        // Execute
         restaurantTableService.setCardColorsForTables();
 
-        // Verify
         verify(restaurantTablesRepository, times(1)).saveAll(tables);
         assertEquals(1, tables.size());
         assertEquals("card-green", table1.getTableCardBackground());
@@ -325,7 +250,6 @@ public class RestaurantTableServiceTest {
 
     @Test
     public void testSetCardColorsForTables_OneOrderMoreThan30Minutes() {
-        // Setup
         List<RestaurantTable> tables = new ArrayList<>();
         RestaurantTable table1 = new RestaurantTable();
         table1.setId(1);
@@ -335,10 +259,8 @@ public class RestaurantTableServiceTest {
         when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
         when(restaurantTablesRepository.findAll()).thenReturn(tables);
 
-        // Execute
         restaurantTableService.setCardColorsForTables();
 
-        // Verify
         verify(restaurantTablesRepository, times(1)).saveAll(tables);
         assertEquals(1, tables.size());
         assertEquals("card-red", table1.getTableCardBackground());
@@ -356,10 +278,8 @@ public class RestaurantTableServiceTest {
         when(orderRepository.getUpdatedOnByTable(Optional.of(table1))).thenReturn(updatedOn);
         when(restaurantTablesRepository.findAll()).thenReturn(tables);
 
-        // Execute
         restaurantTableService.setCardColorsForTables();
 
-        // Verify
         verify(restaurantTablesRepository, times(1)).saveAll(tables);
         assertEquals(1, tables.size());
         assertEquals("card-red", table1.getTableCardBackground());

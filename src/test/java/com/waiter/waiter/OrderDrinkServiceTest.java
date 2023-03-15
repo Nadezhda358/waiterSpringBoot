@@ -152,7 +152,6 @@ public class OrderDrinkServiceTest {
 
     @Test
     void testFindAllNotAddedDrinksToOrder_ReturnsCorrectDrinks() {
-        // Arrange
         Order order = new Order();
         Drink drink1 = new Drink();
         Drink drink2 = new Drink();
@@ -229,104 +228,6 @@ public class OrderDrinkServiceTest {
         assertNotNull(orderInfo);
         assertEquals(0, orderInfo.size());
     }
-
-    //@Test
-    //public void testDeleteOrderDrinkByIdWhenOrderDrinkCanBeDeleted() {
-    //    // given
-    //    Integer orderDrinkId = 1;
-    //    int orderId = 2;
-//
-    //    OrderDrink orderDrink = new OrderDrink();
-    //    Order order = new Order();
-    //    order.setId(orderId);
-    //    order.setOrderStatus(OrderStatus.TAKING);
-    //    orderDrink.setOrder(order);
-//
-    //    Mockito.when(orderDrinkRepository.findById(orderDrinkId)).thenReturn(Optional.of(orderDrink));
-    //    Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
-//
-    //    // when
-    //    orderDrinkService.deleteOrderDrinkById(orderDrinkId, orderId);
-//
-    //    // then
-    //    Mockito.verify(orderDrinkRepository, Mockito.times(1)).deleteById(orderDrinkId);
-    //    Mockito.verify(orderRepository, Mockito.times(1)).save(order);
-    //    Mockito.verify(orderDrinkService, Mockito.times(1)).updateTotalCostOrder(order);
-    //}
-//
-    //@Test
-    //public void testDeleteOrderDrinkByIdWhenOrderDrinkCannotBeDeleted() {
-    //    // given
-    //    Integer orderDrinkId = 1;
-    //    int orderId = 2;
-//
-    //    OrderDrink orderDrink = new OrderDrink();
-    //    Order order = new Order();
-    //    order.setId(orderId);
-    //    order.setOrderStatus(OrderStatus.SERVED);
-    //    orderDrink.setOrder(order);
-//
-    //    Mockito.when(orderDrinkRepository.findById(orderDrinkId)).thenReturn(Optional.of(orderDrink));
-//
-    //    // when
-    //    orderDrinkService.deleteOrderDrinkById(orderDrinkId, orderId);
-//
-    //    // then
-    //    Mockito.verify(orderDrinkRepository, Mockito.times(0)).deleteById(orderDrinkId);
-    //    Mockito.verify(orderRepository, Mockito.times(0)).save(order);
-    //    Mockito.verify(orderDrinkService, Mockito.times(0)).updateTotalCostOrder(order);
-    //}
-
-    //@Test
-    //public void testDeleteOrderDrinkById() {
-    //    // Create an OrderDrink object and save it to the database
-    //    OrderDrink orderDrink = new OrderDrink();
-    //    orderDrink.setOrder(new Order());
-    //    orderDrink.getOrder().setOrderStatus(OrderStatus.TAKING);
-//
-    //    OrderDrink savedOrderDrink = orderDrinkRepository.save(orderDrink);
-    //    assertNotNull(savedOrderDrink);
-//
-    //    // Call the deleteOrderDrinkById method with the OrderDrink ID and an Order ID
-    //    orderDrinkService.deleteOrderDrinkById(savedOrderDrink.getId(), savedOrderDrink.getOrder().getId());
-//
-    //    // Verify that the OrderDrink has been deleted
-    //    assertFalse(orderDrinkRepository.existsById(savedOrderDrink.getId()));
-//
-    //    // Verify that the Order's total cost has been updated
-    //    Optional<Order> order = orderRepository.findById(savedOrderDrink.getOrder().getId());
-    //    assertTrue(order.isPresent());
-    //    assertEquals(0, order.get().getTotalCost());
-    //}
-//
-//
-    //@Test
-    //public void testDeleteOrderDrinkByIdWithInvalidOrderDrinkId() {
-    //    // Call the deleteOrderDrinkById method with an invalid OrderDrink ID and a valid Order ID
-    //    orderDrinkService.deleteOrderDrinkById(12345, 1);
-//
-    //    // Verify that no exceptions were thrown
-    //}
-//
-    //@Test
-    //public void testDeleteOrderDrinkByIdWithOrderInProgress() {
-    //    // Create an OrderDrink object and save it to the database
-    //    OrderDrink orderDrink = new OrderDrink();
-    //    orderDrink.setOrder(new Order());
-    //    orderDrink.getOrder().setOrderStatus(OrderStatus.COOKING);
-    //    orderDrink = orderDrinkRepository.save(orderDrink);
-//
-    //    // Call the deleteOrderDrinkById method with the OrderDrink ID and an Order ID
-    //    orderDrinkService.deleteOrderDrinkById(orderDrink.getId(), orderDrink.getOrder().getId());
-//
-    //    // Verify that the OrderDrink has not been deleted
-    //    assertTrue(orderDrinkRepository.existsById(orderDrink.getId()));
-//
-    //    // Verify that the Order's total cost has not been updated
-    //    Optional<Order> order = orderRepository.findById(orderDrink.getOrder().getId());
-    //    assertTrue(order.isPresent());
-    //    assertNotEquals(0, order.get().getTotalCost());
-    //}
 
 
     @Test
@@ -405,7 +306,6 @@ public class OrderDrinkServiceTest {
         assertEquals(Double.valueOf(30.0), orderDrink.getCurrentPrice());
     }
 
-///////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

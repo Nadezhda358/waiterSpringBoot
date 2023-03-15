@@ -92,16 +92,6 @@ public class DishServiceTest {
         assertEquals(dish, result);
     }
 
-    //@Test
-    //public void testGetDishByIdWithInvalidId() {
-    //    Integer dishId = 1;
-    //    Optional<Dish> optionalDish = Optional.empty();
-    //    Mockito.when(dishRepository.findById(dishId)).thenReturn(optionalDish);
-    //    Dish result = dishService.getDishById(dishId);
-    //    assertNotNull(result);
-    //    assertEquals(new Dish(), result);
-    //}
-
 
     @Test
     public void testDeleteDishByIdWithValidId() {
@@ -112,7 +102,7 @@ public class DishServiceTest {
 
     @Test
     public void testDeleteDishByIdWithInvalidId() {
-        Integer dishId = 99; // invalid ID
+        Integer dishId = 99;
         doThrow(EmptyResultDataAccessException.class).when(dishRepository).deleteById(dishId);
         assertThrows(EmptyResultDataAccessException.class, () -> dishService.deleteDishById(dishId));
     }
