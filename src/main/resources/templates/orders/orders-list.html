@@ -97,7 +97,7 @@ li a:hover:not(.active) {
             <option value="your" th:selected="${filter == 'your'}">Ваши</option>
             <option th:hidden="${loggedUser.role} != ${T(com.waiter.waiter.enums.Role).COOK}" value="free" th:selected="${filter == 'free'}">Без готвач</option>
         </select>
-        <button type="submit">Apply Filter</button>
+        <button type="submit">Приложи</button>
     </form><br>
     <br>
     <div>
