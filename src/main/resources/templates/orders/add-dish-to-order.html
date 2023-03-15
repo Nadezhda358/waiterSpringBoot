@@ -18,12 +18,22 @@
     <div class="row">
         <div class="col-md-6 mx-auto">
             <div class="card border-2">
-                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                <!--<div class="btn-group" role="group" aria-label="Basic outlined example">
                     <a class="list-group-item list-group-item-action active">Храни</a>
                     <form th:action="@{/order-drink/add-drinks/{orderId}(orderId=${order.id})}" method="post">
                         <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left" width="40" height="40">
                     </form>
 
+                </div>-->
+                <div class="btn-group" role="group" aria-label="Basic outlined example">
+                    <!--<a href="/login" class="list-group-item list-group-item-action text-center p-3">Храни</a>-->
+                    <!--<a href="/order-drink/add-drinks/{orderId}(orderId=${order.id})" class="list-group-item list-group-item-action active text-center p-3">Регистрация</a>-->
+                    <form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post" class="col-6">
+                        <button type="submit" class="list-group-item list-group-item-action active text-center p-3">Храни</button>
+                    </form>
+                    <form th:action="@{/order-drink/add-drinks/{orderId}(orderId=${order.id})}" method="post" class="col-6">
+                            <button type="submit" class="list-group-item list-group-item-action text-center p-3">Напитки</button>
+                    </form>
                 </div>
                 <div class="card-body">
                     <form class="ui form p-3" th:action="@{/order-dish/add-to-order/submit/{orderId}(orderId=${orderdish.getOrder.id})}" method="post" th:object="${orderdish}">
@@ -35,7 +45,11 @@
                         </ul>
                         <div class="field">
                             <button type="submit"  class="btn btn-outline-success">Добави</button>
+                            <form th:action="@{/orders/view/{tId}(tId=${order.table.id})}" method="post">
+                            <input type="submit" name="more" value="Назад" class="btn btn-outline-secondary">
+                            </form>
                         </div>
+
                     </form>
                 </div>
             </div>
