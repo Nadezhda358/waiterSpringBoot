@@ -70,7 +70,11 @@ body{
 background: url(/images/modern_restaurant_pic1.jpg)
                 no-repeat center center fixed;
     background-size: cover;
-
+}
+.textInTransparentBlock{
+display: block;
+background-color: rgba(10,10,10 ,0.5);
+color: white;
 }
     </style>
 </head>
@@ -100,8 +104,17 @@ background: url(/images/modern_restaurant_pic1.jpg)
         </ul>
     </div>
     <div class="container">
-        <h3 th:inline="text">Добре дошли<span th:if="${loggedUser}!=null">[[', ' + ${loggedUser.firstName}+' '+${loggedUser.lastName}]]</span>
-        </h3>
+        <br>
+        <br>
+        <div class="textInTransparentBlock">
+        <h2 th:inline="text">Добре дошли<span th:if="${loggedUser}!=null">[[', ' + ${loggedUser.firstName}+' '+${loggedUser.lastName}]]</span>
+        </h2>
+
+            <h3>
+ТЙКХНЦИКХНВ<br/><br/><br/><br/>
+
+            </h3>
+        </div>
         <!--<form th:action="@{/logout}" method="post">
 
             <input type="submit" value="Logout"/>
