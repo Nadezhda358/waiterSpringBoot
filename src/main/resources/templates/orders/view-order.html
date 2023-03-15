@@ -216,10 +216,14 @@ img.white-image {
 
     <form th:action="@{/order-dish/add-dishes/{orderId}(orderId=${order.id})}" method="post">
         <span th:unless="${order.orderStatus} != ${T(com.waiter.waiter.enums.OrderStatus).TAKING}">
-        <input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left"
+            <input type="image" th:src="@{/images/icons8-plus-button-64.png}" alt="Submit" style="float:left"
+                   width="40" height="40"
+                   th:disabled="${isAbleToChangeStatus} == false"
+                   th:class="${AbleToChangeOrder}">
+        <!--<input type="image" src="https://img.freepik.com/free-icon/plus_318-580436.jpg" alt="Submit" style="float:left"
                width="40" height="40"
                th:disabled="${isAbleToChangeStatus} == false"
-               th:class="${AbleToChangeOrder}">
+               th:class="${AbleToChangeOrder}">-->
         <!--<input type="submit" name="more" value="" class="btn btn-outline-primary" href="@{/orders/add-dishes/{orderId}(orderId=${order.id})}"><img src="https://img.freepik.com/free-icon/plus_318-580436.jpg" width="40"/></a>-->
         </span>
     </form>
@@ -365,7 +369,6 @@ img.white-image {
         </thead>
     </table>
     <br/><br/><br/>
-    <span th:if="${loggedUser.role}==${T(com.waiter.waiter.enums.Role).WAITER}"><a href="/tables" class="btn btn-outline-secondary">Назад</a></span>
 </div>
 </body>
 </html>
